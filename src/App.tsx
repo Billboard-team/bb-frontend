@@ -22,15 +22,12 @@ const sampleBills = [
   }
 ]
 
-
 function App() {
   return (
     <>
       <BillGrid items={sampleBills}/>
     </>
-
   )
 }
-
 
 export default App
