@@ -24,4 +24,4 @@ dist-ssr
 *.sw?
 
 # Developer's test page
-dev-*.tsx
+# dev-*.tsx
