@@ -1,6 +1,6 @@
 
 function Dev() {
-  return <>Hello! This is the test page</>
+  return <>Hello! This is the edited page</>
 }
 
 export default Dev
