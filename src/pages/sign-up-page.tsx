@@ -9,6 +9,7 @@ import {
     Box,
     HStack,
 } from '@chakra-ui/react';
+
 import GoogleLogo from '../assets/icons/google.png';
 import XLogo from '../assets/icons/x.png';
 import BillboardLogo from '../assets/icons/Billboard-Logo.png';
@@ -63,6 +64,7 @@ const SignupForm: React.FC = () => {
                             value={formData.email}
                             onChange={handleChange}
                             w="90%"
+                            color="grey"
                             required
                         />
                         <Input
@@ -72,6 +74,7 @@ const SignupForm: React.FC = () => {
                             value={formData.password}
                             onChange={handleChange}
                             w="90%"
+                            color="grey"
                             required
                         />
                         <Input
@@ -81,6 +84,7 @@ const SignupForm: React.FC = () => {
                             value={formData.confirmPassword}
                             onChange={handleChange}
                             w="90%"
+                            color="grey"
                             required
                         />
                         <Input
@@ -90,6 +94,7 @@ const SignupForm: React.FC = () => {
                             value={formData.nickname}
                             onChange={handleChange}
                             w="90%"
+                            color="grey"
                             required
                         />
                         <Button type="submit" colorScheme="blackAlpha" w="90%" color="white">
