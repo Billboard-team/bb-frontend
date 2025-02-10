@@ -97,7 +97,7 @@ const SignupForm: React.FC = () => {
                             color="grey"
                             required
                         />
-                        <Button type="submit" colorScheme="blackAlpha" w="90%" color="white">
+                        <Button type="submit" bg="black" w="90%" color="white">
                             Sign Up
                         </Button>
                     </VStack>
