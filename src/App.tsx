@@ -34,20 +34,12 @@ const sampleBills = [
 // }
 
 function App() {
+  // No routing here – just a normal component
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* Parent route using the shared Layout */}
-        <Route path="/" element={<Layout />}>
-          {/* index makes this the default child route for "/" */}
-          <Route index element={<Dashboard />} />
-
-          {/* Add more child routes as needed:
-              <Route path="other" element={<OtherPage />} />
-           */}
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <div>
+      <h1>My App Component</h1>
+      <BillGrid items={sampleBills} />
+    </div>
   );
 }
 

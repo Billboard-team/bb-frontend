@@ -1,11 +1,10 @@
-// Dashboard.tsx
+// dashboard.tsx
 import React from "react";
 import { Box, Button, HStack, Text, Grid, GridItem } from "@chakra-ui/react";
 
 const Dashboard: React.FC = () => {
   return (
     <>
-      {/* Header */}
       <HStack justify="space-between" mb={6}>
         <Text fontSize="3xl" fontWeight="bold">
           BillBoard Dashboard
@@ -23,7 +22,6 @@ const Dashboard: React.FC = () => {
         </HStack>
       </HStack>
 
-      {/* Recommended Bills */}
       {/* Bills Section */}
       <Box mb={6}>
         <HStack>

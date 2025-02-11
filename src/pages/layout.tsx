@@ -9,10 +9,10 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 import { Outlet } from "react-router-dom";
+
 import BillboardLogo from "../assets/Billboard-Logo.png";
 
 const Layout: React.FC = () => {
-  // Dynamically set the sidebar width based on breakpoints
   const sidebarWidth = useBreakpointValue({ base: "100%", md: "250px" });
 
   return (
@@ -52,11 +52,7 @@ const Layout: React.FC = () => {
 
       {/* Main Content Area */}
       <Box flex="1" p={6} width="100%" maxWidth="100%">
-        {/*
-          The <Outlet> is where child routes (e.g., Dashboard, About, etc.)
-          will render. Make sure your route configuration uses <Route>
-          with <Layout> as the parent and the child routes inside.
-        */}
+        {/* <Outlet /> is where child routes (e.g., Dashboard) will render */}
         <Outlet />
       </Box>
     </Box>
