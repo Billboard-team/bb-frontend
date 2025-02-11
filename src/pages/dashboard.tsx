@@ -1,6 +1,28 @@
 // dashboard.tsx
 import React from "react";
 import { Box, Button, HStack, Text, Grid, GridItem } from "@chakra-ui/react";
+import BillGrid from "@/components/bill-grid";
+
+const sampleBills = [
+  {
+    id: 1,
+    item: {
+      code: "HB-123",
+      title: "Sample Bill 1",
+      sponsor: "John Doe",
+      action: "Pending",
+    },
+  },
+  {
+    id: 2,
+    item: {
+      code: "SB-456",
+      title: "Sample Bill 2",
+      sponsor: "Jane Smith",
+      action: "Approved",
+    },
+  },
+];
 
 const Dashboard: React.FC = () => {
   return (
@@ -32,30 +54,7 @@ const Dashboard: React.FC = () => {
             Refresh
           </Button>
         </HStack>
-
-        <Grid templateColumns="repeat(auto-fill, minmax(350px, 1fr))" gap={6}>
-          <GridItem bg="gray.700" p={6} borderRadius="lg" boxShadow="md">
-            <Text fontWeight="bold">Climate Action Bill</Text>
-            <Text mt={2} fontSize="sm">
-              This bill proposes new regulations to reduce carbon emissions by
-              30% over the next decade.
-            </Text>
-            <Button variant="ghost" mt={4} colorScheme="teal" size="sm">
-              Save
-            </Button>
-          </GridItem>
-
-          <GridItem bg="gray.700" p={6} borderRadius="lg" boxShadow="md">
-            <Text fontWeight="bold">AI Ethics Act</Text>
-            <Text mt={2} fontSize="sm">
-              This bill aims to establish ethical guidelines for the development
-              and implementation of AI technologies.
-            </Text>
-            <Button variant="ghost" mt={4} colorScheme="teal" size="sm">
-              Save
-            </Button>
-          </GridItem>
-        </Grid>
+        <BillGrid items={sampleBills} />
       </Box>
 
       {/* Trending Bills Section */}

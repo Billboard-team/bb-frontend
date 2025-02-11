@@ -9,8 +9,7 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 import { Outlet } from "react-router-dom";
-
-import BillboardLogo from "../assets/Billboard-Logo.png";
+import BillboardLogo from "@/assets/Billboard-Logo.png";
 
 const Layout: React.FC = () => {
   const sidebarWidth = useBreakpointValue({ base: "100%", md: "250px" });
