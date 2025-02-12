@@ -1,6 +1,32 @@
 // Dashboard.tsx
 import React from "react";
-import { Box, Button, HStack, Text, Grid, GridItem } from "@chakra-ui/react";
+import { Box, Button, HStack, Text, Grid, GridItem, Image } from "@chakra-ui/react";
+import BillCard from "../components/bill-card";
+import RefreshButton from "../assets/refresh.png"
+
+//temp impotrs for testing
+import BillboardLogo from "../assets/mike.jpg";
+//TODO (pathmapping in tsconfig.json)
+
+const bills = [
+  {code: "HR.16610", title: "Affordable Care Act of 2025", sponsor: "Joseph Robinette Biden", action: "passed",
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+    sponsorImg: BillboardLogo
+  },
+  {code: "HR.16610", title: "Affordable Care Act of 2025", sponsor: "Joseph Robinette Biden", action: "passed",
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+    sponsorImg: BillboardLogo
+  },
+  {code: "HR.16610", title: "Affordable Care Act of 2025", sponsor: "Joseph Robinette Biden", action: "passed",
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+    sponsorImg: BillboardLogo
+  }
+]
+
+// Refresh Handler
+const handleRefresh = () => {
+  console.log("Refreshed");
+};
 
 const Dashboard: React.FC = () => {
   return (
@@ -26,37 +52,31 @@ const Dashboard: React.FC = () => {
       {/* Recommended Bills */}
       {/* Bills Section */}
       <Box mb={6}>
-        <HStack>
+        <HStack justify="space-between" w="full">
           <Text fontSize="xl" fontWeight="bold" mb={4}>
             Recommended Bills
           </Text>
-          <Button variant="ghost" colorScheme="teal" size="sm">
-            Refresh
-          </Button>
+          <Image
+            src={RefreshButton} // Replace with your refresh image URL or path
+            alt="Refresh"
+            boxSize="24px"                         // Adjust size as needed
+            cursor="pointer"                       // Indicates that the image is clickable
+            onClick={handleRefresh}                // Handles the refresh action
+            _hover={{ opacity: 0.8 }}              // Optional: Adds a hover effect
+          />
         </HStack>
 
         <Grid templateColumns="repeat(auto-fill, minmax(350px, 1fr))" gap={6}>
-          <GridItem bg="gray.700" p={6} borderRadius="lg" boxShadow="md">
-            <Text fontWeight="bold">Climate Action Bill</Text>
-            <Text mt={2} fontSize="sm">
-              This bill proposes new regulations to reduce carbon emissions by
-              30% over the next decade.
-            </Text>
-            <Button variant="ghost" mt={4} colorScheme="teal" size="sm">
-              Save
-            </Button>
-          </GridItem>
-
-          <GridItem bg="gray.700" p={6} borderRadius="lg" boxShadow="md">
-            <Text fontWeight="bold">AI Ethics Act</Text>
-            <Text mt={2} fontSize="sm">
-              This bill aims to establish ethical guidelines for the development
-              and implementation of AI technologies.
-            </Text>
-            <Button variant="ghost" mt={4} colorScheme="teal" size="sm">
-              Save
-            </Button>
-          </GridItem>
+            {bills.map((bill, index) => (
+              <BillCard 
+                code={bill.code} 
+                title={bill.title} 
+                sponsor={bill.sponsor} 
+                action={bill.action}
+                description={bill.description}
+                sponsorImg={bill.sponsorImg}
+              />
+            ))}
         </Grid>
       </Box>
 
