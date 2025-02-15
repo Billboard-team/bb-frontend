@@ -5,6 +5,7 @@ import "./index.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom"; // Fixed import
 import Dashboard from "@/pages/dashboard";
 import DashboardLayout from "@/pages/dashboard-layout";
+import UserProfile from "@/pages/userprofile";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -13,6 +14,7 @@ createRoot(document.getElementById("root")!).render(
         <Routes>
           <Route path="/" element={<DashboardLayout />}>
             <Route index element={<Dashboard />} />
+            <Route path="profile" element={<UserProfile />} />{" "}
           </Route>
         </Routes>
       </BrowserRouter>
