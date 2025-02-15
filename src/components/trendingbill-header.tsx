@@ -1,8 +1,5 @@
-import "./App.css";
-import BillGrid from "@/components/bill-grid";
-import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-
+import { Box, Button, HStack, Text } from "@chakra-ui/react";
+import BillGrid from "./bill-grid";
 const sampleBills = [
   {
     id: 1,
@@ -24,12 +21,17 @@ const sampleBills = [
   },
 ];
 
-function App() {
+const TrendingBills = () => {
   return (
-    <>
+    <Box>
+      <HStack>
+        <Text fontSize="xl" fontWeight="bold" mb={4}>
+          Trending Bills
+        </Text>
+      </HStack>
       <BillGrid items={sampleBills} />
-    </>
+    </Box>
   );
-}
+};
 
-export default App;
+export default TrendingBills;
