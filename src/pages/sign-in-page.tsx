@@ -34,8 +34,20 @@ const SignInForm: React.FC = () => {
     };
 
     return (
-      <Box display="flex" justifyContent="center" alignItems="center">
-        <Box bg="white" p={8} w={{ base: '90%', md: '500px' }} textAlign="center">
+        <Box 
+            display="flex" 
+            justifyContent="center" 
+            alignItems="center"
+            boxSizing="border-box"
+            minH="100vh"
+            bg="white"
+            w="100%"
+            h="100%"
+            m="0"
+            p="0"
+            overflow="hidden"
+        >
+        <Box bg="white" p={8} w={{ base: '90%', md: '500px' }}>
             <Box textAlign="center" mb={10}>
                 <Image src={BillboardLogo} alt="Billboard Logo" mx="auto" maxW="100%" h="auto" />
             </Box>
@@ -56,13 +68,15 @@ const SignInForm: React.FC = () => {
                         placeholder="Password" 
                         type="password" 
                     />
-                    <Button bg="black" width="full" onClick={handleSubmit}>
+                    <Button bg="black" width="full" _dark={{ color: 'white' }} onClick={handleSubmit}>
                         Login
                     </Button>
                 </VStack>
             </form>
 
-            <Text color="gray.500" my={4}>or</Text>
+            <Box textAlign="center" w="100%">
+                <Text color="gray.500" my={4}>or</Text>
+            </Box>
 
             {/* TODO: Social Media Icons */}
             <HStack justify="center" gap={6} mt={4}>
@@ -74,7 +88,12 @@ const SignInForm: React.FC = () => {
                 </Button>
             </HStack>
             <VStack gap={4} mt={6}>
-                <Button bg="black" onClick={() => navigate('/signup')}>
+                <Button 
+                    bg="black" 
+                    color="white" 
+                    _hover={{ bg: 'gray.800' }}
+                    onClick={() => navigate('/signup')}
+                >
                     Sign up
                 </Button>
                 <Button as="a" bg="white" onClick={() => navigate("/forgotpassword")}>

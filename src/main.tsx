@@ -5,6 +5,7 @@ import "./index.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom"; // Fixed import
 import Dashboard from "@/pages/dashboard";
 import DashboardLayout from "@/pages/dashboard-layout";
+import SignInForm from '@/pages/sign-in-page';
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -14,6 +15,7 @@ createRoot(document.getElementById("root")!).render(
           <Route path="/" element={<DashboardLayout />}>
             <Route index element={<Dashboard />} />
           </Route>
+          <Route path='signin' element={<SignInForm />} />
         </Routes>
       </BrowserRouter>
     </Provider>
