@@ -1,6 +1,8 @@
 import { Flex, Text, Image, Spacer, Button } from "@chakra-ui/react";
 import BillboardLogo from "@/assets/Billboard-Logo.png";
+import { useNavigate } from 'react-router-dom';
 const DashboardHeader = () => {
+  const navigate = useNavigate();
   return (
     <Flex justify="space-between" align="center" p={4} bg="white" shadow="md">
       {/* Logo + Navigation Buttons */}
@@ -14,10 +16,10 @@ const DashboardHeader = () => {
 
         {/* Navigation Buttons */}
         <Flex ml={6} gap={4}>
-          <Button variant="ghost" fontSize="lg">
+          <Button variant="ghost" fontSize="lg" onClick={() => navigate('/')}>
             Dashboard
           </Button>
-          <Button variant="ghost" fontSize="lg">
+          <Button variant="ghost" fontSize="lg" onClick={() => navigate('/messages')}>
             Messages
           </Button>
         </Flex>
