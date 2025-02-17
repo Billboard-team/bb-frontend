@@ -1,11 +1,12 @@
 // Dashboard.tsx
 import React from "react";
 import { Box, Button, HStack, Text, Grid, GridItem, Image } from "@chakra-ui/react";
-import BillCard from "../components/bill-card";
+import BillCard from "../components/bill-card"
+import DetailBillCard from "../components/bill-card-detailed"
 import RefreshButton from "../assets/refresh.png"
 
 //temp impotrs for testing
-import BillboardLogo from "../assets/mike.jpg";
+import BillboardLogo from "../assets/mike.jpg"
 //TODO (pathmapping in tsconfig.json)
 
 const bills = [
@@ -28,7 +29,7 @@ const handleRefresh = () => {
   console.log("Refreshed");
 };
 
-const Dashboard: React.FC = () => {
+const Dashboard = () => {
   return (
     <>
       {/* Header */}
@@ -66,7 +67,15 @@ const Dashboard: React.FC = () => {
           />
         </HStack>
 
-        <Grid templateColumns="repeat(auto-fill, minmax(350px, 1fr))" gap={6}>
+        <Grid autoRows="auto" templateColumns="repeat(auto-fill, minmax(350px, 1fr))" gap={6}>
+            <DetailBillCard 
+                code={bills[1].code} 
+                title={bills[1].title} 
+                sponsor={bills[1].sponsor} 
+                action={bills[1].action}
+                description={bills[1].description}
+                sponsorImg={bills[1].sponsorImg}
+            />
             {bills.map((bill, index) => (
               <BillCard 
                 code={bill.code} 
@@ -98,5 +107,4 @@ const Dashboard: React.FC = () => {
     </>
   );
 };
-
 export default Dashboard;

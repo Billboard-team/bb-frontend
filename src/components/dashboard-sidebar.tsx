@@ -9,7 +9,7 @@ const DashboardSidebar = () => {
         Categories
       </Text>
       {categories.map((category) => (
-        <Text key={category} cursor="pointer" _hover={{ color: "blue.500" }}>
+        <Text key={category} color="black" cursor="pointer" _hover={{ color: "blue.500" }}>
           {category}
         </Text>
       ))}
