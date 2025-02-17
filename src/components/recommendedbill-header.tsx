@@ -1,12 +1,11 @@
 import {
   Box,
   Heading,
-  SimpleGrid,
-  Button,
   HStack,
-  Text,
+  IconButton,
 } from "@chakra-ui/react";
 import BillGrid from "./bill-grid";
+import { LuRotateCcw } from "react-icons/lu";
 
 const sampleBills = [
   {
@@ -32,13 +31,13 @@ const sampleBills = [
 const RecommendedBills = () => {
   return (
     <Box>
-      <HStack>
-        <Text fontSize="xl" fontWeight="bold" mb={4}>
+      <HStack my={2}>
+        <Heading>
           Recommended Bills
-        </Text>
-        <Button variant="ghost" colorScheme="teal" size="sm">
-          Refresh
-        </Button>
+        </Heading>
+        <IconButton variant="ghost" colorScheme="teal" size="sm">
+          <LuRotateCcw/>
+        </IconButton>
       </HStack>
       <BillGrid items={sampleBills} />
     </Box>
