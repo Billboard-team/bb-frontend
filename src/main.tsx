@@ -13,11 +13,15 @@ createRoot(document.getElementById("root")!).render(
     <Provider>
       <BrowserRouter>
         <Routes>
+          <Route path='signin' element={<SignInForm />} />
+
           <Route path="/" element={<DashboardLayout />}>
             <Route index element={<Dashboard />} />
           </Route>
-          <Route path='signin' element={<SignInForm />} />
-          <Route path="friendlist" element={<FriendListPage />} />
+
+          <Route path="friendlist" element={<DashboardLayout />} >
+            <Route index element={<FriendListPage />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </Provider>
