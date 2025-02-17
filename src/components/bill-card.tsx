@@ -15,7 +15,7 @@ export interface BillCardProp extends BillDetails{
 
 export default function BillCard({code, title, sponsor, action, description, sponsorImg }: BillCardProp) {
   return (
-    <Card.Root width="320px">
+    <Card.Root width="50rem" _hover={{backgroundColor: "blackAlpha.100", cursor: "pointer"}}>
       {/* Header with relative positioning to allow absolute positioning for the image */}
       <Card.Header position="relative">
         <Card.Title fontSize="sm">{code}</Card.Title>

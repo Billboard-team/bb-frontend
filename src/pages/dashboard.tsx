@@ -50,6 +50,22 @@ const Dashboard = () => {
         </HStack>
       </HStack>
 
+      {/* Trending Bills Section */}
+            <Box>
+        <Text fontSize="xl" fontWeight="bold" mb={4}>
+          Trending Bills
+        </Text>
+        <Grid templateColumns="repeat(auto-fill, minmax(350px, 1fr))" gap={6}>
+          <GridItem bg="gray.700" p={6} borderRadius="lg" boxShadow="md">
+            <Text fontWeight="bold">Healthcare Reform Act</Text>
+            <Text mt={2} fontSize="sm">
+              This bill is currently the most debated with extensive discussions
+              around its potential impact on national healthcare.
+            </Text>
+          </GridItem>
+        </Grid>
+      </Box>
+
       {/* Recommended Bills */}
       {/* Bills Section */}
       <Box mb={6}>
@@ -58,16 +74,16 @@ const Dashboard = () => {
             Recommended Bills
           </Text>
           <Image
-            src={RefreshButton} // Replace with your refresh image URL or path
+            src={RefreshButton} 
             alt="Refresh"
-            boxSize="24px"                         // Adjust size as needed
-            cursor="pointer"                       // Indicates that the image is clickable
-            onClick={handleRefresh}                // Handles the refresh action
-            _hover={{ opacity: 0.8 }}              // Optional: Adds a hover effect
+            boxSize="24px"                         
+            cursor="pointer"                       
+            onClick={handleRefresh}                
+            _hover={{ opacity: 0.8 }}              
           />
         </HStack>
 
-        <Grid autoRows="auto" templateColumns="repeat(auto-fill, minmax(350px, 1fr))" gap={6}>
+        <Grid autoRows="auto" templateColumns="repeat(1, minmax(350px, 1fr))" gap={6}>
             <DetailBillCard 
                 code={bills[1].code} 
                 title={bills[1].title} 
@@ -86,22 +102,6 @@ const Dashboard = () => {
                 sponsorImg={bill.sponsorImg}
               />
             ))}
-        </Grid>
-      </Box>
-
-      {/* Trending Bills Section */}
-      <Box>
-        <Text fontSize="xl" fontWeight="bold" mb={4}>
-          Trending Bills
-        </Text>
-        <Grid templateColumns="repeat(auto-fill, minmax(350px, 1fr))" gap={6}>
-          <GridItem bg="gray.700" p={6} borderRadius="lg" boxShadow="md">
-            <Text fontWeight="bold">Healthcare Reform Act</Text>
-            <Text mt={2} fontSize="sm">
-              This bill is currently the most debated with extensive discussions
-              around its potential impact on national healthcare.
-            </Text>
-          </GridItem>
         </Grid>
       </Box>
     </>
