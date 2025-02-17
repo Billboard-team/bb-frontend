@@ -25,3 +25,6 @@ dist-ssr
 
 # Developer's test page
 dev-*.tsx
+
+# Mark's tmux config
+tmux_init.sh
