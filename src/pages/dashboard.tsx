@@ -10,15 +10,15 @@ import BillboardLogo from "../assets/mike.jpg"
 //TODO (pathmapping in tsconfig.json)
 
 const bills = [
-  {bill_id: 3.2, code: "HR.16610", title: "Affordable Care Act of 2025", sponsor: "Joseph Robinette Biden", action: "passed",
+  {bill_id: 32452, code: "HR.16610", title: "Affordable Care Act of 2025", sponsor: "Joseph Robinette Biden", action: "passed",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     sponsorImg: BillboardLogo
   },
-  {bill_id:3.2, code: "HR.16610", title: "Affordable Care Act of 2025", sponsor: "Joseph Robinette Biden", action: "passed",
+  {bill_id:32456, code: "HR.13", title: "Affordable Care Act of 2025", sponsor: "Joseph Robinette Biden", action: "passed",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     sponsorImg: BillboardLogo
   },
-  {bill_id:4, code: "HR.16610", title: "Affordable Care Act of 2025", sponsor: "Joseph Robinette Biden", action: "passed",
+  {bill_id:4601093, code: "HR.9458", title: "Affordable Care Act of 2025", sponsor: "Joseph Robinette Biden", action: "passed",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     sponsorImg: BillboardLogo
   }

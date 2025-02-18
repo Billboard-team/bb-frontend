@@ -29,7 +29,7 @@ export default function BillCard({bill_id, code, title, sponsor, action, descrip
     <Card.Root 
       width="50rem" 
       _hover={{backgroundColor: "blackAlpha.100", cursor: "pointer"}}
-      onClick={() => navigate('/post/${bill_id}')}
+      onClick={() => navigate('/post/' + bill_id)}
     >
       {/* Header with relative positioning to allow absolute positioning for the image */}
       <Card.Header position="relative">
