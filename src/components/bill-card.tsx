@@ -1,21 +1,36 @@
 import { Badge, Card, Box, Image } from "@chakra-ui/react"
+import { useNavigate } from "react-router-dom"; 
  
-type BillDetails = Record<"code" | "title", string>;
-
-export interface BillCardProp extends BillDetails{
+type BillProps = {
+  /** The uniqueID of a bill */
+  bill_id: number,
+  /** Plaintext title of bill (act name) */
+  title: string,
+  /** Bill code (HR. 40, SR. 121h, etc) */
+  code: string,
+  /** Main sponser of bill (optional) */
   sponsor?: string,
+  /** Current level of action on bill (passed, suspended, etc) */
   action: string,
+  /** Summary of bill (not full description) */
   description?: string,
+  /** Provided url to image of bill sponsor (optional) */
   sponsorImg?: string
 }
 
-// function BillActionBadge({action} : ItemBillProp) {
 
-// }
 
-export default function BillCard({code, title, sponsor, action, description, sponsorImg }: BillCardProp) {
+
+export default function BillCard({bill_id, code, title, sponsor, action, description, sponsorImg } : BillProps) {
+
+  const navigate = useNavigate();
+
   return (
-    <Card.Root width="50rem" _hover={{backgroundColor: "blackAlpha.100", cursor: "pointer"}}>
+    <Card.Root 
+      width="50rem" 
+      _hover={{backgroundColor: "blackAlpha.100", cursor: "pointer"}}
+      onClick={() => navigate('/post/${bill_id}')}
+    >
       {/* Header with relative positioning to allow absolute positioning for the image */}
       <Card.Header position="relative">
         <Card.Title fontSize="sm">{code}</Card.Title>

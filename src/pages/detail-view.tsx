@@ -93,17 +93,6 @@ const Dashboard = () => {
                 description={bills[1].description}
                 sponsorImg={bills[1].sponsorImg}
             />
-            {bills.map((bill, index) => (
-              <BillCard 
-                bill_id={bill.bill_id}
-                code={bill.code} 
-                title={bill.title} 
-                sponsor={bill.sponsor} 
-                action={bill.action}
-                description={bill.description}
-                sponsorImg={bill.sponsorImg}
-              />
-            ))}
         </Grid>
       </Box>
     </>
