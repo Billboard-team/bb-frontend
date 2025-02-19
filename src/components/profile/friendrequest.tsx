@@ -13,27 +13,27 @@ const FriendRequestsBlocked: React.FC<Props> = ({
   return (
     <SimpleGrid columns={2} gap={5}>
       <VStack>
-        <Box bg="white" p={5} shadow="md" borderRadius="md">
-          <Text fontSize="xl" fontWeight="bold" color="black">
+        <Box p={5} shadow="md" borderRadius="md" width="35vw" ml="100%">
+          <Text fontSize="xl" fontWeight="bold">
             Friend Requests
           </Text>
           {friendRequests.map((request) => (
-            <Flex key={request.id} justify="space-between" mt={3} color="black">
+            <Flex key={request.id} justify="space-between" mt={3}>
               <Text>{request.name}</Text>
-              <Button size="sm" colorScheme="blue" color="white">
+              <Button size="sm" colorScheme="blue">
                 Accept
               </Button>
             </Flex>
           ))}
         </Box>
-        <Box bg="white" p={5} shadow="md" borderRadius="md">
-          <Text fontSize="xl" fontWeight="bold" color="black">
+        <Box p={5} shadow="md" borderRadius="md" width="35vw" ml="100%">
+          <Text fontSize="xl" fontWeight="bold">
             Blocked Users
           </Text>
           {blockedUsers.map((user) => (
-            <Flex key={user.id} justify="space-between" mt={3} color="black">
+            <Flex key={user.id} justify="space-between" mt={3}>
               <Text>{user.name}</Text>
-              <Button size="sm" colorScheme="blue" color="white">
+              <Button size="sm" colorScheme="blue">
                 Unblock
               </Button>
             </Flex>

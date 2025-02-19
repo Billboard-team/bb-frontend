@@ -7,7 +7,7 @@ interface Props {
 
 const SavedPosts: React.FC<Props> = ({ savedPosts }) => {
   return (
-    <Box bg="white" p={5} shadow="md" borderRadius="md" color="black">
+    <Box p={5} shadow="md" borderRadius="md">
       <Text fontSize="xl" fontWeight="bold">
         Saved Posts
       </Text>
@@ -15,7 +15,7 @@ const SavedPosts: React.FC<Props> = ({ savedPosts }) => {
         {savedPosts.map((post) => (
           <Flex key={post.id} justify="space-between" w="100%">
             <Text>{post.title}</Text>
-            <Button size="sm" colorScheme="blue" color="white">
+            <Button size="sm" colorScheme="blue">
               View
             </Button>
           </Flex>

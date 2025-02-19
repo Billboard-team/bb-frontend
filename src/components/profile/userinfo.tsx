@@ -21,7 +21,7 @@ const UserInfo: React.FC<Props> = ({ user }) => {
           </Tag.Root>
         ))}
       </HStack>
-      <Button mt={4} colorScheme="blue" color="white">
+      <Button mt={4} colorScheme="blue">
         Edit Profile
       </Button>
     </Box>

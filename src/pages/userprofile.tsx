@@ -20,25 +20,31 @@ const UserProfile = () => {
       h="100vh"
       w="85vw"
       p={10}
-      bg="gray.500"
-      color="white"
       overflow="hidden" // Prevents unwanted scrolling issues
     >
       {/* First Row: User Info + Activity */}
-      <Flex w="100%" justify="space-between">
-        <UserInfo user={mockUser} />
-        <ActivityInsights activity={mockActivity} />
+      <Flex justify="space-between" w="100%">
+        <Flex flex="1" justify="center">
+          <UserInfo user={mockUser} />
+        </Flex>
+        <Flex flex="1" justify="center">
+          <ActivityInsights activity={mockActivity} />
+        </Flex>
       </Flex>
 
       <Box my={6} />
 
       {/* Second Row: Friends List + Requests/Blocked */}
-      <Flex w="100%" justify="space-between">
-        <FriendsList friends={mockFriends} />
-        <FriendRequestsBlocked
-          friendRequests={mockFriendRequests}
-          blockedUsers={mockBlockedUsers}
-        />
+      <Flex justify="space-between" w="100%">
+        <Flex flex="1" justify="center">
+          <FriendsList friends={mockFriends} />
+        </Flex>
+        <Flex flex="1" justify="center">
+          <FriendRequestsBlocked
+            friendRequests={mockFriendRequests}
+            blockedUsers={mockBlockedUsers}
+          />
+        </Flex>
       </Flex>
 
       <Box my={6} />
