@@ -21,7 +21,7 @@ createRoot(document.getElementById("root")!).render(
           <Route path="/" element={<DashboardLayout />}>
             <Route index element={<Dashboard />} />
             <Route path="profile" element={<UserProfile />} />{" "}
-            <Route path="friendlist" element={<FriendListPage />} />
+            <Route path="/profile/friendlist" element={<FriendListPage />} />
           </Route>
 
         </Routes>

@@ -35,7 +35,7 @@ const DashboardHeader = () => {
         <IconButton variant="ghost" fontSize="lg">
           <LuSearch/>
         </IconButton>
-        <Button variant="ghost" fontSize="lg">
+        <Button variant="ghost" fontSize="lg" onClick={() => navigate('/profile')}>
           <LuMeh/>
         </Button>
       </Flex>
