@@ -3,10 +3,13 @@ import {
   Heading,
   SimpleGrid,
   Button,
+  Image,
   HStack,
   Text,
 } from "@chakra-ui/react";
+import RefreshButton from "../assets/refresh.png"
 import BillGrid from "./bill-grid";
+import BillCard from "../components/bill-card"
 
 const sampleBills = [
   {
@@ -29,6 +32,11 @@ const sampleBills = [
   },
 ];
 
+// Refresh Handler
+const handleRefresh = () => {
+  console.log("Refreshed");
+};
+
 const RecommendedBills = () => {
   return (
     <Box>
@@ -36,9 +44,14 @@ const RecommendedBills = () => {
         <Text fontSize="xl" fontWeight="bold" mb={4}>
           Recommended Bills
         </Text>
-        <Button variant="ghost" colorScheme="teal" size="sm">
-          Refresh
-        </Button>
+        <Image
+          src={RefreshButton} 
+          alt="Refresh"
+          boxSize="24px"                         
+          cursor="pointer"                       
+          onClick={handleRefresh}                
+          _hover={{ opacity: 0.8 }}              
+        />
       </HStack>
       <BillGrid items={sampleBills} />
     </Box>

@@ -1,9 +1,7 @@
 import { Badge, Card, Box, Image } from "@chakra-ui/react"
 import { useNavigate } from "react-router-dom"; 
  
-type BillProps = {
-  /** The uniqueID of a bill */
-  bill_id: number,
+export interface BillCardProp {
   /** Plaintext title of bill (act name) */
   title: string,
   /** Bill code (HR. 40, SR. 121h, etc) */
@@ -21,22 +19,22 @@ type BillProps = {
 
 
 
-export default function BillCard({bill_id, code, title, sponsor, action, description, sponsorImg } : BillProps) {
+export default function BillCard({item}: {item: BillCardProp}) {
 
   const navigate = useNavigate();
 
   return (
     <Card.Root 
-      width="50rem" 
+      width="70vw" 
       _hover={{backgroundColor: "blackAlpha.100", cursor: "pointer"}}
-      onClick={() => navigate('/post/' + bill_id)}
+      onClick={() => navigate('/post/' + item.code)}
     >
       {/* Header with relative positioning to allow absolute positioning for the image */}
       <Card.Header position="relative">
-        <Card.Title fontSize="sm">{code}</Card.Title>
+        <Card.Title fontSize="sm">{item.code}</Card.Title>
         
         {/* If an image is provided, display it in the top-right */}
-        {sponsorImg && (
+        {item.sponsorImg && (
           <Box
             position="absolute"
             top="2"
@@ -48,8 +46,8 @@ export default function BillCard({bill_id, code, title, sponsor, action, descrip
           >
             {/* The image with a grey filter */}
             <Image
-              src={sponsorImg}
-              alt={title}
+              src={item.sponsorImg}
+              alt={item.title}
               width="100%"
               height="100%"
               objectFit="cover"
@@ -71,14 +69,14 @@ export default function BillCard({bill_id, code, title, sponsor, action, descrip
 
       <Card.Body gap="3">
         <Card.Title mt="3" fontSize="3xl">
-          {title}
+          {item.title}
         </Card.Title>
-        <Card.Description>Sponser: {sponsor}</Card.Description>
-        <Card.Description>{description}</Card.Description>
+        <Card.Description>Sponser: {item.sponsor}</Card.Description>
+        <Card.Description>{item.description}</Card.Description>
       </Card.Body>
 
       <Card.Footer justifyContent="flex-end">
-        <Badge colorPalette="green">{action}</Badge>
+        <Badge colorPalette="green">{item.action}</Badge>
       </Card.Footer>
     </Card.Root>
   );
