@@ -13,7 +13,7 @@ const FriendRequestsBlocked: React.FC<Props> = ({
   return (
     <SimpleGrid columns={2} gap={5}>
       <VStack>
-        <Box p={5} shadow="md" borderRadius="md" width="35vw" ml="100%">
+        <Box p={5} shadow="md" borderRadius="md" width="34vw" ml="137%">
           <Text fontSize="xl" fontWeight="bold">
             Friend Requests
           </Text>
@@ -26,7 +26,7 @@ const FriendRequestsBlocked: React.FC<Props> = ({
             </Flex>
           ))}
         </Box>
-        <Box p={5} shadow="md" borderRadius="md" width="35vw" ml="100%">
+        <Box p={5} shadow="md" borderRadius="md" width="34vw" ml="137%">
           <Text fontSize="xl" fontWeight="bold">
             Blocked Users
           </Text>

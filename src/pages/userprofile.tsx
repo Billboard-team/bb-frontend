@@ -27,7 +27,7 @@ const UserProfile = () => {
         <Flex flex="1" justify="center">
           <UserInfo user={mockUser} />
         </Flex>
-        <Flex flex="1" justify="center">
+        <Flex flex="1" justify="right">
           <ActivityInsights activity={mockActivity} />
         </Flex>
       </Flex>
@@ -36,10 +36,10 @@ const UserProfile = () => {
 
       {/* Second Row: Friends List + Requests/Blocked */}
       <Flex justify="space-between" w="100%">
-        <Flex flex="1" justify="center">
+        <Flex flex="1" justify="left">
           <FriendsList friends={mockFriends} />
         </Flex>
-        <Flex flex="1" justify="center">
+        <Flex flex="1" justify="right">
           <FriendRequestsBlocked
             friendRequests={mockFriendRequests}
             blockedUsers={mockBlockedUsers}
