@@ -1,15 +1,11 @@
 import {
   Box,
-  Heading,
-  SimpleGrid,
-  Button,
   Image,
   HStack,
   Text,
 } from "@chakra-ui/react";
 import RefreshButton from "../assets/refresh.png"
 import BillGrid from "./bill-grid";
-import BillCard from "../components/bill-card"
 
 const sampleBills = [
   {
