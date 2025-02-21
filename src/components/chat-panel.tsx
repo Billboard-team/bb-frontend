@@ -92,11 +92,11 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ conversation }) => {
   }
 
   return (
-    <VStack gap={4} align="stretch" h="full" p={4} flex="1">
+    <VStack gap={4} align="stretch" justify="space-between" h="full" p={4} flex="1">
       <Text fontSize="xl" fontWeight="bold" color="white">
         {conversation.name}
       </Text>
-      <Box flex="1" overflowY="auto" p={2} maxH="575px">
+      <Box flex="1" overflowY="auto" p={2} h="4/6">
         {" "}
         {/* Fixed height of 500px */}
         {messages.map((msg) => (
@@ -111,7 +111,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ conversation }) => {
               </Avatar.Root>
             )}
             <Box
-              bg={msg.sender === "You" ? "blue.200" : "gray.700"} // Adjust colors for dark theme
+              bg={msg.sender === "You" ? "blue.300" : "gray.700"} // Adjust colors for dark theme
               p={3}
               borderRadius={8}
               maxW="80%" // Increased max width for wider messages
