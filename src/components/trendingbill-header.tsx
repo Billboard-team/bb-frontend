@@ -1,4 +1,4 @@
-import { Box, Button, HStack, Text } from "@chakra-ui/react";
+import { Box, Heading, HStack } from "@chakra-ui/react";
 import BillGrid from "./bill-grid";
 const sampleBills = [
   {
@@ -24,10 +24,10 @@ const sampleBills = [
 const TrendingBills = () => {
   return (
     <Box>
-      <HStack>
-        <Text fontSize="xl" fontWeight="bold" mb={4}>
+      <HStack my={2}>
+        <Heading>
           Trending Bills
-        </Text>
+        </Heading>
       </HStack>
       <BillGrid items={sampleBills} />
     </Box>
