@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import GoogleLogo from '@/assets/icons/google.png';
 import XLogo from '@/assets/icons/x.png';
+import ThemeToggle from '@/components/themetoggle';
 import BillboardLogo from '@/assets/icons/Billboard-Logo.png';
 import {
     Button,
@@ -47,6 +48,14 @@ const SignInForm: React.FC = () => {
             p="0"
             overflow="hidden"
         >
+            <Box
+                position="absolute"
+                bottom="20px"
+                left="20px"
+                p={4}
+            >
+                <ThemeToggle />
+            </Box>
         <Box bg="white" p={8} w={{ base: '90%', md: '500px' }}>
             <Box textAlign="center" mb={10}>
                 <Image src={BillboardLogo} alt="Billboard Logo" mx="auto" maxW="100%" h="auto" />
