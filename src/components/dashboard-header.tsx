@@ -1,5 +1,5 @@
 import { Flex, Image, Spacer, Button, IconButton } from "@chakra-ui/react";
-import BillboardLogo from "@/assets/Billboard-Logo.png";
+import BillboardLogo from "@/assets/Billboard-Logo-Banner.png";
 import { useNavigate } from 'react-router-dom';
 import { LuMeh, LuSearch } from "react-icons/lu";
 
@@ -13,8 +13,10 @@ const DashboardHeader = () => {
           src={BillboardLogo}
           bg="white"
           alt="Billboard Logo"
+          borderRadius="sm"
           width="120px"
           height="auto"
+          p={1}
         />
 
         {/* Navigation Buttons */}
@@ -22,7 +24,7 @@ const DashboardHeader = () => {
           <Button variant="ghost" fontSize="sm" onClick={() => navigate('/')}>
             Dashboard
           </Button>
-          <Button variant="ghost" fontSize="sm" onClick={() => navigate('/messages')}>
+          <Button variant="ghost" fontSize="sm" onClick={() => navigate('/profile/messages')}>
             Messages
           </Button>
         </Flex>
