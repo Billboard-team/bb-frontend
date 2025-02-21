@@ -92,7 +92,15 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ conversation }) => {
   }
 
   return (
-    <VStack gap={4} align="stretch" justify="space-between" h="full" p={4} flex="1">
+    <VStack
+      gap={4}
+      align="stretch"
+      justify="space-between"
+      h="full"
+      maxH="100vh"
+      p={4}
+      flex="1"
+    >
       <Text fontSize="xl" fontWeight="bold" color="white">
         {conversation.name}
       </Text>
