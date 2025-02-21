@@ -1,5 +1,5 @@
 import { Box, Text, Input, VStack, Flex, Button } from "@chakra-ui/react";
-import { Activity, Friend } from "@/components/type";
+import { Friend } from "@/components/type";
 
 interface Props {
   friends: Friend[];
@@ -16,7 +16,7 @@ const FriendsList: React.FC<Props> = ({ friends }) => {
         {friends.map((friend) => (
           <Flex key={friend.id} justify="space-between" w="100%">
             <Text>{friend.name}</Text>
-            <Button size="sm" colorScheme="blue">
+            <Button variant="surface" size="sm">
               View
             </Button>
           </Flex>

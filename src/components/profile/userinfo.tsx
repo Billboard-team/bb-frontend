@@ -16,12 +16,12 @@ const UserInfo: React.FC<Props> = ({ user }) => {
       </Text>
       <HStack mt={2}>
         {user.expertiseTags.map((tag, idx) => (
-          <Tag.Root>
+          <Tag.Root key={idx}>
             <Tag.Label>{tag}</Tag.Label>
           </Tag.Root>
         ))}
       </HStack>
-      <Button mt={4} colorScheme="blue">
+      <Button variant="ghost" mt={4}>
         Edit Profile
       </Button>
     </Box>

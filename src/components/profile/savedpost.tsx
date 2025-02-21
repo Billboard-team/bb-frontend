@@ -15,7 +15,7 @@ const SavedPosts: React.FC<Props> = ({ savedPosts }) => {
         {savedPosts.map((post) => (
           <Flex key={post.id} justify="space-between" w="100%">
             <Text>{post.title}</Text>
-            <Button size="sm" colorScheme="blue">
+            <Button variant="surface" size="sm">
               View
             </Button>
           </Flex>

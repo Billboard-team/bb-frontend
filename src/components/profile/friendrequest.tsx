@@ -20,7 +20,7 @@ const FriendRequestsBlocked: React.FC<Props> = ({
           {friendRequests.map((request) => (
             <Flex key={request.id} justify="space-between" mt={3}>
               <Text>{request.name}</Text>
-              <Button size="sm" colorScheme="blue">
+              <Button variant="surface" size="sm" colorPalette="green">
                 Accept
               </Button>
             </Flex>
@@ -33,7 +33,7 @@ const FriendRequestsBlocked: React.FC<Props> = ({
           {blockedUsers.map((user) => (
             <Flex key={user.id} justify="space-between" mt={3}>
               <Text>{user.name}</Text>
-              <Button size="sm" colorScheme="blue">
+              <Button variant="surface" size="sm" colorPalette="red">
                 Unblock
               </Button>
             </Flex>
