@@ -1,5 +1,4 @@
 import { Badge, Card, Box, Image } from "@chakra-ui/react"
-import { useNavigate } from "react-router-dom"; 
  
 export interface BillCardProp {
   /** Plaintext title of bill (act name) */
@@ -18,20 +17,12 @@ export interface BillCardProp {
 
 
 
-
 export default function BillCard({item}: {item: BillCardProp}) {
-
-  const navigate = useNavigate();
-
   return (
-    <Card.Root 
-      width="70vw" 
-      _hover={{backgroundColor: "blackAlpha.100", cursor: "pointer"}}
-      onClick={() => navigate('/post/' + item.code)}
-    >
+    <Card.Root width="80vw" height="35rem">
       {/* Header with relative positioning to allow absolute positioning for the image */}
       <Card.Header position="relative">
-        <Card.Title fontSize="sm">{item.code}</Card.Title>
+        <Card.Title fontSize="l">{item.code}</Card.Title>
         
         {/* If an image is provided, display it in the top-right */}
         {item.sponsorImg && (
@@ -39,8 +30,8 @@ export default function BillCard({item}: {item: BillCardProp}) {
             position="absolute"
             top="2"
             right="3"
-            width="125px"      
-            height="80px"     
+            width="150px"      
+            height="100px"     
             borderRadius="md"
             overflow="hidden"
           >
@@ -51,7 +42,6 @@ export default function BillCard({item}: {item: BillCardProp}) {
               width="100%"
               height="100%"
               objectFit="cover"
-              filter="grayscale(75%)" 
             />
             {/* Gradient overlay */}
             <Box
@@ -60,7 +50,10 @@ export default function BillCard({item}: {item: BillCardProp}) {
               left="0"
               right="0"
               bottom="0"
-              bgGradient="linear(to-b, rgba(128,128,128,0.75), rgba(128,128,128,1))"
+              width="100%"
+              height="100%"
+              bgGradient="linear(to-r, gray.300, yellow.400, pink.200)"
+              zIndex="1"
               pointerEvents="none" 
             />
           </Box>

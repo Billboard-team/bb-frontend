@@ -1,7 +1,7 @@
 import {
   Box,
-  Heading,
   HStack,
+  Heading,
   IconButton,
 } from "@chakra-ui/react";
 import BillGrid from "./bill-grid";
@@ -28,15 +28,18 @@ const sampleBills = [
   },
 ];
 
+// Refresh Handler
+const handleRefresh = () => {
+  console.log("Refreshed");
+};
+
 const RecommendedBills = () => {
   return (
     <Box>
       <HStack my={2}>
-        <Heading>
-          Recommended Bills
-        </Heading>
-        <IconButton variant="ghost" colorScheme="teal" size="sm">
-          <LuRotateCcw/>
+        <Heading>Recommended Bills</Heading>
+        <IconButton variant="ghost" colorScheme="teal" size="sm" onClick={handleRefresh}>
+          <LuRotateCcw />
         </IconButton>
       </HStack>
       <BillGrid items={sampleBills} />
