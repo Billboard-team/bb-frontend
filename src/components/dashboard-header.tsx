@@ -24,7 +24,7 @@ const DashboardHeader = () => {
           <Button variant="ghost" fontSize="sm" onClick={() => navigate('/')}>
             Dashboard
           </Button>
-          <Button variant="ghost" fontSize="sm" onClick={() => navigate('/messages')}>
+          <Button variant="ghost" fontSize="sm" onClick={() => navigate('/profile/messages')}>
             Messages
           </Button>
         </Flex>

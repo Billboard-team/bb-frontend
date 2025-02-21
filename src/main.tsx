@@ -23,9 +23,12 @@ createRoot(document.getElementById("root")!).render(
           <Route path="/" element={<DashboardLayout />}>
             <Route index element={<Dashboard />} />
             <Route path="post/:id" element={<DetailView/> } />
-            <Route path="profile" element={<UserProfile />} />{" "}
-            <Route path="profile/friendlist" element={<FriendListPage />} />
-            <Route path="profile/message" element={<DMPage />} />
+
+            <Route path="profile">
+              <Route path="" element={<UserProfile />} />{" "}
+              <Route path="friendlist" element={<FriendListPage />} />
+              <Route path="messages" element={<DMPage />} />
+            </Route>
           </Route>
 
         </Routes>
