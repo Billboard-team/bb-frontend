@@ -26,6 +26,9 @@ const sampleBills = [
   },
 ];
 
+// TODO: will have to change <CommentSection billId={sampleBills[1].id} />  
+// to <CommentSection billId={selectedBill} /> later, when we slecting a bill Dynamically
+
 const Dashboard = () => {
   return (
     <>
@@ -34,7 +37,7 @@ const Dashboard = () => {
         <Grid autoRows="auto" templateColumns="repeat(1, minmax(350px, 1fr))" gap={6}>
             <DetailBillCard item={sampleBills[1].item} />
           </Grid>
-          <CommentSection billId={sampleBills[1].id} />
+          <CommentSection billId={sampleBills[1].id} />  
       </Box>
       </Stack>
     </>
