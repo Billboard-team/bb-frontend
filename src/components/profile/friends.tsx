@@ -19,7 +19,7 @@ const FriendsList: React.FC<Props> = ({ friends }) => {
         <Text fontSize="xl" fontWeight="bold">
           Friends
         </Text>
-        <Button size="sm" colorScheme="blue" onClick={expandFriendList}>Expand</Button>
+        <Button size="sm" variant="surface" onClick={expandFriendList}>Expand</Button>
       </HStack>
       <Input placeholder="Search friends..." mt={2} />
       <VStack mt={3} align="start">

@@ -11,7 +11,11 @@ export default function BillGrid({items} : {items : BillItemProp[]}) {
     <Grid templateColumns="repeat(1, 1fr)" gap="3">
       {items.map(data => (
         <BillCard 
-          item={data.item}
+          key={data.id}
+          item={{
+            ...data.item,
+            id: data.id
+          }}
         />
       ))}
     </Grid>
