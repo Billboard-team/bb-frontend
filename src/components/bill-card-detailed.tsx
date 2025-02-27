@@ -1,4 +1,5 @@
 import { Box, Heading, Text, Link, Stack, VStack } from "@chakra-ui/react";
+import { useColorModeValue } from "@/components/ui/color-mode";
 
 interface BillCardProps {
   bill: {
@@ -17,18 +18,24 @@ interface BillCardProps {
 }
 
 const BillCardDetailed = ({ bill }: { bill: BillCardProps["bill"] }) => {
+  const bgColor = useColorModeValue("white", "gray.800");
+  const textColor = useColorModeValue("gray.800", "whiteAlpha.900");
+  const subTextColor = useColorModeValue("gray.500", "gray.400");
+  const linkColor = useColorModeValue("blue.500", "blue.300");
+
   return (
     <Box 
       p={5} 
       shadow="lg" 
       borderWidth="1px" 
       borderRadius="lg" 
-      bg="white"
+      bg={bgColor}
+      color={textColor}
     >
       <VStack align="stretch" gap={4}>
         <Box>
           <Heading fontSize="xl">{bill.title || "Currently Unavailable"}</Heading>
-          <Text fontSize="sm" color="gray.500">
+          <Text fontSize="sm" color={subTextColor}>
             Bill Number: {bill.bill_type + " " + bill.bill_number || "N/A"} | Congress: {bill.congress || "N/A"}
           </Text>
         </Box>
@@ -53,7 +60,7 @@ const BillCardDetailed = ({ bill }: { bill: BillCardProps["bill"] }) => {
             href={bill.url} 
             target="_blank" 
             rel="noopener noreferrer"
-            color="blue.500"
+            color={linkColor}
             as="a"
           >
             View Full Bill Text
