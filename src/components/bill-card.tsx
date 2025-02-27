@@ -1,6 +1,6 @@
-import { Badge, Card, Box, Image } from "@chakra-ui/react"
+import { Badge, Card, Button,  Box, Image } from "@chakra-ui/react"
 import { useNavigate } from "react-router-dom"; 
- 
+import { useState } from "react";
 export interface BillCardProp {
   /** Unique identifier for the bill */
   id: number,
@@ -24,6 +24,11 @@ export interface BillCardProp {
 export default function BillCard({item}: {item: BillCardProp}) {
 
   const navigate = useNavigate();
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const maxLength = 30; // Set max character length before truncation
+  const shouldTruncate = item.action.length > maxLength;
+  const displayedText = isExpanded || !shouldTruncate ? item.action : item.action.slice(0, maxLength) + "...";
 
   return (
     <Card.Root 
@@ -76,10 +81,27 @@ export default function BillCard({item}: {item: BillCardProp}) {
         <Card.Description>Sponser: {item.sponsor}</Card.Description>
         <Card.Description>{item.description}</Card.Description>
       </Card.Body>
-
-      <Card.Footer justifyContent="flex-end">
-        <Badge colorPalette="green">{item.action}</Badge>
+      
+      <Card.Footer justifyContent="flex-end" display="flex" flexDirection="column" alignItems="flex-end" flexWrap="wrap">
+        <Badge bg="green.500" color="white" fontSize="10" px={2} py={1} borderRadius="md" whiteSpace="normal" overflowWrap="break-word">
+          {displayedText}
+        </Badge>
+        {shouldTruncate && (
+          <Button
+            variant="ghost"
+            color="green.500"
+            fontSize="sm"
+            ml={1}
+            onClick={(e) => {
+              e.stopPropagation(); // Prevent card click event
+              setIsExpanded(!isExpanded);
+            }}
+          >
+            {isExpanded ? "Show less" : "Read more"}
+          </Button>
+        )}
       </Card.Footer>
+
     </Card.Root>
   );
 

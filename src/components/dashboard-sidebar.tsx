@@ -1,13 +1,25 @@
 import { VStack, Text, Box, Button } from "@chakra-ui/react";
 import { useState } from "react";
-import ThemeToggle from "@/components/themetoggle"
+import ThemeToggle from "@/components/themetoggle";
+
 const categories = ["Technology", "Environment", "Healthcare", "Economy"];
 
 const DashboardSidebar = () => {
   const [selected, setSelected] = useState(-1);
 
   return (
-    <Box borderRightWidth="medium" h="100vh" display="flex" flexDirection="column" justifyContent="space-between">
+    <Box
+      position="sticky"  // Keeps it in place while scrolling
+      top="0"            // Sticks to the top of the viewport
+      left="0"
+      h="100vh"          // Full height
+      display="flex"
+      flexDirection="column"
+      justifyContent="space-between"
+      borderRightWidth="medium"
+      bg="blackAlpha.900"  // Ensure background remains solid when scrolling
+      zIndex="1000"        // Keeps it above other elements
+    >
       {/* Categories */}
       <VStack align="start" p={4} w="200px">
         <Text fontWeight="bold" mb={2}> Categories </Text>
@@ -26,7 +38,7 @@ const DashboardSidebar = () => {
       </VStack>
 
       {/* Dark Mode Toggle Button */}
-      <Box p={4}>
+      <Box p={10}>
         <ThemeToggle />
       </Box>
     </Box>
