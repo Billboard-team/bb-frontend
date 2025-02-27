@@ -3,10 +3,6 @@ import { Button, Card, HStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { LuCodeXml, LuFile } from "react-icons/lu";
 
-const sample = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-
-const id = 54
-
 interface SummaryProps {
   summary: string,
   token_count: number
@@ -19,7 +15,7 @@ interface SourcesProps {
   type: string,
 }
 
-function Dev() {
+function SummaryCard({id} : {id : number}) {
   const [loading, setLoading] = useState(true)
   const [notFound, setNotFound] = useState(false)
   const [summary, setSummary] = useState<SummaryProps| null>(null)
@@ -38,6 +34,8 @@ function Dev() {
         const data = await res.json()
         setSummary(data)
       }
+
+      setLoading(false)
     }
 
     //Fetch text sources
@@ -58,7 +56,7 @@ function Dev() {
   }, [id]);
 
   return (
-    <Card.Root onClick={() => setLoading(false)}>
+    <Card.Root>
       <Card.Header justifyContent="space-between">
         <HStack>
           <Card.Title>AI Summary</Card.Title>
@@ -72,11 +70,14 @@ function Dev() {
       </Card.Body>
       <Card.Footer justifyContent="flex-end">
         <Button disabled={loading || notFound} variant="solid">
-          View PDF <LuFile/></Button>
-        <Button disabled={loading || notFound} variant="solid">View XML <LuCodeXml/></Button>
+          View PDF <LuFile/>
+        </Button>
+        <Button disabled={loading || notFound} variant="solid">
+          View XML <LuCodeXml/>
+        </Button>
       </Card.Footer>
     </Card.Root>
   );
 }
 
-export default Dev
+export default SummaryCard

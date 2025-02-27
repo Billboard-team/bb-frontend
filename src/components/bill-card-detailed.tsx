@@ -1,5 +1,6 @@
 import { Box, Heading, Text, Link, Stack, VStack } from "@chakra-ui/react";
 import { useColorModeValue } from "@/components/ui/color-mode";
+import SummaryCard from "./summary-card";
 
 interface BillCardProps {
   bill: {
@@ -18,7 +19,7 @@ interface BillCardProps {
 }
 
 const BillCardDetailed = ({ bill }: { bill: BillCardProps["bill"] }) => {
-  const bgColor = useColorModeValue("white", "gray.800");
+  const bgColor = useColorModeValue("white", "gray.700");
   const textColor = useColorModeValue("gray.800", "whiteAlpha.900");
   const subTextColor = useColorModeValue("gray.500", "gray.400");
   const linkColor = useColorModeValue("blue.500", "blue.300");
@@ -47,11 +48,7 @@ const BillCardDetailed = ({ bill }: { bill: BillCardProps["bill"] }) => {
           <Text fontWeight="bold">Action Date:</Text>
           <Text>{bill.action_date || "Currently Unavailable"}</Text>
 
-          <Text fontWeight="bold">Description:</Text>
-          <Text>{bill.description || "Currently Unavailable"}</Text>
-
-          <Text fontWeight="bold">Summary:</Text>
-          <Text>{bill.summary || "Currently Unavailable"}</Text>
+          <SummaryCard id={bill.bill_id}/>
         </Stack>
 
         <Box pt={4}>
