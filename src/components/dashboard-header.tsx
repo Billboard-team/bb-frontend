@@ -5,6 +5,11 @@ import { LuMeh, LuSearch } from "react-icons/lu";
 
 const DashboardHeader = () => {
   const navigate = useNavigate();
+  const handleLogoClick = () => {
+    navigate("/", { replace: true }); // Navigate to home page
+    window.location.reload(); // Force page reload
+  };
+
   return (
     <Flex justify="space-between" align="center" p={4} shadow="md">
       {/* Logo + Navigation Buttons */}
@@ -17,6 +22,8 @@ const DashboardHeader = () => {
           width="120px"
           height="auto"
           p={1}
+          cursor="pointer" // Make it clickable
+          onClick={handleLogoClick} // Attach the click event
         />
 
         {/* Navigation Buttons */}
