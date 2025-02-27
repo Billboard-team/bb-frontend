@@ -2,6 +2,8 @@ import { Badge, Card, Box, Image } from "@chakra-ui/react"
 import { useNavigate } from "react-router-dom"; 
  
 export interface BillCardProp {
+  /** Unique identifier for the bill */
+  id: number,
   /** Plaintext title of bill (act name) */
   title: string,
   /** Bill code (HR. 40, SR. 121h, etc) */
@@ -27,7 +29,7 @@ export default function BillCard({item}: {item: BillCardProp}) {
     <Card.Root 
       width="70vw" 
       _hover={{backgroundColor: "blackAlpha.100", cursor: "pointer"}}
-      onClick={() => navigate('/post/' + item.code)}
+      onClick={() => navigate(`/post/${item.id}`)} // Changed to use the unique identifier instead of code since that may not be unique
     >
       {/* Header with relative positioning to allow absolute positioning for the image */}
       <Card.Header position="relative">
