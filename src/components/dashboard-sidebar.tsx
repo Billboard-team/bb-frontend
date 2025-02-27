@@ -12,13 +12,11 @@ const DashboardSidebar = () => {
       position="sticky"  // Keeps it in place while scrolling
       top="0"            // Sticks to the top of the viewport
       left="0"
-      h="100vh"          // Full height
+      h="full"          // Full height
       display="flex"
       flexDirection="column"
       justifyContent="space-between"
       borderRightWidth="medium"
-      bg="blackAlpha.900"  // Ensure background remains solid when scrolling
-      zIndex="1000"        // Keeps it above other elements
     >
       {/* Categories */}
       <VStack align="start" p={4} w="200px">

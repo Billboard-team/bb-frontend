@@ -19,7 +19,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ billId }) => {
     ]);
     const [newComment, setNewComment] = useState("");
 
-    const bgColor = useColorModeValue("gray.100", "gray.700");  // Background color
+    // const bgColor = useColorModeValue("gray.100", "gray.700");  // Background color
     const textColor = useColorModeValue("gray.800", "whiteAlpha.900"); // Text color
     const inputBgColor = useColorModeValue("white", "gray.800"); // Input field background
 
@@ -62,13 +62,13 @@ const CommentSection: React.FC<CommentSectionProps> = ({ billId }) => {
     };
 
     return (
-        <Box mt={4} p={4} borderWidth="1px" borderRadius="md" bg={bgColor}>
+        <Box mt={4} p={4} borderWidth="1px" borderRadius="md">
             <Text fontSize="lg" fontWeight="bold" color={textColor}>
                 Comments
             </Text>
             <VStack align="start" gap={3} mt={2} w="100%">
                 {displayedComments.map((comment) => (
-                    <Box key={comment.id} p={2} bg={bgColor} borderRadius="md" w="100%">
+                    <Box key={comment.id} p={2} borderRadius="md" w="100%">
                         <Text fontWeight="bold" color={textColor}>{comment.user}:</Text>
                         <Text color={textColor}>{comment.text}</Text>
                     </Box>
