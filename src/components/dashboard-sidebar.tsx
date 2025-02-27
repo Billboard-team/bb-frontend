@@ -1,32 +1,48 @@
-import { VStack, Text, Box, For, Button } from "@chakra-ui/react";
+import { VStack, Text, Box, 
+  createListCollection,
+  SelectContent,
+  SelectItem,
+  SelectRoot,
+  SelectTrigger,
+  SelectValueText,
+} from "@chakra-ui/react";
 import { useState } from "react";
 
-const categories = ["Technology", "Environment", "Healthcare", "Economy"];
+
+const categories = createListCollection({
+items: [
+  { label: "Technology", value: "tech" },
+  { label: "Environment", value: "environment" },
+  { label: "Healthcare", value: "health" },
+  { label: "Economy", value: "econ" },
+  { label: "All",     value: "all "}
+],
+})
 
 const DashboardSidebar = () => {
-  const [selected, setSelected] = useState(-1)
 
-  return (
-    <Box borderRightWidth="medium">
-      <VStack align="start" p={4} w="200px"  h="full">
-        <Text fontWeight="bold" mb={2}> Categories </Text>
-        <For each={categories}>
-          {(item, index) => 
-            <Button 
-              justifyContent="start" 
-              w="150px" 
-              key={index} 
-              colorPalette={index === selected ? "teal" : "bg"}
-              variant="subtle"
-              onClick={()=> {setSelected(index)}}
-            >
-              {item}
-            </Button>
-          }
-        </For>
-      </VStack>
-    </Box>
-  );
+return (
+  <Box borderRightWidth="medium">
+    <VStack align="start" p={4} w="270px"  h="full">
+      <Text fontWeight="bold" mb={2}> Categories </Text>
+      <SelectRoot multiple collection={categories} size="md" width="250px">
+        <SelectTrigger >
+          <SelectValueText placeholder="Select Cateogry"  />         
+        </SelectTrigger>
+        <SelectContent>
+          {categories.items.map((category) => (
+            <SelectItem item={category} key={category.value}>
+              {category.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </SelectRoot>
+
+    </VStack>
+
+  </Box>
+
+);
 };
 
 export default DashboardSidebar;
