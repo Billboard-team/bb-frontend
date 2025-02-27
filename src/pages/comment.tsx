@@ -19,7 +19,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ billId }) => {
     ]);
     const [newComment, setNewComment] = useState("");
 
-    // const bgColor = useColorModeValue("gray.100", "gray.700");  // Background color
+    const bgColor = useColorModeValue("gray.100", "gray.700");  // Background color
     const textColor = useColorModeValue("gray.800", "whiteAlpha.900"); // Text color
     const inputBgColor = useColorModeValue("white", "gray.800"); // Input field background
 
@@ -62,7 +62,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ billId }) => {
     };
 
     return (
-        <Box mt={4} p={4} borderWidth="1px" borderRadius="md">
+        <Box bg={bgColor} mt={4} p={4} borderWidth="1px" borderRadius="md">
             <Text fontSize="lg" fontWeight="bold" color={textColor}>
                 Comments
             </Text>
