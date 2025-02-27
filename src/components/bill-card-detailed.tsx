@@ -49,6 +49,9 @@ const BillCardDetailed = ({ bill }: { bill: BillCardProps["bill"] }) => {
           <Text>{bill.action_date || "Currently Unavailable"}</Text>
 
           <SummaryCard id={bill.bill_id}/>
+
+          <Text fontWeight="bold">Description:</Text>
+          <Text>{bill.description || "Currently Unavailable"}</Text>
         </Stack>
 
         <Box pt={4}>
