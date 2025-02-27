@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { Box, Heading, HStack, Spinner, Text } from "@chakra-ui/react";
+import { Box, Heading, HStack, IconButton, Spinner, Text } from "@chakra-ui/react";
 import BillGrid from "./bill-grid"; // Ensure this is correctly implemented
+import { LuRotateCcw } from "react-icons/lu";
 
 // Define the structure expected by BillCardProp
 interface BillCardProp {
@@ -65,6 +66,14 @@ const TrendingBills = () => {
     <Box>
       <HStack my={2}>
         <Heading>Trending Bills</Heading>
+        <IconButton
+          variant="ghost"
+          colorScheme="teal"
+          size="sm"
+          onClick={TrendingBills}
+          aria-label="Refresh Recommended Bills">
+          <LuRotateCcw/>
+        </IconButton>
       </HStack>
 
       {loading && <Spinner size="xl" />}
