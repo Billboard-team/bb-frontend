@@ -1,7 +1,5 @@
 import "./App.css";
-import BillGrid from "@/components/bill-grid";
-import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import 'vite/modulepreload-polyfill'
 
 const sampleBills = [
   {
@@ -27,7 +25,6 @@ const sampleBills = [
 function App() {
   return (
     <>
-      <BillGrid items={sampleBills} />
     </>
   );
 }
