@@ -1,7 +1,10 @@
 import { VStack, Text, Box, Button, SelectTrigger, SelectValueText, SelectRoot, SelectContent, createListCollection, SelectItem } from "@chakra-ui/react";
-import { useState } from "react";
 import ThemeToggle from "@/components/themetoggle";
+import { useFilters } from "./filter-context";
+import { BillType, Congress } from "./type";
 
+const billType : Array<BillType> = ["HR", "S", "SRES", "SJRES"];
+const billCongress :Array<Congress> = [119, 118, 117];
 
 const categories = createListCollection({
   items: [
@@ -14,21 +17,55 @@ const categories = createListCollection({
   })
   
 const DashboardSidebar = () => {
+  // Track selected items for each category separately
+  const { selectedTypes, selectedCongress, toggleTypeSelection, toggleCongressSelection } = useFilters();
+
   return (
     <Box
-      position="sticky"  // Keeps it in place while scrolling
-      top="0"            // Sticks to the top of the viewport
+      position="sticky" // Keeps it in place while scrolling
+      top="0" // Sticks to the top of the viewport
       left="0"
       h="95vh"
       display="flex"
       flexDirection="column"
       justifyContent="space-between"
       borderRightWidth="medium"
-      zIndex="1000"        // Keeps it above other elements
+      zIndex="1000" // Keeps it above other elements
     >
       {/* Categories */}
-      <Box borderRightWidth="medium">
-      <VStack align="start" p={4} w="270px"  h="full">
+      <VStack align="start" p={4} w="200px">
+        <Text fontWeight="bold" mb={2}> Bill Types </Text>
+        {billType.map((item) => (
+          <Button
+            key={item}
+            justifyContent="start"
+            w="150px"
+            variant={selectedTypes.includes(item) ? "subtle" : "ghost"}
+            colorPalette={selectedTypes.includes(item) ? "teal" : "bg"}
+            onClick={() => {
+              toggleTypeSelection(item);
+              console.log("Selected Types:", selectedTypes);
+            }}
+          >
+            {item}
+          </Button>
+        ))}
+        <Text fontWeight="bold" mb={2}> Congress </Text>
+        {billCongress.map((item) => (
+          <Button
+            key={item}
+            justifyContent="start"
+            w="150px"
+            variant={selectedCongress.includes(item) ? "subtle" : "ghost"}
+            colorPalette={selectedCongress.includes(item) ? "teal" : "bg"}
+            onClick={() => {
+              toggleCongressSelection(item);
+              console.log("Selected Congress:", selectedCongress);
+            }}
+          >
+            {item}
+          </Button>
+        ))}
         <Text fontWeight="bold" mb={2}> Categories </Text>
         <SelectRoot multiple collection={categories} size="md" width="250px">
           <SelectTrigger >
@@ -42,11 +79,7 @@ const DashboardSidebar = () => {
             ))}
           </SelectContent>
         </SelectRoot>
-  
       </VStack>
-  
-    </Box>
-
       {/* Dark Mode Toggle Button */}
       <Box p={10}>
         <ThemeToggle />
