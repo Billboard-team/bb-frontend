@@ -1,11 +1,14 @@
 import { VStack, Text, Box, Button } from "@chakra-ui/react";
-import { useState } from "react";
 import ThemeToggle from "@/components/themetoggle";
+import { useFilters } from "./filter-context";
+import { BillType, Congress } from "./type";
 
-const categories = ["Technology", "Environment", "Healthcare", "Economy"];
+const billType : Array<BillType> = ["HR", "S", "SRES", "SJRES"];
+const billCongress :Array<Congress> = [119, 118, 117];
 
 const DashboardSidebar = () => {
-  const [selected, setSelected] = useState(-1);
+  // Track selected items for each category separately
+  const { selectedTypes, selectedCongress, toggleTypeSelection, toggleCongressSelection } = useFilters();
 
   return (
     <Box
@@ -21,24 +24,40 @@ const DashboardSidebar = () => {
     >
       {/* Categories */}
       <VStack align="start" p={4} w="200px">
-        <Text fontWeight="bold" mb={2} color="bg.inverted">
-          {" "}
-          Categories{" "}
-        </Text>
-        {categories.map((item, index) => (
+        <Text fontWeight="bold" mb={2}> Bill Types </Text>
+        {billType.map((item) => (
           <Button
+            key={item}
             justifyContent="start"
             w="150px"
-            key={index}
-            colorScheme={index === selected ? "teal" : "gray"}
-            variant="ghost"
-            onClick={() => setSelected(index)}
+            variant={selectedTypes.includes(item) ? "subtle" : "ghost"}
+            colorPalette={selectedTypes.includes(item) ? "teal" : "bg"}
+            onClick={() => {
+              toggleTypeSelection(item);
+              console.log("Selected Types:", selectedTypes);
+            }}
+          >
+            {item}
+          </Button>
+        ))}
+        <Text fontWeight="bold" mb={2}> Congress </Text>
+        {billCongress.map((item) => (
+          <Button
+            key={item}
+            justifyContent="start"
+            w="150px"
+            variant={selectedCongress.includes(item) ? "subtle" : "ghost"}
+            colorPalette={selectedCongress.includes(item) ? "teal" : "bg"}
+            onClick={() => {
+              toggleCongressSelection(item);
+              console.log("Selected Congress:", selectedCongress);
+            }}
           >
             {item}
           </Button>
         ))}
       </VStack>
-
+      
       {/* Dark Mode Toggle Button */}
       <Box p={10}>
         <ThemeToggle />
