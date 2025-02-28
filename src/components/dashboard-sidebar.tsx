@@ -3,12 +3,17 @@ import ThemeToggle from "@/components/themetoggle";
 import { useFilters } from "./filter-context";
 import { BillType, Congress } from "./type";
 
-const billType : Array<BillType> = ["HR", "S", "SRES", "SJRES"];
-const billCongress :Array<Congress> = [119, 118, 117];
+const billType: Array<BillType> = ["HR", "S", "SRES", "SJRES"];
+const billCongress: Array<Congress> = [119, 118, 117];
 
 const DashboardSidebar = () => {
   // Track selected items for each category separately
-  const { selectedTypes, selectedCongress, toggleTypeSelection, toggleCongressSelection } = useFilters();
+  const {
+    selectedTypes,
+    selectedCongress,
+    toggleTypeSelection,
+    toggleCongressSelection,
+  } = useFilters();
 
   return (
     <Box
@@ -24,7 +29,10 @@ const DashboardSidebar = () => {
     >
       {/* Categories */}
       <VStack align="start" p={4} w="200px">
-        <Text fontWeight="bold" mb={2}> Bill Types </Text>
+        <Text fontWeight="bold" mb={2} color="bg.inverted">
+          {" "}
+          Bill Types{" "}
+        </Text>
         {billType.map((item) => (
           <Button
             key={item}
@@ -40,7 +48,10 @@ const DashboardSidebar = () => {
             {item}
           </Button>
         ))}
-        <Text fontWeight="bold" mb={2}> Congress </Text>
+        <Text fontWeight="bold" mb={2} color="bg.inverted">
+          {" "}
+          Congress{" "}
+        </Text>
         {billCongress.map((item) => (
           <Button
             key={item}
@@ -57,7 +68,7 @@ const DashboardSidebar = () => {
           </Button>
         ))}
       </VStack>
-      
+
       {/* Dark Mode Toggle Button */}
       <Box p={10}>
         <ThemeToggle />
