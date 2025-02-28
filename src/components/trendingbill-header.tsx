@@ -3,17 +3,25 @@ import { Box, Heading, HStack, IconButton, Spinner, Text } from "@chakra-ui/reac
 import BillGrid from "./bill-grid"; // Ensure this is correctly implemented
 import { LuRotateCcw } from "react-icons/lu";
 import { BillCardProp } from "@/components/type";
+import { useFilters } from "./filter-context";
+
+const trendingBillsURL = "http://localhost:8000/api/bills/trending"
 
 const TrendingBills = () => {
   const [bills, setBills] = useState<BillCardProp[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [url, setUrl] = useState<string>(trendingBillsURL);
+
+  const { selectedCategories } = useFilters();
 
   const fetchTrendedBills = () => {
     setLoading(true);
     setError(null);
 
-    fetch("http://localhost:8000/api/bills/trending")
+    console.log(url)
+
+    fetch(url)
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -23,10 +31,11 @@ const TrendingBills = () => {
       .then((data) => {
         console.log("Fetched Trending Bills:", data);
 
+        // commenting this out for now as to not kill requests for categorized bills
         if (!data.trending_bills || !Array.isArray(data.trending_bills)) {
           throw new Error("Invalid response format");
         }
-
+        
         setBills(data.trending_bills);
       })
       .catch((err) => {
@@ -40,7 +49,11 @@ const TrendingBills = () => {
   useEffect(() => {
     fetchTrendedBills();
   }, []);
-  
+
+  useEffect(() => {
+    const param = selectedCategories.join(",")
+    setUrl(trendingBillsURL + "?categories=" + encodeURIComponent(param))
+  }, [selectedCategories]);
 
   return (
     <Box>
@@ -53,7 +66,7 @@ const TrendingBills = () => {
           variant="ghost"
           colorScheme="teal"
           size="sm"
-          onClick={TrendingBills}
+          onClick={fetchTrendedBills}
           aria-label="Refresh Recommended Bills">
           <LuRotateCcw/>
         </IconButton>

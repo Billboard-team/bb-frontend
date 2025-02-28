@@ -6,8 +6,8 @@ const Dashboard = () => {
   return (
     <>
       <Stack separator={<StackSeparator/>} gapY={2}>
-        <RecommendedBills />
         <TrendingBills />
+        <RecommendedBills />
       </Stack>
     </>
   );
