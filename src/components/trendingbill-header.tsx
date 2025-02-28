@@ -1,28 +1,18 @@
 import { useEffect, useState } from "react";
-import { Box, Heading, HStack, Spinner, Text } from "@chakra-ui/react";
+import { Box, Heading, HStack, IconButton, Spinner, Text } from "@chakra-ui/react";
 import BillGrid from "./bill-grid"; // Ensure this is correctly implemented
-
-// Define the structure expected by BillCardProp
-interface BillCardProp {
-  title: string;
-  code: string;
-  sponsor?: string;
-  action: string;
-  description?: string;
-}
-
-// Define the structure expected by BillGrid
-interface BillItemProp {
-  id: number;
-  item: BillCardProp;
-}
+import { LuRotateCcw } from "react-icons/lu";
+import { BillCardProp } from "@/components/type";
 
 const TrendingBills = () => {
-  const [bills, setBills] = useState<BillItemProp[]>([]);
+  const [bills, setBills] = useState<BillCardProp[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
+  const fetchTrendedBills = () => {
+    setLoading(true);
+    setError(null);
+
     fetch("http://localhost:8000/api/bills/trending")
       .then((response) => {
         if (!response.ok) {
@@ -37,29 +27,20 @@ const TrendingBills = () => {
           throw new Error("Invalid response format");
         }
 
-        // Transform API response to match BillItemProp[]
-        const formattedBills: BillItemProp[] = data.trending_bills.map((bill: {
-          bill_id: any; title:
-            any; sponsor: any; action: any; description: any;
-        }) => ({
-          id: bill.bill_id, // Ensure this is used for navigation
-          item: {
-            title: bill.title,
-            code: `Bill-${bill.bill_id}`, // Change to match frontend expectations
-            sponsor: bill.sponsor || "Unknown Sponsor",
-            action: bill.action,
-            description: bill.description || "No description available",
-          },
-        }));
-
-        setBills(formattedBills);
+        setBills(data.trending_bills);
       })
       .catch((err) => {
         console.error("Error fetching trending bills:", err);
         setError("Failed to load trending bills.");
       })
       .finally(() => setLoading(false));
+  }; 
+  
+  // Fetch data on mount
+  useEffect(() => {
+    fetchTrendedBills();
   }, []);
+  
 
   return (
     <Box>
@@ -67,6 +48,15 @@ const TrendingBills = () => {
         <Heading color="var(--chakra-colors-gray-900)" _dark={{ color: "white" }}>
           Trending Bills
         </Heading>
+
+        <IconButton
+          variant="ghost"
+          colorScheme="teal"
+          size="sm"
+          onClick={TrendingBills}
+          aria-label="Refresh Recommended Bills">
+          <LuRotateCcw/>
+        </IconButton>
       </HStack>
 
       {loading && <Spinner size="xl" />}

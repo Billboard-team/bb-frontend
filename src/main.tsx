@@ -1,4 +1,4 @@
-import { StrictMode } from "react";
+// import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "@/components/ui/provider";
 import "./index.css";
@@ -11,11 +11,13 @@ import SignInForm from '@/pages/sign-in-page';
 import FriendListPage from "@/pages/friend-list-page";
 import SignupForm from "./pages/sign-up-page";
 import DMPage from "@/pages/dm-page";
+import Dev from "./pages/dev-page";
+import { FilterProvider } from "@/components/filter-context";
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <Provider>
-      <BrowserRouter>
+  <Provider>
+    <BrowserRouter>
+      <FilterProvider>
         <Routes>
           <Route path='signin' element={<SignInForm />} />
           <Route path='signup' element={<SignupForm />} />
@@ -31,8 +33,9 @@ createRoot(document.getElementById("root")!).render(
             </Route>
           </Route>
 
+          <Route path="dev" element={<Dev/>}/>
         </Routes>
-      </BrowserRouter>
-    </Provider>
-  </StrictMode>
+      </FilterProvider>
+    </BrowserRouter>
+  </Provider>
 );
