@@ -38,6 +38,9 @@ const BillCardDetailed = ({ bill }: { bill: BillCardProp }) => {
           <Text>{bill.action_date || "Currently Unavailable"}</Text>
 
           <SummaryCard id={bill.bill_id}/>
+
+          <Text fontWeight="bold">Description:</Text>
+          <Text>{bill.description || "Currently Unavailable"}</Text>
         </Stack>
 
         <HStack justifyContent="space-between">
