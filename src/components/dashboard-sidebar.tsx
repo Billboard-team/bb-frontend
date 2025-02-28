@@ -9,19 +9,22 @@ const DashboardSidebar = () => {
 
   return (
     <Box
-      position="sticky"  // Keeps it in place while scrolling
-      top="0"            // Sticks to the top of the viewport
+      position="sticky" // Keeps it in place while scrolling
+      top="0" // Sticks to the top of the viewport
       left="0"
       h="95vh"
       display="flex"
       flexDirection="column"
       justifyContent="space-between"
       borderRightWidth="medium"
-      zIndex="1000"        // Keeps it above other elements
+      zIndex="1000" // Keeps it above other elements
     >
       {/* Categories */}
       <VStack align="start" p={4} w="200px">
-        <Text fontWeight="bold" mb={2}> Categories </Text>
+        <Text fontWeight="bold" mb={2} color="bg.inverted">
+          {" "}
+          Categories{" "}
+        </Text>
         {categories.map((item, index) => (
           <Button
             justifyContent="start"
