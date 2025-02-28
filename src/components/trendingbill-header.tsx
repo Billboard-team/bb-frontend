@@ -2,24 +2,10 @@ import { useEffect, useState } from "react";
 import { Box, Heading, HStack, IconButton, Spinner, Text } from "@chakra-ui/react";
 import BillGrid from "./bill-grid"; // Ensure this is correctly implemented
 import { LuRotateCcw } from "react-icons/lu";
-
-// Define the structure expected by BillCardProp
-export interface BillCardProp {
-  title: string;
-  code: string;
-  sponsor?: string;
-  action: string;
-  description?: string;
-}
-
-// Define the structure expected by BillGrid
-interface BillItemProp {
-  id: number;
-  item: BillCardProp;
-}
+import { BillCardProp } from "@/components/type";
 
 const TrendingBills = () => {
-  const [bills, setBills] = useState<BillItemProp[]>([]);
+  const [bills, setBills] = useState<BillCardProp[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -41,22 +27,7 @@ const TrendingBills = () => {
           throw new Error("Invalid response format");
         }
 
-        // Transform API response to match BillItemProp[]
-        const formattedBills: BillItemProp[] = data.trending_bills.map((bill: {
-          bill_id: any; title:
-            any; sponsor: any; action: any; description: any;
-        }) => ({
-          id: bill.bill_id, // Ensure this is used for navigation
-          item: {
-            title: bill.title,
-            code: `Bill-${bill.bill_id}`, // Change to match frontend expectations
-            sponsor: bill.sponsor || "Unknown Sponsor",
-            action: bill.action,
-            description: bill.description || "No description available",
-          },
-        }));
-
-        setBills(formattedBills);
+        setBills(data.trending_bills);
       })
       .catch((err) => {
         console.error("Error fetching trending bills:", err);
