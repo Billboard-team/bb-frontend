@@ -34,7 +34,10 @@ const DashboardSidebar = () => {
 
       {/* Categories */}
       <VStack align="start" p={4} w="200px">
-        <Text fontWeight="bold" mb={2}> Bill Types </Text>
+        <Text fontWeight="bold" mb={2} color="bg.inverted">
+          {" "}
+          Bill Types{" "}
+        </Text>
         {billType.map((item) => (
           <Button
             key={item}
@@ -50,8 +53,10 @@ const DashboardSidebar = () => {
             {item}
           </Button>
         ))}
-
-        <Text fontWeight="bold" mb={2}> Congress </Text>
+        <Text fontWeight="bold" mb={2} color="bg.inverted">
+          {" "}
+          Congress{" "}
+        </Text>
         {billCongress.map((item) => (
           <Button
             key={item}
@@ -68,7 +73,10 @@ const DashboardSidebar = () => {
           </Button>
         ))}
 
-        <Text fontWeight="bold" mb={2}> Categories </Text>
+        <Text fontWeight="bold" mb={2} color="bg.inverted">
+          {" "}
+          Categorires{" "}
+        </Text>
         {categories.items.map((item) => (
           <Button
             key={item.value}
