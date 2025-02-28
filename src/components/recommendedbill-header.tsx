@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Box, Heading, HStack, Spinner, Text, IconButton } from "@chakra-ui/react";
 import BillGrid from "./bill-grid"; // Ensure this is correctly implemented
-import Refresh from "../assets/refresh.png"
 import { LuRotateCcw } from "react-icons/lu";
 
 // Define the structure expected by BillCardProp

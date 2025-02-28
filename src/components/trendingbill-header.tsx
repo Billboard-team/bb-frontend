@@ -4,7 +4,7 @@ import BillGrid from "./bill-grid"; // Ensure this is correctly implemented
 import { LuRotateCcw } from "react-icons/lu";
 
 // Define the structure expected by BillCardProp
-interface BillCardProp {
+export interface BillCardProp {
   title: string;
   code: string;
   sponsor?: string;
@@ -23,7 +23,10 @@ const TrendingBills = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
+  const fetchTrendedBills = () => {
+    setLoading(true);
+    setError(null);
+
     fetch("http://localhost:8000/api/bills/trending")
       .then((response) => {
         if (!response.ok) {
@@ -60,7 +63,13 @@ const TrendingBills = () => {
         setError("Failed to load trending bills.");
       })
       .finally(() => setLoading(false));
+  }; 
+  
+  // Fetch data on mount
+  useEffect(() => {
+    fetchTrendedBills();
   }, []);
+  
 
   return (
     <Box>
