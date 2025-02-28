@@ -13,7 +13,7 @@ import {
 import GoogleLogo from '../assets/icons/google.png';
 import XLogo from '../assets/icons/x.png';
 import BillboardLogo from '../assets/icons/Billboard-Logo.png';
-
+import ThemeToggle from '@/components/themetoggle';
 const SignupForm: React.FC = () => {
     const [formData, setFormData] = useState({
         email: '',
@@ -49,12 +49,20 @@ const SignupForm: React.FC = () => {
             p="0"
             overflow="hidden"
             boxSizing="border-box"
-        >
+        >   
+            <Box
+                position="absolute"
+                bottom="20px"
+                left="20px"
+                p={4}
+            >
+                <ThemeToggle /> 
+            </Box>
             <Box bg="white" p={8} w={{ base: '90%', md: '500px' }}>
                 <Box textAlign="center" mb={10}>
                     <Image src={BillboardLogo} alt="Billboard Logo" mx="auto" maxW="100%" h="auto" />
                 </Box>
-
+            
                 <form onSubmit={handleSubmit}>
                     <VStack gap={4}>
                         <Input
@@ -133,7 +141,9 @@ const SignupForm: React.FC = () => {
                     </Link>
                 </Box>
             </Box>
+            
         </Box>
+        
     );
 };
 

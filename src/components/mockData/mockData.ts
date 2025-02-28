@@ -16,6 +16,9 @@ export const mockFriends: Friend[] = [
   { id: 1, name: "Jessica Smith" },
   { id: 2, name: "Michael Brown" },
   { id: 3, name: "Emily Davis" },
+  { id: 4, name: "James Anderson" },
+  { id: 5, name: "Emily Carter" },
+  { id: 6, name: "Michael Thompson" },
 ];
 
 export const mockFriendRequests: FriendRequest[] = [{ id: 4, name: "Sarah Wilson" }];

@@ -1,5 +1,7 @@
 import React from 'react';
+import { useLocation } from "react-router-dom";
 import { useTheme } from 'next-themes'
+import { Friend } from "@/components/type";
 import {
   Box,
   Text,
@@ -10,36 +12,6 @@ import {
   Container,
 } from "@chakra-ui/react";
 
-interface User {
-  user_id: string;
-  username: string;
-  email: string;
-  password: string;
-}
-
-// Mock data with random values - username is what will be displayed
-// And remaining data will be used when opening up the friend's profile (modal)
-const friends: User[] = [
-  {
-    user_id: "u1",
-    username: "Jessica Smith",
-    email: "jessica@example.com",
-    password: "***"
-  },
-  {
-    user_id: "u2",
-    username: "Michael Brown",
-    email: "michael@example.com",
-    password: "***"
-  },
-  {
-    user_id: "u3",
-    username: "Emily Davis",
-    email: "emily@example.com",
-    password: "***"
-  }
-];
-
 const FriendListPage: React.FC = () => {
   const { resolvedTheme } = useTheme()
   const isDark = resolvedTheme === 'dark'
@@ -48,6 +20,9 @@ const FriendListPage: React.FC = () => {
   const hoverBg = isDark ? 'gray.700' : 'gray.50'
   const inputBg = isDark ? 'gray.700' : 'gray.50'
   const inputHoverBg = isDark ? 'gray.600' : 'gray.100'
+
+  const location = useLocation();
+  const friends = location.state?.friends || [];
 
   return (
     <Box w="100%" minH="100vh">
@@ -67,16 +42,16 @@ const FriendListPage: React.FC = () => {
             {/* Friends List */}
             <VStack gap={2} align="stretch">
               {friends.length > 0 ? (
-                friends.map((friend) => (
+                friends.map((friend: Friend) => (
                   <Flex 
-                    key={friend.user_id}
+                    key={friend.id}
                     justify="space-between"
                     align="center"
                     p={3}
                     borderRadius="md"
                     _hover={{ bg: hoverBg }}
                   >
-                    <Text>{friend.username}</Text>
+                    <Text>{friend.name}</Text>
                     <Button 
                       bg="black"
                       color="white"

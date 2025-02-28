@@ -8,9 +8,15 @@ interface BillItemProp {
 
 export default function BillGrid({items} : {items : BillItemProp[]}) {
   return (
-    <Grid templateColumns="repeat(6, 1fr)" gap="3">
+    <Grid templateColumns="repeat(1, 1fr)" gap="3">
       {items.map(data => (
-        <BillCard item={data.item}/> 
+        <BillCard 
+          key={data.id}
+          item={{
+            ...data.item,
+            id: data.id
+          }}
+        />
       ))}
     </Grid>
   )
