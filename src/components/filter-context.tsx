@@ -5,8 +5,10 @@ import { BillType, Congress } from '@/components/type';
 interface FilterContextType {
   selectedTypes: BillType[];
   selectedCongress: Congress[];
+  selectedCategories: string[];
   toggleTypeSelection: (type: BillType) => void;
   toggleCongressSelection: (congress: Congress) => void;
+  toggleCategorySelection: (value: string) => void;
 }
 
 // Create context with initial default value
@@ -21,6 +23,7 @@ interface FilterProviderProps {
 export const FilterProvider: React.FC<FilterProviderProps> = ({ children }) => {
   const [selectedTypes, setSelectedTypes] = useState<BillType[]>([]);
   const [selectedCongress, setSelectedCongress] = useState<Congress[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
   // Toggle functions
   const toggleTypeSelection = (type: BillType) => {
@@ -43,12 +46,24 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({ children }) => {
     });
   };
 
+  const toggleCategorySelection = (value: string) => {
+    setSelectedCategories(prev => {
+      if (prev.includes(value)) {
+        return prev.filter(item => item !== value);
+      } else {
+        return [...prev, value];
+      }
+    });
+  };
+
   // Value to be provided
   const value: FilterContextType = {
     selectedTypes,
     selectedCongress,
+    selectedCategories,
     toggleTypeSelection,
-    toggleCongressSelection
+    toggleCongressSelection,
+    toggleCategorySelection,
   };
 
   return (
