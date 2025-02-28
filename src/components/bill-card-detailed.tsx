@@ -2,26 +2,10 @@ import { Box, Heading, Text, Link, Stack, VStack, HStack, IconButton } from "@ch
 import { useColorModeValue } from "@/components/ui/color-mode";
 import SummaryCard from "./summary-card";
 import { LuCircleCheckBig, LuShare } from "react-icons/lu";
-import { toaster } from "./ui/toaster";
 import { useState } from "react";
+import { BillCardProp } from "@/components/type"
 
-interface BillCardProps {
-  bill: {
-    bill_id: number;
-    title: string;
-    action: string;
-    action_date: string;
-    description: string;
-    congress: number;
-    bill_type: string;
-    bill_number: string;
-    summary?: string | null;
-    text?: string | null;
-    url: string;
-  };
-}
-
-const BillCardDetailed = ({ bill }: { bill: BillCardProps["bill"] }) => {
+const BillCardDetailed = ({ bill }: { bill: BillCardProp }) => {
   const bgColor = useColorModeValue("white", "gray.700");
   const textColor = useColorModeValue("gray.800", "whiteAlpha.900");
   const subTextColor = useColorModeValue("gray.500", "gray.400");

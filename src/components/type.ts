@@ -52,11 +52,16 @@ export interface BillCardProp {
   action: string;
   action_date: string;
   description: string;
-  congress: number;
+  congress: Congress;
   sponsor?: string,
-  bill_type: string;
+  bill_type: BillType;
   bill_number: string;
   summary?: string | null;
   text?: string | null;
   url: string;
 }
+
+//Sidebar filters
+export type BillType = 'HR' | 'S' | 'SRES' | 'SJRES';
+export type Congress = 119 | 118 | 117;
+
