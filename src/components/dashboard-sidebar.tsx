@@ -67,7 +67,7 @@ const DashboardSidebar = () => {
           </Button>
         ))}
         <Text fontWeight="bold" mb={2}> Categories </Text>
-        <SelectRoot multiple collection={categories} size="md" width="250px">
+        <SelectRoot multiple collection={categories} size="md" width="175px">
           <SelectTrigger >
             <SelectValueText placeholder="Select Cateogry"  />         
           </SelectTrigger>
