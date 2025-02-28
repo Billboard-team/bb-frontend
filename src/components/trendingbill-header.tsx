@@ -45,7 +45,10 @@ const TrendingBills = () => {
   return (
     <Box>
       <HStack my={2}>
-        <Heading>Trending Bills</Heading>
+        <Heading color="var(--chakra-colors-gray-900)" _dark={{ color: "white" }}>
+          Trending Bills
+        </Heading>
+
         <IconButton
           variant="ghost"
           colorScheme="teal"
