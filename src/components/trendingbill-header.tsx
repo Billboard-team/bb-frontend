@@ -13,7 +13,7 @@ const TrendingBills = () => {
     setLoading(true);
     setError(null);
 
-    fetch("http://localhost:8000/api/bills/trending")
+    fetch("http://localhost:8000/api/bills/trending/education")
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -23,10 +23,11 @@ const TrendingBills = () => {
       .then((data) => {
         console.log("Fetched Trending Bills:", data);
 
+        // commenting this out for now as to not kill requests for categorized bills
         if (!data.trending_bills || !Array.isArray(data.trending_bills)) {
           throw new Error("Invalid response format");
         }
-
+        
         setBills(data.trending_bills);
       })
       .catch((err) => {

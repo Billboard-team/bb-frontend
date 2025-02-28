@@ -1,12 +1,19 @@
-import { VStack, Text, Box, Button } from "@chakra-ui/react";
+import { VStack, Text, Box, Button, SelectTrigger, SelectValueText, SelectRoot, SelectContent, createListCollection, SelectItem } from "@chakra-ui/react";
 import { useState } from "react";
 import ThemeToggle from "@/components/themetoggle";
 
-const categories = ["Technology", "Environment", "Healthcare", "Economy"];
 
+const categories = createListCollection({
+  items: [
+    { label: "Technology", value: "tech" },
+    { label: "Environment", value: "environment" },
+    { label: "Healthcare", value: "health" },
+    { label: "Economy", value: "econ" },
+    { label: "All",     value: "all "}
+  ],
+  })
+  
 const DashboardSidebar = () => {
-  const [selected, setSelected] = useState(-1);
-
   return (
     <Box
       position="sticky"  // Keeps it in place while scrolling
@@ -20,21 +27,25 @@ const DashboardSidebar = () => {
       zIndex="1000"        // Keeps it above other elements
     >
       {/* Categories */}
-      <VStack align="start" p={4} w="200px">
+      <Box borderRightWidth="medium">
+      <VStack align="start" p={4} w="270px"  h="full">
         <Text fontWeight="bold" mb={2}> Categories </Text>
-        {categories.map((item, index) => (
-          <Button
-            justifyContent="start"
-            w="150px"
-            key={index}
-            colorScheme={index === selected ? "teal" : "gray"}
-            variant="ghost"
-            onClick={() => setSelected(index)}
-          >
-            {item}
-          </Button>
-        ))}
+        <SelectRoot multiple collection={categories} size="md" width="250px">
+          <SelectTrigger >
+            <SelectValueText placeholder="Select Cateogry"  />         
+          </SelectTrigger>
+          <SelectContent>
+            {categories.items.map((category) => (
+              <SelectItem item={category} key={category.value}>
+                {category.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </SelectRoot>
+  
       </VStack>
+  
+    </Box>
 
       {/* Dark Mode Toggle Button */}
       <Box p={10}>
@@ -43,5 +54,8 @@ const DashboardSidebar = () => {
     </Box>
   );
 };
+
+
+  
 
 export default DashboardSidebar;
