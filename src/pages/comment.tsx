@@ -1,7 +1,15 @@
 import React, { useState } from "react";
-import { VStack, Box, Text, Input, Button, HStack } from "@chakra-ui/react";
+import { VStack, Box, Text, Input, Button, HStack,
+    AccordionItem,
+    AccordionItemContent,
+    AccordionItemTrigger,
+    AccordionRoot,
+    IconButton
+} from "@chakra-ui/react";
 import { useColorMode } from "@/components/ui/color-mode"
 import { useColorModeValue } from "@/components/ui/color-mode"
+import { FaChevronDown, FaChevronUp } from "react-icons/fa"
+
 interface Comment {
     id: number;
     text: string;
@@ -18,6 +26,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ billId }) => {
         { id: 2, text: "I totally agree with this legislation.", user: "Bob" },
     ]);
     const [newComment, setNewComment] = useState("");
+    const [isOpen, setIsOpen] = useState(false);
 
     // const bgColor = useColorModeValue("gray.100", "gray.700");  // Background color
     const textColor = useColorModeValue("gray.800", "whiteAlpha.900"); // Text color
@@ -63,18 +72,32 @@ const CommentSection: React.FC<CommentSectionProps> = ({ billId }) => {
 
     return (
         <Box mt={4} p={4} borderWidth="1px" borderRadius="md">
-            <Text fontSize="lg" fontWeight="bold" color={textColor}>
+        <AccordionRoot>
+            <AccordionItem value="comments">
+            <Box fontSize="lg" fontWeight="bold" color={textColor}>
                 Comments
-            </Text>
-            <VStack align="start" gap={3} mt={2} w="100%">
+            </Box>
+            <AccordionItemTrigger>
+                <IconButton
+                    aria-label="Toggle comments"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setIsOpen(!isOpen)}
+                >
+                    <FaChevronDown />
+                </IconButton>
+            </AccordionItemTrigger>
+            <AccordionItemContent>
+            { isOpen && <VStack align="start" gap={3} mt={2} w="100%">
                 {displayedComments.map((comment) => (
                     <Box key={comment.id} p={2} borderRadius="md" w="100%">
                         <Text fontWeight="bold" color={textColor}>{comment.user}:</Text>
                         <Text color={textColor}>{comment.text}</Text>
                     </Box>
                 ))}
+            
             </VStack>
-
+}
             {/* Pagination Controls */}
             {comments.length > commentsPerPage && (
                 <HStack mt={3} justify="space-between" w="100%">
@@ -110,6 +133,9 @@ const CommentSection: React.FC<CommentSectionProps> = ({ billId }) => {
             <Button mt={2} bg="black" color="white" onClick={handleAddComment}>
                 Add Comment
             </Button>
+            </AccordionItemContent>
+            </AccordionItem>
+        </AccordionRoot>
         </Box>
     );
 };
