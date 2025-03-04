@@ -1,26 +1,11 @@
 import { useEffect, useState } from "react";
 import { Box, Heading, HStack, Spinner, Text, IconButton } from "@chakra-ui/react";
 import BillGrid from "./bill-grid"; // Ensure this is correctly implemented
-import Refresh from "../assets/refresh.png"
 import { LuRotateCcw } from "react-icons/lu";
-
-// Define the structure expected by BillCardProp
-export interface BillCardProp {
-  title: string;
-  code: string;
-  sponsor?: string;
-  action: string;
-  description?: string;
-}
-
-// Define the structure expected by BillGrid
-interface BillItemProp {
-  id: number;
-  item: BillCardProp;
-}
+import { BillCardProp } from "@/components/type";
 
 const RecommendedBills = () => {
-  const [bills, setBills] = useState<BillItemProp[]>([]);
+  const [bills, setBills] = useState<BillCardProp[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -42,22 +27,7 @@ const RecommendedBills = () => {
           throw new Error("Invalid response format");
         }
 
-        // Transform API response to match BillItemProp[]
-        const formattedBills: BillItemProp[] = data.recommended_bills.map((bill: {
-          bill_id: any; title:
-            any; sponsor: any; action: any; description: any;
-        }) => ({
-          id: bill.bill_id, // Ensure this is used for navigation
-          item: {
-            title: bill.title,
-            code: `Bill-${bill.bill_id}`, // Change to match frontend expectations
-            sponsor: bill.sponsor || "Unknown Sponsor",
-            action: bill.action,
-            description: bill.description || "No description available",
-          },
-        }));
-
-        setBills(formattedBills);
+        setBills(data.recommended_bills);
       })
       .catch((err) => {
         console.error("Error fetching recommended bills:", err);
@@ -75,7 +45,9 @@ const RecommendedBills = () => {
   return (
     <Box>
       <HStack my={2}>
-        <Heading>Recommended Bills</Heading>
+        <Heading color="var(--chakra-colors-gray-900)" _dark={{ color: "white" }}>
+          Recommended Bills
+        </Heading>
         <IconButton
           variant="ghost"
           colorScheme="teal"

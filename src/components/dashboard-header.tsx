@@ -1,7 +1,8 @@
-import { Flex, Image, Spacer, Button, IconButton, Box } from "@chakra-ui/react";
+import { Flex, Image, Spacer, Button, IconButton, Box, Avatar } from "@chakra-ui/react";
 import BillboardLogo from "@/assets/Billboard-Logo-Banner.png";
 import { useNavigate } from 'react-router-dom';
-import { LuMeh, LuSearch } from "react-icons/lu";
+import { LuSearch } from "react-icons/lu";
+import { mockUser } from "./mockData/mockData";
 
 const DashboardHeader = () => {
   const navigate = useNavigate();
@@ -9,6 +10,8 @@ const DashboardHeader = () => {
     navigate("/", { replace: true }); // Navigate to home page
     window.location.reload(); // Force page reload
   };
+
+  const user = mockUser
 
   return (
     <Box position="sticky">
@@ -46,7 +49,9 @@ const DashboardHeader = () => {
             <LuSearch/>
           </IconButton>
           <Button variant="ghost" fontSize="lg" onClick={() => navigate('/profile')}>
-            <LuMeh/>
+            <Avatar.Root>
+              <Avatar.Fallback name={user.name} />
+            </Avatar.Root>
           </Button>
         </Flex>
       </Flex>

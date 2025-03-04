@@ -16,8 +16,8 @@ interface MessageSidebarProps {
 const MessageSidebar: React.FC<MessageSidebarProps> = ({
   onSelectConversation,
 }) => {
-  // Type the conversations array with the Conversation interface
-  const conversations: Conversation[] = [
+  // Initialize conversations as a state with the Conversation interface
+  const [conversations, setConversations] = useState<Conversation[]>([
     {
       id: 1,
       name: "Alex Johnson",
@@ -39,14 +39,27 @@ const MessageSidebar: React.FC<MessageSidebarProps> = ({
       timestamp: "2025-02-18 14:20",
       unread: false,
     },
-  ];
+  ]);
 
   // Type the selectedId state as number or null
   const [selectedId, setSelectedId] = useState<number | null>(null);
 
   const handleConversationSelect = (conversation: Conversation) => {
+    // Create a new conversations array with the updated unread status
+    const updatedConversations = conversations.map((conv) =>
+      conv.id === conversation.id
+        ? { ...conv, unread: false } // Set unread to false for the clicked conversation
+        : conv
+    );
+
+    // Update the conversations state
+    setConversations(updatedConversations);
+
+    // Update the selected ID
     setSelectedId(conversation.id);
-    onSelectConversation(conversation); // Pass the selected conversation to the parent
+
+    // Pass the updated conversation to the parent
+    onSelectConversation({ ...conversation, unread: false });
   };
 
   return (
@@ -58,8 +71,7 @@ const MessageSidebar: React.FC<MessageSidebarProps> = ({
         {conversations
           .sort(
             (a, b) =>
-              new Date(b.timestamp as string).getTime() -
-              new Date(a.timestamp as string).getTime()
+              new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
           ) // Sort by most recent using getTime()
           .map((conv) => (
             <Button
