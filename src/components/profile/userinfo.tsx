@@ -11,7 +11,7 @@ const UserInfo: React.FC<Props> = ({ user }) => {
       <Avatar.Root>
         <Avatar.Fallback name={user.name} />
       </Avatar.Root>
-      <Text fontSize="2xl" fontWeight="bold" mt={2}>
+      <Text fontSize="2xl" fontWeight="bold" mt={2} color="bg.inverted">
         {user.name}
       </Text>
       <HStack mt={2}>

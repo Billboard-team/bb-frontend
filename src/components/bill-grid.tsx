@@ -1,21 +1,23 @@
 import { Grid } from "@chakra-ui/react";
-import BillCard, { BillCardProp } from "@/components/bill-card";
+import BillCard from "@/components/bill-card";
+import { BillCardProp } from "@/components/type";
+import { useFilters } from "@/components/filter-context";
 
-interface BillItemProp {
-  id: number,
-  item: BillCardProp,
-}
+export default function BillGrid({items} : {items : BillCardProp[]}) {
 
-export default function BillGrid({items} : {items : BillItemProp[]}) {
+  const {selectedTypes, selectedCongress} = useFilters()
+  // Filter bills based on selections
+  const filteredBills = items.filter(bill => 
+    (selectedTypes.length === 0 || selectedTypes.includes(bill.bill_type)) &&
+    (selectedCongress.length === 0 || selectedCongress.includes(bill.congress))
+  );
+
   return (
     <Grid templateColumns="repeat(1, 1fr)" gap="3">
-      {items.map(data => (
+      {filteredBills.map(data => (
         <BillCard 
-          key={data.id}
-          item={{
-            ...data.item,
-            id: data.id
-          }}
+          key={data.bill_id}
+          item={data}
         />
       ))}
     </Grid>

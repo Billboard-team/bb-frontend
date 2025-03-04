@@ -1,5 +1,5 @@
 import { SkeletonText } from "@/components/ui/skeleton";
-import { Button, Card, HStack } from "@chakra-ui/react";
+import { Button, Card, HStack, Link } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { LuCodeXml, LuFile } from "react-icons/lu";
 
@@ -69,11 +69,11 @@ function SummaryCard({id} : {id : number}) {
         }
       </Card.Body>
       <Card.Footer justifyContent="flex-end">
-        <Button disabled={loading || notFound} variant="solid">
-          View PDF <LuFile/>
+        <Button disabled={loading || notFound} variant="surface">
+          <Link href={source?.pdf_url} cursor={source? "pointer" : "disabled"}> View PDF <LuFile/></Link>
         </Button>
-        <Button disabled={loading || notFound} variant="solid">
-          View XML <LuCodeXml/>
+        <Button disabled={loading || notFound} variant="surface">
+          <Link href={source?.xml_url} cursor={source? "pointer" : "disabled"}> View XML <LuCodeXml/></Link>
         </Button>
       </Card.Footer>
     </Card.Root>
