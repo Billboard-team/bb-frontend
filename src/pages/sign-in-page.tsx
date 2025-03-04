@@ -16,6 +16,7 @@ import { useNavigate } from 'react-router-dom';
 
 const SignInForm: React.FC = () => {
     const navigate = useNavigate();
+    const [error, setError] = useState<string | null>(null);
     const [formData, setFormData] = useState({
         email: '',
         password: ''
@@ -26,8 +27,21 @@ const SignInForm: React.FC = () => {
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
+    const validateEmail = (email: string) => {
+        return email.includes('@');
+    };
+
+    const validatePassword = (password: string) => {
+        return password.length >= 8;
+    };
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+
+        if (!validateEmail(formData.email) || !validatePassword(formData.password)) {
+            setError('Please enter a valid email address or password');
+            return;
+        }
         
         // TODO: Login API call needed for email/password verficiation
 
@@ -63,19 +77,34 @@ const SignInForm: React.FC = () => {
   
             <form onSubmit={handleSubmit}>
                 <VStack gap={4}>
+                    {error && (
+                        <Box 
+                            p={3} 
+                            bg="red.100" 
+                            color="red.500" 
+                            borderRadius="md" 
+                            width="100%"
+                        >
+                            <Text>{error}</Text>
+                        </Box>
+                    )}
                     <Input 
                         name="email"
                         value={formData.email}
                         onChange={handleChange}
                         placeholder="Email" 
-                        type="email" 
+                        type="email"
+                        border={error ? "2px solid" : "1px solid"}
+                        borderColor={error ? "red.500" : "gray.200"}
                     />
                     <Input 
                         name="password"
                         value={formData.password}
                         onChange={handleChange}
                         placeholder="Password" 
-                        type="password" 
+                        type="password"
+                        border={error ? "2px solid" : "1px solid"}
+                        borderColor={error ? "red.500" : "gray.200"}
                     />
                     <Button bg="black" width="full" _dark={{ color: 'white' }} onClick={handleSubmit}>
                         Login
