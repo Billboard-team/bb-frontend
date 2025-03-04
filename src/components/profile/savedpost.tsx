@@ -8,13 +8,13 @@ interface Props {
 const SavedPosts: React.FC<Props> = ({ savedPosts }) => {
   return (
     <Box p={5} shadow="md" borderRadius="md">
-      <Text fontSize="xl" fontWeight="bold" color="bg.inverted">
+      <Text fontSize="xl" fontWeight="bold">
         Saved Posts
       </Text>
       <VStack mt={3} align="start">
         {savedPosts.map((post) => (
           <Flex key={post.id} justify="space-between" w="100%">
-            <Text color="bg.inverted">{post.title}</Text>
+            <Text>{post.title}</Text>
             <Button variant="surface" size="sm">
               View
             </Button>

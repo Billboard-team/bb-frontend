@@ -8,12 +8,12 @@ interface Props {
 const ActivityInsights: React.FC<Props> = ({ activity }) => {
   return (
     <Box p={5} shadow="md" borderRadius="md">
-      <Text fontSize="xl" fontWeight="bold" color="bg.inverted">
+      <Text fontSize="xl" fontWeight="bold">
         Activity Insights
       </Text>
       <SimpleGrid columns={3} gap={4} mt={3}>
         <Box>
-          <Text fontSize="lg" fontWeight="bold" color="bg.inverted">
+          <Text fontSize="lg" fontWeight="bold">
             {activity.postViews}
           </Text>
           <Text fontSize="sm" color="gray.500">
@@ -21,7 +21,7 @@ const ActivityInsights: React.FC<Props> = ({ activity }) => {
           </Text>
         </Box>
         <Box>
-          <Text fontSize="lg" fontWeight="bold" color="bg.inverted">
+          <Text fontSize="lg" fontWeight="bold">
             {activity.commentInteractions}
           </Text>
           <Text fontSize="sm" color="gray.500">
@@ -29,7 +29,7 @@ const ActivityInsights: React.FC<Props> = ({ activity }) => {
           </Text>
         </Box>
         <Box>
-          <Text fontSize="lg" fontWeight="bold" color="bg.inverted">
+          <Text fontSize="lg" fontWeight="bold">
             {activity.votes}
           </Text>
           <Text fontSize="sm" color="gray.500">
