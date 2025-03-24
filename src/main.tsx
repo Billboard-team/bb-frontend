@@ -24,7 +24,8 @@ createRoot(document.getElementById("root")!).render(
     clientId={clientId}
     authorizationParams={{
       redirect_uri: window.location.origin,
-      audience: "https://billboard.local"
+      audience: "https://billboard.local",
+      scope: "openid profile email"
     }}
     cacheLocation="localstorage" 
     useRefreshTokens={true}  
@@ -36,6 +37,7 @@ createRoot(document.getElementById("root")!).render(
           <Route path='signin' element={<SignInForm />} />
           <Route path='signup' element={<SignupForm />} />
             <Route path="/callback" element={<AuthCallback />} />  
+            
           <Route path="/" element={<DashboardLayout />}>
             <Route index element={<Dashboard />} />
             <Route path="post/:id" element={<DetailView/> } />

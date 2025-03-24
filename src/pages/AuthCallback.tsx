@@ -7,18 +7,28 @@ const AuthCallback = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        console.log("Auth0 Status:", { isAuthenticated, isLoading, error, user }); // 🔹 Debugging
+        console.log("🧠 Auth0 Status:", {
+            isAuthenticated,
+            isLoading,
+            error,
+            user
+        });
+
+        if (error) {
+            console.error("❌ FULL Auth0 Error:", error);
+        }
 
         if (!isLoading) {
             if (isAuthenticated) {
-                console.log("✅ User Authenticated:", user); // Debug
-                navigate("/dashboard");  // Redirect to dashboard
-            } else if (error) {
-                console.error("❌ Authentication Error:", error);
-                navigate("/signin");  // Redirect to login page on failure
+                console.log("✅ User Authenticated:", user);
+                navigate("/dashboard");
+            } else {
+                console.warn("⚠️ Not authenticated, redirecting to /signin");
+                navigate("/signin");
             }
         }
     }, [isAuthenticated, isLoading, error, user, navigate]);
+
 
     return <p>Processing login...</p>;
 };
