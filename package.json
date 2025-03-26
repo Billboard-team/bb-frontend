@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@auth0/auth0-react": "^2.3.0",
     "@chakra-ui/react": "^3.8.1",
     "@chakra-ui/theme-utils": "^2.0.21",
     "@emotion/react": "^11.14.0",
