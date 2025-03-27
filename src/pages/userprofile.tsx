@@ -1,7 +1,7 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 import UserInfo from "@/components/profile/userinfo";
 import ActivityInsights from "@/components/profile/activityinsights";
 import FriendsList from "@/components/profile/friends";
@@ -22,6 +22,7 @@ const UserProfile = () => {
   const [userProfile, setUserProfile] = useState<any>(null);
   const [profileLoading, setProfileLoading] = useState(true);
   const [profileError, setProfileError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -59,6 +60,13 @@ const UserProfile = () => {
       fetchUserProfile();
     }
   }, [isAuthenticated, getAccessTokenSilently]);
+  
+  useEffect(() => {
+    if (isAuthenticated && userProfile && !userProfile.name) {
+      navigate("/complete-profile");
+    }
+  }, [isAuthenticated, userProfile, navigate]);
+
 
   if (isLoading || profileLoading) {
     return <Box p={10}><Text>Loading profile...</Text></Box>;

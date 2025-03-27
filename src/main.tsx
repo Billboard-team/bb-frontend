@@ -14,7 +14,7 @@ import Dev from "./pages/dev-page";
 import { FilterProvider } from "@/components/filter-context";
 import { Auth0Provider } from "@auth0/auth0-react";
 import AuthCallback from "@/pages/auth-callback";
-
+import CompleteProfile from "@/pages/complete-profile";
 const domain = "dev-o057ijjrl6wtbm32.us.auth0.com";
 const clientId = "KtwRQunLY2dwT5UiqHDYOIoqMt4j3Sab";
 const audience = "https://billboard.local";
@@ -37,7 +37,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path='signup' element={<SignupForm />} />
             <Route path="/" element={<DashboardLayout />}>
               <Route path="callback" element={<AuthCallback />} />
-
+              <Route path="/complete-profile" element={<CompleteProfile />} />
               <Route index element={<Dashboard />} />
               <Route path="post/:id" element={<DetailView />} />
               <Route path="profile">
