@@ -83,8 +83,10 @@ const CommentSection: React.FC<CommentSectionProps> = ({ billId }) => {
                     variant="ghost"
                     size="sm"
                     onClick={() => setIsOpen(!isOpen)}
+                    transition="transform 0.3s ease-in-out"
+                    transform={isOpen ? "rotate(180deg)" : "rotate(0deg)"}
                 >
-                    <FaChevronDown />
+                    <FaChevronUp />
                 </IconButton>
             </AccordionItemTrigger>
             <AccordionItemContent>
