@@ -1,4 +1,4 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -18,12 +18,44 @@ import {
 } from "@/components/mockData/mockData";
 
 const UserProfile = () => {
-  const { getAccessTokenSilently, isAuthenticated, isLoading, error } = useAuth0();
+  const { getAccessTokenSilently, isAuthenticated, isLoading, error } =
+    useAuth0();
   const [userProfile, setUserProfile] = useState<any>(null);
   const [profileLoading, setProfileLoading] = useState(true);
   const [profileError, setProfileError] = useState<string | null>(null);
   const navigate = useNavigate();
 
+  const handleDeleteAccount = async () => {
+    if (
+      !window.confirm(
+        "Are you sure you want to permanently delete your account?"
+      )
+    )
+      return;
+
+    try {
+      const options: GetTokenSilentlyOptions = {
+        authorizationParams: {
+          audience: "https://billboard.local",
+        },
+      };
+
+      const token = await getAccessTokenSilently(options);
+
+      const res = await fetch("http://localhost:8000/api/me/delete/", {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to delete account.");
+      }
+    } catch (err: any) {
+      console.error("Account deletion failed:", err);
+    }
+  };
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
@@ -60,24 +92,35 @@ const UserProfile = () => {
       fetchUserProfile();
     }
   }, [isAuthenticated, getAccessTokenSilently]);
-  
+
   useEffect(() => {
     if (isAuthenticated && userProfile && !userProfile.name) {
       navigate("/complete-profile");
     }
   }, [isAuthenticated, userProfile, navigate]);
 
-
   if (isLoading || profileLoading) {
-    return <Box p={10}><Text>Loading profile...</Text></Box>;
+    return (
+      <Box p={10}>
+        <Text>Loading profile...</Text>
+      </Box>
+    );
   }
 
   if (error || profileError) {
-    return <Box p={10}><Text color="red.500">Error: {error?.message || profileError}</Text></Box>;
+    return (
+      <Box p={10}>
+        <Text color="red.500">Error: {error?.message || profileError}</Text>
+      </Box>
+    );
   }
 
   if (!isAuthenticated || !userProfile) {
-    return <Box p={10}><Text>Please sign in to view your profile.</Text></Box>;
+    return (
+      <Box p={10}>
+        <Text>Please sign in to view your profile.</Text>
+      </Box>
+    );
   }
 
   return (
@@ -91,6 +134,14 @@ const UserProfile = () => {
           <ActivityInsights activity={mockActivity} />
         </Flex>
       </Flex>
+      <Button
+        mt={4}
+        colorScheme="red"
+        variant="outline"
+        onClick={handleDeleteAccount}
+      >
+        Delete Account
+      </Button>
 
       <Box my={6} />
 
