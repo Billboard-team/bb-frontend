@@ -156,7 +156,7 @@ const SignInForm: React.FC = () => {
                 >
                     Sign up
                 </Button>
-                <Button as="a" bg="white" onClick={() => navigate("/forgotpassword")}>
+                <Button as="a" bg="white" color="blue.500" onClick={() => navigate("/forgotpassword")}>
                     {/* TODO: Display forgot password page and it's functionality */}
                     Forgot Password?
                 </Button>
