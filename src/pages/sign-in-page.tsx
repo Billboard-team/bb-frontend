@@ -127,7 +127,6 @@ const SignInForm: React.FC = () => {
                             loginWithRedirect({
                                 authorizationParams: {
                                     connection: "google-oauth2"
-
                                 }
                             } as any)
                         }
