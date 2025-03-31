@@ -3,6 +3,8 @@ import GoogleLogo from '@/assets/icons/google.png';
 import XLogo from '@/assets/icons/x.png';
 import ThemeToggle from '@/components/themetoggle';
 import BillboardLogo from '@/assets/icons/Billboard-Logo.png';
+import { useAuth0 } from "@auth0/auth0-react";
+
 import {
     Button,
     Input,
@@ -16,6 +18,8 @@ import { useNavigate } from 'react-router-dom';
 
 const SignInForm: React.FC = () => {
     const navigate = useNavigate();
+    const { loginWithRedirect } = useAuth0();
+
     const [error, setError] = useState<string | null>(null);
     const [formData, setFormData] = useState({
         email: '',
@@ -117,14 +121,32 @@ const SignInForm: React.FC = () => {
             </Box>
 
             {/* TODO: Social Media Icons */}
-            <HStack justify="center" gap={6} mt={4}>
-                <Button onClick={() => console.log("Google Signup")} p={0} border="none">
-                    <Image src={GoogleLogo} alt="Google Logo" boxSize="40px" />
-                </Button>
-                <Button onClick={() => console.log("X Signup")} p={0} border="none" >
-                    <Image src={XLogo} alt="X Logo" boxSize="40px" />
-                </Button>
-            </HStack>
+                <HStack justify="center" gap={6} mt={4}>
+                    <Button
+                        onClick={() =>
+                            loginWithRedirect({
+                                connection: "google-oauth2"
+                            } as any)
+                        }
+                        p={0}
+                        border="none"
+                    >
+                        <Image src={GoogleLogo} alt="Google Logo" boxSize="40px" />
+                    </Button>
+
+                    <Button
+                        onClick={() =>
+                            loginWithRedirect({
+                                connection: "twitter"
+                            } as any)
+                        }
+                        p={0}
+                        border="none"
+                    >
+                        <Image src={XLogo} alt="X Logo" boxSize="40px" />
+                    </Button>
+                </HStack>
+
             <VStack gap={4} mt={6}>
                 <Button 
                     bg="black" 
@@ -134,7 +156,7 @@ const SignInForm: React.FC = () => {
                 >
                     Sign up
                 </Button>
-                <Button as="a" bg="white" onClick={() => navigate("/forgotpassword")}>
+                <Button as="a" bg="white" color="blue.500" onClick={() => navigate("/forgotpassword")}>
                     {/* TODO: Display forgot password page and it's functionality */}
                     Forgot Password?
                 </Button>
