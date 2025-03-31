@@ -125,7 +125,10 @@ const SignInForm: React.FC = () => {
                     <Button
                         onClick={() =>
                             loginWithRedirect({
-                                connection: "google-oauth2"
+                                authorizationParams: {
+                                    connection: "google-oauth2"
+
+                                }
                             } as any)
                         }
                         p={0}
@@ -137,7 +140,9 @@ const SignInForm: React.FC = () => {
                     <Button
                         onClick={() =>
                             loginWithRedirect({
-                                connection: "twitter"
+                               // authorizationParams: {
+                                    connection: "twitter"
+                               // }
                             } as any)
                         }
                         p={0}
