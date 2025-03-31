@@ -136,7 +136,7 @@ const SignupForm: React.FC = () => {
 
 
                 <Box textAlign="center" mt={4}>
-                    <Link href="/login" color="blue.500" fontWeight="medium">
+                    <Link href="/signin" color="blue.500" fontWeight="medium">
                         Already have an account? Log in here
                     </Link>
                 </Box>
