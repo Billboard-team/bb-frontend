@@ -1,6 +1,6 @@
 import { Box, Avatar, Text, HStack, Tag, Button } from "@chakra-ui/react";
 import { User } from "@/components/type";
-
+import { useAuth0 } from "@auth0/auth0-react";
 interface Props {
   user: User;
 }

@@ -9,12 +9,13 @@ import {
     Box,
     HStack,
 } from '@chakra-ui/react';
-
+import { useAuth0 } from "@auth0/auth0-react";
 import GoogleLogo from '../assets/icons/google.png';
 import XLogo from '../assets/icons/x.png';
 import BillboardLogo from '../assets/icons/Billboard-Logo.png';
 import ThemeToggle from '@/components/themetoggle';
 const SignupForm: React.FC = () => {
+    const { loginWithRedirect } = useAuth0();
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -118,17 +119,26 @@ const SignupForm: React.FC = () => {
                 {/* Social Media Icons */}
                 <HStack justify="center" gap={6} mt={4}>
                     <Button
-                        onClick={() => console.log("Google Signup")}
+                        onClick={() =>
+                            loginWithRedirect({
+                                authorizationParams: {
+                                    connection: "google-oauth2"
+                                }
+                            } as any)
+                        }
                         p={0}
                         border="none"
                     >
                         <Image src={GoogleLogo} alt="Google Logo" boxSize="40px" />
                     </Button>
                     <Button
-                        onClick={() => console.log("Twitter Signup")}
+                        onClick={() =>
+                            loginWithRedirect({
+                                connection: "twitter"
+                            } as any)
+                        }
                         p={0}
                         border="none"
-                        
                     >
                         <Image src={XLogo} alt="X Logo" boxSize="40px" />
                     </Button>
@@ -136,7 +146,7 @@ const SignupForm: React.FC = () => {
 
 
                 <Box textAlign="center" mt={4}>
-                    <Link href="/login" color="blue.500" fontWeight="medium">
+                    <Link href="/signin" color="blue.500" fontWeight="medium">
                         Already have an account? Log in here
                     </Link>
                 </Box>

@@ -15,6 +15,8 @@ import { FilterProvider } from "@/components/filter-context";
 import { Auth0Provider } from "@auth0/auth0-react";
 import AuthCallback from "@/pages/auth-callback";
 import CompleteProfile from "@/pages/complete-profile";
+import SignOutPage from "@/pages/sign-out-page";
+
 const domain = "dev-o057ijjrl6wtbm32.us.auth0.com";
 const clientId = "KtwRQunLY2dwT5UiqHDYOIoqMt4j3Sab";
 const audience = "https://billboard.local";
@@ -33,6 +35,7 @@ createRoot(document.getElementById("root")!).render(
       <BrowserRouter>
         <FilterProvider>
           <Routes>
+            <Route path="/sign-out" element={<SignOutPage />} />
             <Route path='signin' element={<SignInForm />} />
             <Route path='signup' element={<SignupForm />} />
             <Route path="/" element={<DashboardLayout />}>
