@@ -135,7 +135,6 @@ const UserProfile = () => {
     );
   }
 
-
   return (
     <Flex direction="column" h="100vh" w="85vw" p={10} overflow="hidden">
       {/* First Row: User Info + Activity */}
@@ -151,9 +150,13 @@ const UserProfile = () => {
         mt={2}
         colorScheme="gray"
         variant="solid"
-        onClick={() => {
-          window.location.href = `https://dev-o057ijjrl6wtbm32.us.auth0.com/v2/logout?client_id=KtwRQunLY2dwT5UiqHDYOIoqMt4j3Sab&returnTo=${encodeURIComponent(window.location.origin)}`;
-        }}
+        onClick={() =>
+          logout({
+            logoutParams: {
+              returnTo: window.location.origin,
+            },
+          })
+        }
       >
         Log Out
       </Button>
