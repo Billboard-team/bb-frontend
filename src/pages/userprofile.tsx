@@ -17,8 +17,14 @@ import {
 } from "@/components/mockData/mockData";
 
 const UserProfile = () => {
-  const { logout, getAccessTokenSilently, isAuthenticated, isLoading, error } =
-    useAuth0();
+  const {
+    logout,
+    getAccessTokenSilently,
+    user,
+    isAuthenticated,
+    isLoading,
+    error,
+  } = useAuth0();
   const [userProfile, setUserProfile] = useState<any>(null);
   const [profileLoading, setProfileLoading] = useState(true);
   const [profileError, setProfileError] = useState<string | null>(null);
@@ -51,10 +57,18 @@ const UserProfile = () => {
       if (!res.ok) {
         throw new Error("Failed to delete account.");
       }
+
+      // ✅ Log out and redirect to homepage after deletion
+      logout({
+        logoutParams: {
+          returnTo: window.location.origin,
+        },
+      });
     } catch (err: any) {
       console.error("Account deletion failed:", err);
     }
   };
+
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
@@ -121,6 +135,22 @@ const UserProfile = () => {
         <Text mb={4}>Please sign in to view your profile.</Text>
         <Button onClick={() => navigate("/signin")} colorScheme="teal">
           Go to Sign In Page
+        </Button>
+      </Box>
+    );
+  }
+  if (isAuthenticated && user && !user.email_verified) {
+    return (
+      <Box p={10}>
+        <Text color="orange.500">
+          Please verify your email address to continue. Check your inbox!
+        </Text>
+        <Button
+          onClick={() =>
+            logout({ logoutParams: { returnTo: window.location.origin } })
+          }
+        >
+          Log Out
         </Button>
       </Box>
     );
