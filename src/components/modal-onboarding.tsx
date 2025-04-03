@@ -8,35 +8,17 @@ import {
   ButtonGroup,
   Image,
 } from '@chakra-ui/react';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const OnboardingDialog = () => {
-
-  // const handleNext = () => {
-  //   if (currentStep < steps.length - 1) {
-  //     setCurrentStep(currentStep + 1);
-  //   } else {
-  //     onClose();
-  //   }
-  // };
-
-  // const handlePrevious = () => {
-  //   if (currentStep > 0) {
-  //     setCurrentStep(currentStep - 1);
-  //   }
-  // };
-
-  // const handleSkip = () => {
-  //   onClose();
-  // };
-
   const dialog = useDialog()
-
+  const {isAuthenticated, user} = useAuth0()
 
   useEffect(() => {
-
-    dialog.setOpen(true)
+    if (isAuthenticated && user) {
+      dialog.setOpen(true)
+    }
   },[])
-
 
   return (
     <>
@@ -45,11 +27,6 @@ const OnboardingDialog = () => {
         placement="center"
         size="xl"
       >
-        {/* <Dialog.Trigger asChild> */}
-        {/*   <Button colorScheme="blue"> */}
-        {/*     Reopen Onboarding */}
-        {/*   </Button> */}
-        {/* </Dialog.Trigger> */}
         <Steps.Root defaultStep={0} count={steps.length}>      
           <Dialog.Backdrop />
           <Dialog.Positioner>
