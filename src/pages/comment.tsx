@@ -11,7 +11,9 @@ import {
     AccordionItemTrigger,
     AccordionRoot,
     IconButton,
-    Dialog
+    Dialog,
+    DialogDescription,
+    Textarea
 } from "@chakra-ui/react";
 import { useColorMode } from "@/components/ui/color-mode"
 import { useColorModeValue } from "@/components/ui/color-mode"
@@ -33,6 +35,7 @@ interface Comment {
     dislikes: number;
     created_at: string;
     updated_at: string;
+    auth0_id: string;
 }
 
 interface CommentSectionProps {
@@ -42,57 +45,55 @@ interface CommentSectionProps {
 type SortType = 'most-liked' | 'most-controversial' | 'newest';
 
 const CommentSection: React.FC<CommentSectionProps> = ({ billId }) => {
-    const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
+    // Auth0 hooks
+    const { user, isAuthenticated, getAccessTokenSilently, loginWithRedirect } = useAuth0();
     
-    useEffect(() => {
-        console.log('Auth state:', { isAuthenticated, user });
-        if (isAuthenticated && user) {
-            console.log('User info:', {
-                sub: user.sub,  // This is the Auth0 ID
-                email: user.email,
-                name: user.name,
-                picture: user.picture
-            });
-        }
-    }, [isAuthenticated, user]);
-
-    const [comments, setComments] = useState<Comment[]>([]);
-    const [newComment, setNewComment] = useState("");
-    const [newCommentPassword, setNewCommentPassword] = useState("");
-    const [isOpen, setIsOpen] = useState(true);
-    const [sortType, setSortType] = useState<SortType>('newest');
-    const [editingText, setEditingText] = useState("");
-    const [editingPassword, setEditingPassword] = useState("");
-    const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
-    const [deleteCommentId, setDeleteCommentId] = useState<number | null>(null);
-    const [deletePassword, setDeletePassword] = useState("");
-    const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-    const [showEditDialog, setShowEditDialog] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-
-    const textColor = useColorModeValue("gray.800", "whiteAlpha.900");
+    // Color mode hooks
+    const { colorMode } = useColorMode();
     const bgColor = useColorModeValue("white", "gray.800");
+    const textColor = useColorModeValue("gray.800", "white");
     const borderColor = useColorModeValue("gray.200", "gray.600");
-    const buttonBgColor = useColorModeValue("black", "gray.200");
-    const buttonTextColor = useColorModeValue("white", "gray.800");
+    const buttonBgColor = useColorModeValue("black", "white");
+    const buttonTextColor = useColorModeValue("white", "black");
     const iconColor = useColorModeValue("gray.600", "gray.400");
     const commentBgColor = useColorModeValue("gray.50", "gray.700");
+
+    // State hooks
+    const [comments, setComments] = useState<Comment[]>([]);
+    const [newComment, setNewComment] = useState("");
+    const [isOpen, setIsOpen] = useState(true);
+    const [sortType, setSortType] = useState<SortType>('newest');
+    const [editingComment, setEditingComment] = useState<Comment | null>(null);
+    const [editingText, setEditingText] = useState("");
+    const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
+    const [deleteCommentId, setDeleteCommentId] = useState<number | null>(null);
+    const [showEditDialog, setShowEditDialog] = useState(false);
+    const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     const commentsPerPage = 5;
     const [currentPage, setCurrentPage] = useState(1);
     const totalPages = Math.ceil(comments.length / commentsPerPage);
 
+    // Effect hooks
     useEffect(() => {
-        fetchComments();
-    }, [billId]);
+        if (isAuthenticated) {
+            fetchComments();
+        }
+    }, [billId, isAuthenticated]);
 
     const fetchComments = async () => {
         try {
-            const response = await fetch(`http://localhost:8000/api/bills/${billId}/comments/`);
+            const token = await getAccessTokenSilently();
+            const response = await fetch(`http://localhost:8000/api/comments/?bill_id=${billId}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
             if (!response.ok) throw new Error('Failed to fetch comments');
             const data = await response.json();
-            setComments(data);
+                setComments(data);
             setIsLoading(false);
         } catch (err) {
             setError(err instanceof Error ? err.message : 'An error occurred');
@@ -102,89 +103,99 @@ const CommentSection: React.FC<CommentSectionProps> = ({ billId }) => {
 
     const handleLike = async (commentId: number) => {
         try {
-            const response = await fetch(`http://localhost:8000/api/bills/${billId}/comments/${commentId}/like/`, {
+            const token = await getAccessTokenSilently();
+            const response = await fetch(`http://localhost:8000/api/comments/${commentId}/like/`, {
                 method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
             });
-            if (!response.ok) throw new Error('Failed to like comment');
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(errorText || 'Failed to like comment');
+            }
+            const updatedComment = await response.json();
             setComments(comments.map(comment => 
-                comment.id === commentId 
-                    ? { ...comment, likes: comment.likes + 1 }
-                    : comment
+                comment.id === commentId ? updatedComment : comment
             ));
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'Failed to like comment');
+            toaster.create({
+                title: 'Error',
+                description: err instanceof Error ? err.message : 'Failed to like comment',
+                type: 'error',
+                duration: 3000,
+                meta: { closable: true },
+            });
         }
     };
 
     const handleDislike = async (commentId: number) => {
         try {
-            const response = await fetch(`http://localhost:8000/api/bills/${billId}/comments/${commentId}/dislike/`, {
+            const token = await getAccessTokenSilently();
+            const response = await fetch(`http://localhost:8000/api/comments/${commentId}/dislike/`, {
                 method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
             });
-            if (!response.ok) throw new Error('Failed to dislike comment');
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(errorText || 'Failed to dislike comment');
+            }
+            const updatedComment = await response.json();
             setComments(comments.map(comment => 
-                comment.id === commentId 
-                    ? { ...comment, dislikes: comment.dislikes + 1 }
-                    : comment
+                comment.id === commentId ? updatedComment : comment
             ));
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'Failed to dislike comment');
+            toaster.create({
+                title: 'Error',
+                description: err instanceof Error ? err.message : 'Failed to dislike comment',
+                type: 'error',
+                duration: 3000,
+                meta: { closable: true },
+            });
         }
     };
 
     const handleEditClick = (comment: Comment) => {
         setEditingCommentId(comment.id);
         setEditingText(comment.text);
-        setEditingPassword('');
         setShowEditDialog(true);
     };
 
     const handleDeleteClick = (comment: Comment) => {
         setDeleteCommentId(comment.id);
-        setDeletePassword('');
         setShowDeleteDialog(true);
     };
 
     const handleEditSubmit = async () => {
-        if (!editingCommentId) return;
+        if (!editingComment || !isAuthenticated) return;
 
         try {
-            const response = await fetch(`http://localhost:8000/api/bills/${billId}/comments/${editingCommentId}/`, {
+            const token = await getAccessTokenSilently();
+            const response = await fetch(`http://localhost:8000/api/comments/${editingComment.id}/`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    text: editingText,
-                    password: editingPassword,
+                    text: editingText
                 }),
             });
 
-            const responseText = await response.text();
-
             if (!response.ok) {
-                const errorMessage = responseText ? JSON.parse(responseText).detail : 'Failed to edit comment';
-                toaster.create({
-                    title: 'Error',
-                    description: errorMessage,
-                    type: 'error',
-                    duration: 3000,
-                    meta: { closable: true },
-                });
-                return;
+                const errorText = await response.text();
+                throw new Error(errorText || 'Failed to edit comment');
             }
 
-            // Update the comment in the local state
+            const updatedComment = await response.json();
             setComments(comments.map(comment => 
-                comment.id === editingCommentId 
-                    ? { ...comment, text: editingText }
-                    : comment
+                comment.id === updatedComment.id ? updatedComment : comment
             ));
-
             setShowEditDialog(false);
-            setEditingText('');
-            setEditingPassword('');
-            setEditingCommentId(null);
+            setEditingComment(null);
+            setEditingText("");
 
             toaster.create({
                 title: 'Success',
@@ -193,10 +204,10 @@ const CommentSection: React.FC<CommentSectionProps> = ({ billId }) => {
                 duration: 3000,
                 meta: { closable: true },
             });
-        } catch (error) {
+        } catch (err) {
             toaster.create({
                 title: 'Error',
-                description: 'Failed to edit comment',
+                description: err instanceof Error ? err.message : 'Failed to edit comment',
                 type: 'error',
                 duration: 3000,
                 meta: { closable: true },
@@ -205,39 +216,25 @@ const CommentSection: React.FC<CommentSectionProps> = ({ billId }) => {
     };
 
     const handleDeleteSubmit = async () => {
-        if (!deleteCommentId) return;
+        if (!editingComment || !isAuthenticated) return;
 
         try {
-            const response = await fetch(`http://localhost:8000/api/bills/${billId}/comments/${deleteCommentId}/`, {
+            const token = await getAccessTokenSilently();
+            const response = await fetch(`http://localhost:8000/api/comments/${editingComment.id}/`, {
                 method: 'DELETE',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify({
-                    password: deletePassword,
-                }),
             });
 
-            const responseText = await response.text();
-
             if (!response.ok) {
-                const errorMessage = responseText ? JSON.parse(responseText).detail : 'Failed to delete comment';
-                toaster.create({
-                    title: 'Error',
-                    description: errorMessage,
-                    type: 'error',
-                    duration: 3000,
-                    meta: { closable: true },
-                });
-                return;
+                const errorText = await response.text();
+                throw new Error(errorText || 'Failed to delete comment');
             }
 
-            // Remove the comment from the local state
-            setComments(comments.filter(comment => comment.id !== deleteCommentId));
-
+            setComments(comments.filter(comment => comment.id !== editingComment.id));
             setShowDeleteDialog(false);
-            setDeletePassword('');
-            setDeleteCommentId(null);
+            setEditingComment(null);
 
             toaster.create({
                 title: 'Success',
@@ -246,10 +243,10 @@ const CommentSection: React.FC<CommentSectionProps> = ({ billId }) => {
                 duration: 3000,
                 meta: { closable: true },
             });
-        } catch (error) {
+        } catch (err) {
             toaster.create({
                 title: 'Error',
-                description: 'Failed to delete comment',
+                description: err instanceof Error ? err.message : 'Failed to delete comment',
                 type: 'error',
                 duration: 3000,
                 meta: { closable: true },
@@ -258,52 +255,67 @@ const CommentSection: React.FC<CommentSectionProps> = ({ billId }) => {
     };
 
     const handleAddComment = async () => {
-        if (newComment.trim() === "" || newCommentPassword.trim() === "") {
-            setError("Comment text and password are required");
+        if (!isAuthenticated || !user) {
+            toaster.create({
+                title: 'Error',
+                description: 'Please log in to add comments',
+                type: 'error',
+                duration: 3000,
+                meta: { closable: true },
+            });
             return;
         }
-        
-        console.log('Adding comment with auth state:', { isAuthenticated, user });
-        
-        const url = `http://localhost:8000/api/bills/${billId}/comments/add/`;
-        const requestData = {
-            text: newComment,
-            user_name: isAuthenticated && user ? user.name || user.email : "Guest",
-            password: newCommentPassword,
-        };
 
-        console.log('Comment request data:', requestData);
+        if (newComment.trim() === "") {
+            toaster.create({
+                title: 'Error',
+                description: 'Comment text is required',
+                type: 'error',
+                duration: 3000,
+                meta: { closable: true },
+            });
+            return;
+        }
 
         try {
-            const response = await fetch(url, {
+            const token = await getAccessTokenSilently();
+            const response = await fetch(`http://localhost:8000/api/comments/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify(requestData),
+                body: JSON.stringify({
+                    text: newComment,
+                    bill: Number(billId),
+                    user_name: user.name || user.email
+                }),
             });
-            
-            const responseText = await response.text();
-            console.log('Add comment response:', responseText);
 
             if (!response.ok) {
-                let errorMessage = 'Failed to add comment';
-                try {
-                    const errorData = JSON.parse(responseText);
-                    errorMessage = errorData.error || errorMessage;
-                } catch (e) {
-                    errorMessage = 'Failed to add comment';
-                }
-                throw new Error(errorMessage);
+                const errorText = await response.text();
+                throw new Error(errorText || 'Failed to add comment');
             }
 
-            const newEntry = JSON.parse(responseText);
-            setComments([newEntry, ...comments]);
+            const newCommentData = await response.json();
+            setComments(prevComments => [newCommentData, ...prevComments]);
             setNewComment("");
-            setNewCommentPassword("");
-            setError(null);
+
+            toaster.create({
+                title: 'Success',
+                description: 'Comment added successfully',
+                type: 'success',
+                duration: 3000,
+                meta: { closable: true },
+            });
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'Failed to add comment');
+            toaster.create({
+                title: 'Error',
+                description: err instanceof Error ? err.message : 'Failed to add comment',
+                type: 'error',
+                duration: 3000,
+                meta: { closable: true },
+            });
         }
     };
 
@@ -344,26 +356,43 @@ const CommentSection: React.FC<CommentSectionProps> = ({ billId }) => {
 
     return (
         <Box mt={4} p={4} borderWidth="1px" borderRadius="md" borderColor={borderColor} bg={bgColor}>
+            {!isAuthenticated ? (
+                <Box textAlign="center" py={4}>
+                    <Text color={textColor}>Please log in to view and add comments</Text>
+                    <Button
+                        mt={2}
+                        bg={buttonBgColor}
+                        color={buttonTextColor}
+                        onClick={() => loginWithRedirect()}
+                        _hover={{
+                            bg: useColorModeValue("gray.800", "gray.300"),
+                        }}
+                    >
+                        Log In
+                    </Button>
+                </Box>
+            ) : (
+                <>
             <Box fontSize="lg" fontWeight="bold" color={textColor}>
                 Comments
-                <select
-                    style={{
-                        marginLeft: '1rem',
-                        width: '200px',
-                        padding: '0.5rem',
-                        borderRadius: '0.375rem',
-                        border: '1px solid',
-                        borderColor: useColorModeValue('gray.200', 'gray.600'),
-                        backgroundColor: useColorModeValue('white', 'gray.700'),
-                        color: 'black'
-                    }}
-                    value={sortType}
-                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSortType(e.target.value as SortType)}
-                >
-                    <option value="newest">Newest</option>
-                    <option value="most-liked">Most Liked</option>
-                    <option value="most-controversial">Most Controversial</option>
-                </select>
+                        <select
+                            style={{
+                                marginLeft: '1rem',
+                                width: '200px',
+                                padding: '0.5rem',
+                                borderRadius: '0.375rem',
+                                border: '1px solid',
+                                borderColor: useColorModeValue('gray.200', 'gray.600'),
+                                backgroundColor: useColorModeValue('white', 'gray.700'),
+                                color: 'black'
+                            }}
+                            value={sortType}
+                            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSortType(e.target.value as SortType)}
+                        >
+                            <option value="newest">Newest</option>
+                            <option value="most-liked">Most Liked</option>
+                            <option value="most-controversial">Most Controversial</option>
+                        </select>
                 <IconButton
                     aria-label="Toggle comments"
                     variant="ghost"
@@ -371,237 +400,208 @@ const CommentSection: React.FC<CommentSectionProps> = ({ billId }) => {
                     onClick={() => setIsOpen(!isOpen)}
                     transition="transform 0.3s ease-in-out"
                     transform={isOpen ? "rotate(180deg)" : "rotate(0deg)"}
-                    ml={2}
-                    color={iconColor}
+                            ml={2}
+                            color={iconColor}
                 >
                     <FaChevronUp />
                 </IconButton>
-            </Box>
+                    </Box>
+                    
+                    <Box mt={4}>
+                        {isOpen && (
+                            <VStack align="start" gap={3} mt={2} w="100%">
+                                {displayedComments.map((comment) => (
+                                    <Box 
+                                        key={comment.id} 
+                                        p={4} 
+                                        borderRadius="md" 
+                                        w="100%" 
+                                        borderWidth="1px"
+                                        borderColor={borderColor}
+                                        bg={commentBgColor}
+                                    >
+                                        <HStack justify="space-between">
+                                            <Text fontWeight="bold" color={textColor}>{comment.user_name}:</Text>
+                                            <HStack gap={2}>
+                                                <IconButton
+                                                    aria-label="Like"
+                                                    variant="ghost"
+                                                    size="sm"
+                                                    onClick={() => handleLike(comment.id)}
+                                                    color={iconColor}
+                                                >
+                                                    <FaThumbsUp />
+                                                </IconButton>
+                                                <Text color={textColor}>{comment.likes}</Text>
+                                                <IconButton
+                                                    aria-label="Dislike"
+                                                    variant="ghost"
+                                                    size="sm"
+                                                    onClick={() => handleDislike(comment.id)}
+                                                    color={iconColor}
+                                                >
+                                                    <FaThumbsDown />
+                                                </IconButton>
+                                                <Text color={textColor}>{comment.dislikes}</Text>
+                                                {user?.sub === comment.auth0_id && (
+                                                    <>
+                                                        <IconButton
+                                                            aria-label="Edit comment"
+                                                            size="sm"
+                                                            onClick={() => {
+                                                                setEditingComment(comment);
+                                                                setEditingText(comment.text);
+                                                                setShowEditDialog(true);
+                                                            }}
+                                                            color={iconColor}
+                                                        >
+                                                            <FaEdit />
+                                                        </IconButton>
+                                                        <IconButton
+                                                            aria-label="Delete comment"
+                                                            size="sm"
+                                                            onClick={() => {
+                                                                setEditingComment(comment);
+                                                                setShowDeleteDialog(true);
+                                                            }}
+                                                            color={iconColor}
+                                                        >
+                                                            <FaTrash />
+                                                        </IconButton>
+                                                    </>
+                                                )}
+                                            </HStack>
+                                        </HStack>
+                                        <Text color={textColor} mt={2}>{comment.text}</Text>
+                                    </Box>
+                                ))}
+                            </VStack>
+                        )}
             
-            <Box mt={4}>
-                {isOpen && (
-                    <VStack align="start" gap={3} mt={2} w="100%">
-                        {displayedComments.map((comment) => (
-                            <Box 
-                                key={comment.id} 
-                                p={4} 
-                                borderRadius="md" 
-                                w="100%" 
-                                borderWidth="1px"
-                                borderColor={borderColor}
-                                bg={commentBgColor}
-                            >
-                                <HStack justify="space-between">
-                                    <Text fontWeight="bold" color={textColor}>{comment.user_name}:</Text>
-                                    <HStack>
-                                        <IconButton
-                                            aria-label="Like"
-                                            variant="ghost"
-                                            size="sm"
-                                            onClick={() => handleLike(comment.id)}
-                                            color={iconColor}
-                                        >
-                                            <FaThumbsUp />
-                                        </IconButton>
-                                        <Text color={textColor}>{comment.likes}</Text>
-                                        <IconButton
-                                            aria-label="Dislike"
-                                            variant="ghost"
-                                            size="sm"
-                                            onClick={() => handleDislike(comment.id)}
-                                            color={iconColor}
-                                        >
-                                            <FaThumbsDown />
-                                        </IconButton>
-                                        <Text color={textColor}>{comment.dislikes}</Text>
-                                        <IconButton
-                                            aria-label="Edit"
-                                            variant="ghost"
-                                            size="sm"
-                                            onClick={() => handleEditClick(comment)}
-                                            color={iconColor}
-                                        >
-                                            <FaEdit />
-                                        </IconButton>
-                                        <IconButton
-                                            aria-label="Delete"
-                                            variant="ghost"
-                                            size="sm"
-                                            onClick={() => handleDeleteClick(comment)}
-                                            color={iconColor}
-                                        >
-                                            <FaTrash />
-                                        </IconButton>
-                                    </HStack>
-                                </HStack>
-                                <Text color={textColor} mt={2}>{comment.text}</Text>
-                            </Box>
-                        ))}
-                    </VStack>
-                )}
-
-                {/* Pagination Controls */}
-                {comments.length > commentsPerPage && (
-                    <HStack mt={3} justify="space-between" w="100%">
-                        <Button
-                            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                            disabled={currentPage === 1}
-                            size="sm"
-                            bg={buttonBgColor}
-                            color={buttonTextColor}
-                        >
-                            Previous
-                        </Button>
-                        <Text color={textColor}>
-                            Page {currentPage} of {totalPages}
-                        </Text>
-                        <Button
-                            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-                            disabled={currentPage === totalPages}
-                            size="sm"
-                            bg={buttonBgColor}
-                            color={buttonTextColor}
-                        >
-                            Next
-                        </Button>
-                    </HStack>
-                )}
-
-                {/* Comment Input */}
-                <VStack gap={2} mt={4} w="100%">
-                    <Input
-                        placeholder="Write a comment..."
-                        value={newComment}
-                        onChange={(e) => setNewComment(e.target.value)}
-                        bg={bgColor}
-                        color={textColor}
-                        borderColor={borderColor}
-                    />
-                    <Input
-                        placeholder="Set a password for editing/deleting..."
-                        value={newCommentPassword}
-                        onChange={(e) => setNewCommentPassword(e.target.value)}
-                        type="password"
-                        bg={bgColor}
-                        color={textColor}
-                        borderColor={borderColor}
-                    />
-                    <Button 
-                        w="100%" 
-                        bg={buttonBgColor} 
-                        color={buttonTextColor}
-                        onClick={handleAddComment}
-                        _hover={{
-                            bg: useColorModeValue("gray.800", "gray.300"),
-                        }}
+            {/* Pagination Controls */}
+            {comments.length > commentsPerPage && (
+                <HStack mt={3} justify="space-between" w="100%">
+                    <Button
+                        onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                        disabled={currentPage === 1}
+                        size="sm"
+                                    bg={buttonBgColor}
+                                    color={buttonTextColor}
                     >
-                        Add Comment
+                        Previous
                     </Button>
-                </VStack>
-            </Box>
+                    <Text color={textColor}>
+                        Page {currentPage} of {totalPages}
+                    </Text>
+                    <Button
+                        onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                        disabled={currentPage === totalPages}
+                        size="sm"
+                                    bg={buttonBgColor}
+                                    color={buttonTextColor}
+                    >
+                        Next
+                    </Button>
+                </HStack>
+            )}
 
-            {/* Edit Dialog */}
-            <DialogRoot 
-                open={showEditDialog} 
-                onOpenChange={(details: OpenChangeDetails) => setShowEditDialog(details.open)}
-            >
-                <DialogContent backdrop>
-                    <DialogHeader>
-                        <DialogTitle>Edit Comment</DialogTitle>
-                    </DialogHeader>
-                    <DialogBody>
-                        <VStack gap={3}>
-                            <Input
-                                value={editingText}
-                                onChange={(e) => setEditingText(e.target.value)}
-                                placeholder="Edit your comment..."
+            {/* Comment Input */}
+                        <VStack gap={2} mt={4} w="100%">
+            <Input
+                placeholder="Write a comment..."
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
                                 bg={bgColor}
                                 color={textColor}
                                 borderColor={borderColor}
                             />
-                            <Input
-                                type="password"
-                                value={editingPassword}
-                                onChange={(e) => setEditingPassword(e.target.value)}
-                                placeholder="Enter your password..."
-                                bg={bgColor}
-                                color={textColor}
-                                borderColor={borderColor}
-                            />
+                            <Button 
+                                w="100%" 
+                                bg={buttonBgColor} 
+                                color={buttonTextColor}
+                                onClick={handleAddComment}
+                                _hover={{
+                                    bg: useColorModeValue("gray.800", "gray.300"),
+                                }}
+                            >
+                Add Comment
+            </Button>
                         </VStack>
-                    </DialogBody>
-                    <DialogFooter>
-                        <Button 
-                            bg={buttonBgColor} 
-                            color={buttonTextColor} 
-                            onClick={() => setShowEditDialog(false)}
-                            _hover={{
-                                bg: useColorModeValue("gray.800", "gray.300"),
-                            }}
-                        >
-                            Cancel
-                        </Button>
-                        <Button 
-                            bg={buttonBgColor} 
-                            color={buttonTextColor} 
-                            onClick={handleEditSubmit}
-                            _hover={{
-                                bg: useColorModeValue("gray.800", "gray.300"),
-                            }}
-                        >
-                            Save
-                        </Button>
-                    </DialogFooter>
-                </DialogContent>
-            </DialogRoot>
+                    </Box>
 
-            {/* Delete Dialog */}
-            <DialogRoot 
-                open={showDeleteDialog} 
-                onOpenChange={(details: OpenChangeDetails) => setShowDeleteDialog(details.open)}
-            >
-                <DialogContent backdrop>
-                    <DialogHeader>
-                        <DialogTitle>Delete Comment</DialogTitle>
-                    </DialogHeader>
-                    <DialogBody>
-                        <VStack gap={3}>
-                            <Text color={textColor}>Are you sure you want to delete this comment?</Text>
-                            <Input
-                                type="password"
-                                value={deletePassword}
-                                onChange={(e) => setDeletePassword(e.target.value)}
-                                placeholder="Enter your password to confirm..."
-                                bg={bgColor}
-                                color={textColor}
-                                borderColor={borderColor}
-                            />
-                        </VStack>
-                    </DialogBody>
-                    <DialogFooter>
-                        <Button 
-                            bg={buttonBgColor} 
-                            color={buttonTextColor} 
-                            onClick={() => setShowDeleteDialog(false)}
-                            _hover={{
-                                bg: useColorModeValue("gray.800", "gray.300"),
-                            }}
-                        >
-                            Cancel
-                        </Button>
-                        <Button 
-                            bg={buttonBgColor} 
-                            color={buttonTextColor} 
-                            onClick={handleDeleteSubmit}
-                            _hover={{
-                                bg: useColorModeValue("gray.800", "gray.300"),
-                            }}
-                        >
-                            Delete
-                        </Button>
-                    </DialogFooter>
-                </DialogContent>
-            </DialogRoot>
+                    {/* Edit Dialog */}
+                    <DialogRoot open={showEditDialog}>
+                        <DialogContent>
+                            <Box p={4}>
+                                <DialogTitle>Edit Comment</DialogTitle>
+                                <DialogDescription mt={2}>
+                                    Make changes to your comment here.
+                                </DialogDescription>
+                                <Box mt={4}>
+                                    <Textarea
+                                        value={editingText}
+                                        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setEditingText(e.target.value)}
+                                        placeholder="Edit your comment..."
+                                        size="md"
+                                        bg={bgColor}
+                                        color={textColor}
+                                        borderColor={borderColor}
+                                    />
+                                </Box>
+                                <DialogFooter>
+                                    <Button
+                                        variant="outline"
+                                        onClick={() => setShowEditDialog(false)}
+                                        color={textColor}
+                                        borderColor={borderColor}
+                                    >
+                                        Cancel
+                                    </Button>
+                                    <Button
+                                        onClick={handleEditSubmit}
+                                        bg={buttonBgColor}
+                                        color={buttonTextColor}
+                                        ml={3}
+                                    >
+                                        Save Changes
+                                    </Button>
+                                </DialogFooter>
+                            </Box>
+                        </DialogContent>
+                    </DialogRoot>
+
+                    {/* Delete Dialog */}
+                    <DialogRoot open={showDeleteDialog}>
+                        <DialogContent>
+                            <Box p={4}>
+                                <DialogTitle>Delete Comment</DialogTitle>
+                                <DialogDescription mt={2}>
+                                    Are you sure you want to delete this comment? This action cannot be undone.
+                                </DialogDescription>
+                                <DialogFooter>
+                                    <Button
+                                        variant="outline"
+                                        onClick={() => setShowDeleteDialog(false)}
+                                        color={textColor}
+                                        borderColor={borderColor}
+                                    >
+                                        Cancel
+                                    </Button>
+                                    <Button
+                                        onClick={handleDeleteSubmit}
+                                        bg="red.500"
+                                        color="white"
+                                        ml={3}
+                                        _hover={{ bg: "red.600" }}
+                                    >
+                                        Delete
+                                    </Button>
+                                </DialogFooter>
+                            </Box>
+                        </DialogContent>
+                    </DialogRoot>
+                </>
+            )}
         </Box>
     );
 };
