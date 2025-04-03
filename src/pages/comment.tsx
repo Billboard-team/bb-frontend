@@ -71,14 +71,8 @@ const CommentSection: React.FC<CommentSectionProps> = ({ billId }) => {
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [likedComments, setLikedComments] = useState<Set<number>>(() => {
-        const stored = localStorage.getItem('likedComments');
-        return stored ? new Set(JSON.parse(stored)) : new Set();
-    });
-    const [dislikedComments, setDislikedComments] = useState<Set<number>>(() => {
-        const stored = localStorage.getItem('dislikedComments');
-        return stored ? new Set(JSON.parse(stored)) : new Set();
-    });
+    const [likedComments, setLikedComments] = useState<Set<number>>(new Set());
+    const [dislikedComments, setDislikedComments] = useState<Set<number>>(new Set());
 
     const commentsPerPage = 5;
     const [currentPage, setCurrentPage] = useState(1);
@@ -90,11 +84,6 @@ const CommentSection: React.FC<CommentSectionProps> = ({ billId }) => {
             fetchComments();
         }
     }, [billId, isAuthenticated]);
-
-    useEffect(() => {
-        localStorage.setItem('likedComments', JSON.stringify([...likedComments]));
-        localStorage.setItem('dislikedComments', JSON.stringify([...dislikedComments]));
-    }, [likedComments, dislikedComments]);
 
     const fetchComments = async () => {
         try {
@@ -115,17 +104,6 @@ const CommentSection: React.FC<CommentSectionProps> = ({ billId }) => {
     };
 
     const handleLike = async (commentId: number) => {
-        if (likedComments.has(commentId) || dislikedComments.has(commentId)) {
-            toaster.create({
-                title: 'Error',
-                description: 'You have already interacted with this comment',
-                type: 'error',
-                duration: 3000,
-                meta: { closable: true },
-            });
-            return;
-        }
-
         try {
             const token = await getAccessTokenSilently();
             const response = await fetch(`http://localhost:8000/api/comments/${commentId}/like/`, {
@@ -142,7 +120,6 @@ const CommentSection: React.FC<CommentSectionProps> = ({ billId }) => {
             setComments(comments.map(comment => 
                 comment.id === commentId ? updatedComment : comment
             ));
-            setLikedComments(prev => new Set([...prev, commentId]));
         } catch (err) {
             toaster.create({
                 title: 'Error',
@@ -155,17 +132,6 @@ const CommentSection: React.FC<CommentSectionProps> = ({ billId }) => {
     };
 
     const handleDislike = async (commentId: number) => {
-        if (likedComments.has(commentId) || dislikedComments.has(commentId)) {
-            toaster.create({
-                title: 'Error',
-                description: 'You have already interacted with this comment',
-                type: 'error',
-                duration: 3000,
-                meta: { closable: true },
-            });
-            return;
-        }
-
         try {
             const token = await getAccessTokenSilently();
             const response = await fetch(`http://localhost:8000/api/comments/${commentId}/dislike/`, {
@@ -182,7 +148,6 @@ const CommentSection: React.FC<CommentSectionProps> = ({ billId }) => {
             setComments(comments.map(comment => 
                 comment.id === commentId ? updatedComment : comment
             ));
-            setDislikedComments(prev => new Set([...prev, commentId]));
         } catch (err) {
             toaster.create({
                 title: 'Error',
