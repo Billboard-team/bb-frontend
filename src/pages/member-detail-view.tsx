@@ -20,7 +20,7 @@ interface Bill {
   url: string;
 }
 
-const DetailView = () => {
+const MemberDetailView = () => {
   const { id } = useParams<{ id: string }>();  
   const [bill, setBill] = useState<Bill | null>(null);
   const [loading, setLoading] = useState(true);
@@ -36,7 +36,7 @@ const DetailView = () => {
         }
       })
       .catch(error => {
-        console.error("Error fetching bill details:", error);
+        console.error("Error fetching member details:", error);
       })
       .finally(() => setLoading(false));
   }, [id]);
@@ -56,4 +56,5 @@ const DetailView = () => {
   );
 };
 
-export default DetailView;
+
+export default MemberDetailView;

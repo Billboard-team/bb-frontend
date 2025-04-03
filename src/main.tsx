@@ -13,6 +13,7 @@ import SignupForm from "./pages/sign-up-page";
 import DMPage from "@/pages/dm-page";
 import Dev from "./pages/dev-page";
 import { FilterProvider } from "@/components/filter-context";
+import MemberDetailView from "./pages/member-detail-view";
 
 createRoot(document.getElementById("root")!).render(
   <Provider>
@@ -25,7 +26,7 @@ createRoot(document.getElementById("root")!).render(
           <Route path="/" element={<DashboardLayout />}>
             <Route index element={<Dashboard />} />
             <Route path="post/:id" element={<DetailView/> } />
-
+            <Route path="member/:bioguideid" element={<MemberDetailView/>} />
             <Route path="profile">
               <Route path="" element={<UserProfile />} />{" "}
               <Route path="friendlist" element={<FriendListPage />} />

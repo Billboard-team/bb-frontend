@@ -1,11 +1,15 @@
-import { Box, Heading, Text, Link, Stack, VStack, HStack, IconButton } from "@chakra-ui/react";
+import { Box, Heading, Text, Link, Stack, VStack, HStack, IconButton, Color } from "@chakra-ui/react";
 import { useColorModeValue } from "@/components/ui/color-mode";
 import SummaryCard from "./summary-card";
 import { LuCircleCheckBig, LuShare } from "react-icons/lu";
 import { useState } from "react";
 import { BillCardProp } from "@/components/type"
+import { useNavigate } from "react-router";
+import { FaMousePointer } from "react-icons/fa";
 
 const BillCardDetailed = ({ bill }: { bill: BillCardProp }) => {
+  
+  const navigate = useNavigate();
   const bgColor = useColorModeValue("white", "gray.700");
   const textColor = useColorModeValue("gray.800", "whiteAlpha.900");
   const subTextColor = useColorModeValue("gray.500", "gray.400");
@@ -41,6 +45,26 @@ const BillCardDetailed = ({ bill }: { bill: BillCardProp }) => {
 
           <Text fontWeight="bold">Description:</Text>
           <Text>{bill.description || "Currently Unavailable"}</Text>
+
+          <Text fontWeight="bold">Cosponsors</Text>
+          {bill.cosponsors && bill.cosponsors.length > 0 ? (
+          <Stack>
+            {bill.cosponsors.map((cosponsor) => (
+              <Text 
+                textDecoration={"underline"}
+                key={cosponsor.bioguide_id} 
+                color={"lightblue"}
+                _hover={{cursor: "pointer", color: "blue.400"}}
+                transition={"0.4s"}
+                onClick={() => navigate(`/member/${cosponsor.bioguide_id}`)}
+              >
+                  {cosponsor.full_name} ({cosponsor.party}-{cosponsor.state})
+              </Text>
+            ))}
+          </Stack>
+        ) : (
+          <Text>Currently Unavailable</Text>
+        )}
         </Stack>
 
         <HStack justifyContent="space-between">
