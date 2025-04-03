@@ -8,7 +8,6 @@ import FriendsList from "@/components/profile/friends";
 import FriendRequestsBlocked from "@/components/profile/friendrequest";
 import SavedPosts from "@/components/profile/savedpost";
 import { GetTokenSilentlyOptions } from "@auth0/auth0-react";
-
 import {
   mockActivity,
   mockFriends,
@@ -18,8 +17,14 @@ import {
 } from "@/components/mockData/mockData";
 
 const UserProfile = () => {
-  const { getAccessTokenSilently, isAuthenticated, isLoading, error } =
-    useAuth0();
+  const {
+    logout,
+    getAccessTokenSilently,
+    user,
+    isAuthenticated,
+    isLoading,
+    error,
+  } = useAuth0();
   const [userProfile, setUserProfile] = useState<any>(null);
   const [profileLoading, setProfileLoading] = useState(true);
   const [profileError, setProfileError] = useState<string | null>(null);
@@ -52,10 +57,18 @@ const UserProfile = () => {
       if (!res.ok) {
         throw new Error("Failed to delete account.");
       }
+
+      // ✅ Log out and redirect to homepage after deletion
+      logout({
+        logoutParams: {
+          returnTo: window.location.origin,
+        },
+      });
     } catch (err: any) {
       console.error("Account deletion failed:", err);
     }
   };
+
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
@@ -99,14 +112,6 @@ const UserProfile = () => {
     }
   }, [isAuthenticated, userProfile, navigate]);
 
-  if (isLoading || profileLoading) {
-    return (
-      <Box p={10}>
-        <Text>Loading profile...</Text>
-      </Box>
-    );
-  }
-
   if (error || profileError) {
     return (
       <Box p={10}>
@@ -114,11 +119,48 @@ const UserProfile = () => {
       </Box>
     );
   }
-
-  if (!isAuthenticated || !userProfile) {
+  // While Auth0 is still loading, show the loading screen first
+  if (isLoading) {
     return (
       <Box p={10}>
-        <Text>Please sign in to view your profile.</Text>
+        <Text>Loading profile...</Text>
+      </Box>
+    );
+  }
+
+  // After Auth0 finished loading, if user is not authenticated
+  if (!isAuthenticated) {
+    return (
+      <Box p={10} textAlign="center">
+        <Text mb={4}>Please sign in to view your profile.</Text>
+        <Button onClick={() => navigate("/signin")} colorScheme="teal">
+          Go to Sign In Page
+        </Button>
+      </Box>
+    );
+  }
+  if (isAuthenticated && user && !user.email_verified) {
+    return (
+      <Box p={10}>
+        <Text color="orange.500">
+          Please verify your email address to continue. Check your inbox!
+        </Text>
+        <Button
+          onClick={() =>
+            logout({ logoutParams: { returnTo: window.location.origin } })
+          }
+        >
+          Log Out
+        </Button>
+      </Box>
+    );
+  }
+
+  // After Auth0 and user profile both loaded
+  if (profileLoading) {
+    return (
+      <Box p={10}>
+        <Text>Loading profile...</Text>
       </Box>
     );
   }
@@ -134,6 +176,21 @@ const UserProfile = () => {
           <ActivityInsights activity={mockActivity} />
         </Flex>
       </Flex>
+      <Button
+        mt={2}
+        colorScheme="gray"
+        variant="solid"
+        onClick={() =>
+          logout({
+            logoutParams: {
+              returnTo: window.location.origin,
+            },
+          })
+        }
+      >
+        Log Out
+      </Button>
+
       <Button
         mt={4}
         colorScheme="red"
