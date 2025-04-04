@@ -14,7 +14,7 @@ export default function BillCard({item}: {item: BillCardProp}) {
 
   return (
     <Card.Root 
-      width="70vw" 
+      width="full" 
       _hover={{backgroundColor: "blackAlpha.100", cursor: "pointer"}}
       onClick={() => navigate(`/post/${item.bill_id}`)} // Changed to use the unique identifier instead of code since that may not be unique
     >

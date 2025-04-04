@@ -1,6 +1,5 @@
-import RecommendedBills from "@/components/recommendedbill-header";
 import DetailBillCard from "@/components/bill-card-detailed";
-import { Box, Grid, HStack, Stack, StackSeparator, Image, Text, Spinner } from "@chakra-ui/react";
+import { Box, Grid, Stack, StackSeparator, Text, Spinner } from "@chakra-ui/react";
 import CommentSection from "@/pages/comment"; // Import Comment Component
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -26,6 +25,7 @@ const DetailView = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    //fetch bill information and cosponsors
     fetch(`http://localhost:8000/api/bills/${id}`)
       .then(response => response.json())
       .then(data => {
