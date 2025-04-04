@@ -12,6 +12,7 @@ import SignupForm from "./pages/sign-up-page";
 import DMPage from "@/pages/dm-page";
 import Dev from "./pages/dev-page";
 import { FilterProvider } from "@/components/filter-context";
+import MemberDetailView from "./pages/member-detail-view";
 import { Auth0Provider } from "@auth0/auth0-react";
 import AuthCallback from "@/pages/auth-callback";
 import CompleteProfile from "@/pages/complete-profile";
@@ -43,6 +44,8 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/complete-profile" element={<CompleteProfile />} />
               <Route index element={<Dashboard />} />
               <Route path="post/:id" element={<DetailView />} />
+
+              <Route path="member/:id" element={<MemberDetailView/>} />
               <Route path="profile">
                 <Route path="" element={<UserProfile />} />
                 <Route path="friendlist" element={<FriendListPage />} />

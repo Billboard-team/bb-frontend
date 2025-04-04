@@ -45,6 +45,30 @@ export interface Message {
   timestamp: string; // e.g., "2025-02-18 14:30"
 }
 
+// Bill Cosponsor / Congress member
+export interface Cosponsor {
+  bioguide_id: string;
+  full_name: string;
+  party: string;
+  state: string;
+  district?: number | null;
+  is_original_cosponsor: boolean;
+  sponsorship_date: string;
+  url: string;
+  image_url: string;
+  cosponsored_bills: BillCardProp[];  //for congress member detail view page
+}
+
+export interface CosponsorCardProp {
+  bioguide_id: string;
+  full_name: string;
+  party: string;
+  state: string;
+  district?: number | null;
+  url: string;
+  image_url: string;
+}
+
 // Bill Cards
 export interface BillCardProp {
   bill_id: number;
@@ -59,6 +83,7 @@ export interface BillCardProp {
   summary?: string | null;
   text?: string | null;
   url: string;
+  cosponsors?: CosponsorCardProp[]; //for bill detail view page
 }
 
 //Sidebar filters
