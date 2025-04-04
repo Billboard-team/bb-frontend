@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Dialog,
   Button,
@@ -8,17 +8,68 @@ import {
   ButtonGroup,
   Image,
 } from '@chakra-ui/react';
+import { GetTokenSilentlyOptions } from "@auth0/auth0-react";
 import { useAuth0 } from '@auth0/auth0-react';
+import { useNavigate } from 'react-router';
+
+import Step1 from '@/assets/Billboard-Logo.png';
+import Step2 from '@/assets/ob1.png';
+import Step3 from '@/assets/ob2.png';
 
 const OnboardingDialog = () => {
   const dialog = useDialog()
-  const {isAuthenticated, user} = useAuth0()
+  const {
+    getAccessTokenSilently,
+    isAuthenticated,
+  } = useAuth0();
+
+  const [userProfile, setUserProfile] = useState<any>(null);
+  const [profileLoading, setProfileLoading] = useState(true);
+  const [profileError, setProfileError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (isAuthenticated && user) {
+    const fetchUserProfile = async () => {
+      try {
+        const options: GetTokenSilentlyOptions = {
+          authorizationParams: {
+            audience: "https://billboard.local",
+          },
+        };
+
+        const token = await getAccessTokenSilently(options);
+        const res = await fetch("http://localhost:8000/api/me/", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch user profile");
+        }
+
+        const data = await res.json();
+
+        data.expertiseTags = data.expertiseTags || [];
+        setUserProfile(data);
+      } catch (err: any) {
+        console.error("Error fetching user profile:", err);
+        setProfileError(err.message);
+      } finally {
+        setProfileLoading(false);
+      }
+    };
+
+    if (isAuthenticated) {
+      fetchUserProfile();
+    }
+  }, [isAuthenticated, getAccessTokenSilently]);
+
+  useEffect(() => {
+    if (isAuthenticated && userProfile && !userProfile.name) {
       dialog.setOpen(true)
     }
-  },[])
+  }, [isAuthenticated, userProfile, navigate]);
 
   return (
     <>
@@ -45,10 +96,10 @@ const OnboardingDialog = () => {
                 </Steps.List>
 
                 {steps.map((step, index) => (
-                  <Steps.Content key={index} index={index} padding={2} width="full" textAlign="center">
+                  <Steps.Content key={index} index={index} pt={4} autoFocus={false} textAlign="center">
                     <Image src={step.image} margin="auto"/>
 
-                    {step.description}
+                    <Steps.Description fontSize="lg" margin="4">{step.description}</Steps.Description>
                   </Steps.Content>
                 ))}
 
@@ -78,23 +129,23 @@ const OnboardingDialog = () => {
 const steps = [
   {
     title: "Welcome!",
-    description: "We're excited to have you join us. Let's get you set up in just a few steps.",
-    image: "https://placehold.co/400x250"
+    description: "We're excited to have you join us! Let's get you set up in just a few steps.",
+    image: Step1
   },
   {
     title: "Your Profile",
     description: "Add your details and preferences to make the most of your experience.",
-    image: "https://placehold.co/400x250"
+    image: Step2
   },
   {
     title: "Explore",
-    description: "Discover the powerful tools and resources available to you.",
-    image: "https://placehold.co/400x250"
+    description: "Discover the congressional information and discourse in your local and federal government!",
+    image: Step3
   },
   {
     title: "You're All Set!",
     description: "You're ready to start using our platform. Enjoy your journey with us!",
-    image: "https://placehold.co/400x250"
+    image: ""
   }
 ];
 
