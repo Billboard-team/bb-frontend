@@ -55,8 +55,18 @@ export interface Cosponsor {
   is_original_cosponsor: boolean;
   sponsorship_date: string;
   url: string;
-  imageurl: string;
+  image_url: string;
   cosponsored_bills: BillCardProp[];  //for congress member detail view page
+}
+
+export interface CosponsorCardProp {
+  bioguide_id: string;
+  full_name: string;
+  party: string;
+  state: string;
+  district?: number | null;
+  url: string;
+  image_url: string;
 }
 
 // Bill Cards
@@ -73,10 +83,8 @@ export interface BillCardProp {
   summary?: string | null;
   text?: string | null;
   url: string;
-  cosponsors?: Cosponsor[]; //for bill detail view page
+  cosponsors?: CosponsorCardProp[]; //for bill detail view page
 }
-
-
 
 //Sidebar filters
 export type BillType = 'HR' | 'S' | 'SRES' | 'SJRES';

@@ -24,6 +24,7 @@ const CongressMemberDetailed = ({ member }: { member: Cosponsor}) => {
   const [shareClicked, setShareClicked] = useState(false)
 
 
+  console.log(member.cosponsored_bills)
   return (
     <Box 
       p={5} 
@@ -36,9 +37,9 @@ const CongressMemberDetailed = ({ member }: { member: Cosponsor}) => {
       <VStack align="stretch" gap={4}>
         <Box textAlign="center">
           <Image 
-            src={member.imageurl} 
+            src={member.image_url} 
             alt={member.full_name} 
-            borderRadius="full" 
+            borderRadius="md" 
             boxSize="100px" 
             mx="auto" 
           />
@@ -49,10 +50,9 @@ const CongressMemberDetailed = ({ member }: { member: Cosponsor}) => {
         </Box>
         <HStack justifyContent="space-between">
           <Box pt={4}>
-            <Text fontWeight="bold" display="inline" mr={2}>Cosponsored Bills</Text>
+            {/* <Text fontWeight="bold" display="inline" mr={2}>Cosponsored Bills</Text> */}
             <BillGrid items={member.cosponsored_bills} /> 
           </Box>
-
           <IconButton 
             variant={shareClicked ? "outline" : "solid"} // Chakra UI-supported values
             colorScheme={shareClicked ? "green" : "gray"} // Correct color prop
@@ -63,8 +63,6 @@ const CongressMemberDetailed = ({ member }: { member: Cosponsor}) => {
             }>
             {shareClicked ? <LuCircleCheckBig/> : <LuShare/>}
           </IconButton>
-          
-
         </HStack>
       </VStack>
     </Box>
