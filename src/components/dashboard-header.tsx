@@ -3,7 +3,7 @@ import BillboardLogo from "@/assets/Billboard-Logo-Banner.png";
 import { useNavigate } from 'react-router-dom';
 import { LuSearch } from "react-icons/lu";
 import { mockUser } from "./mockData/mockData";
-
+import { useAuth0 } from "@auth0/auth0-react";
 const DashboardHeader = () => {
   const navigate = useNavigate();
   const handleLogoClick = () => {
@@ -11,8 +11,7 @@ const DashboardHeader = () => {
     window.location.reload(); // Force page reload
   };
 
-  const user = mockUser
-
+  const { user } = useAuth0(); 
   return (
     <Box position="sticky">
       <Flex justify="space-between" align="center" p={4} shadow="md">
@@ -50,7 +49,7 @@ const DashboardHeader = () => {
           </IconButton>
           <Button variant="ghost" fontSize="lg" onClick={() => navigate('/profile')}>
             <Avatar.Root>
-              <Avatar.Fallback name={user.name} />
+              <Avatar.Fallback name={user?.name} />   {/* use actual user name for avatar */}
             </Avatar.Root>
           </Button>
         </Flex>
