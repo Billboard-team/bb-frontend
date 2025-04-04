@@ -26,6 +26,7 @@ const DetailView = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    //fetch bill information and cosponsors
     fetch(`http://localhost:8000/api/bills/${id}/cosponsors`)
       .then(response => response.json())
       .then(data => {

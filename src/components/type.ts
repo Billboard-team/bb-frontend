@@ -55,6 +55,8 @@ export interface Cosponsor {
   is_original_cosponsor: boolean;
   sponsorship_date: string;
   url: string;
+  imageurl: string;
+  cosponsored_bills: BillCardProp[];  //for congress member detail view page
 }
 
 // Bill Cards
@@ -71,7 +73,7 @@ export interface BillCardProp {
   summary?: string | null;
   text?: string | null;
   url: string;
-  cosponsors?: Cosponsor[];
+  cosponsors?: Cosponsor[]; //for bill detail view page
 }
 
 
