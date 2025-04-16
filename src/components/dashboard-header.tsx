@@ -37,6 +37,9 @@ const DashboardHeader = () => {
             <Button variant="ghost" fontSize="sm" onClick={() => navigate('/profile/messages')}>
               Messages
             </Button>
+            <Button variant="ghost" fontSize="sm" onClick={() => navigate('/reps')}>
+              Representatives
+            </Button>
           </Flex>
         </Flex>
 
