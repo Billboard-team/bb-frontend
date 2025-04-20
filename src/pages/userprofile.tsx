@@ -118,7 +118,7 @@ const UserProfile = () => {
           if (followCheck.ok) {
             const followData = await followCheck.json();
             console.log("📦 Parsed followCheck data:", followData);
-            setIsFollowing(followData.isFollowing); // ✅ consistent key
+            setIsFollowing(followData.is_following); // ✅ consistent key
           }
         }
 
