@@ -1,39 +1,61 @@
-import { Box, SimpleGrid, Text } from "@chakra-ui/react";
-import { Activity } from "@/components/type";
+import { Box, SimpleGrid, Text, Spinner } from "@chakra-ui/react";
+import { useAuth0 } from "@auth0/auth0-react";
+import { useEffect, useState } from "react";
 
-interface Props {
-  activity: Activity;
+interface ActivityStats {
+  bill_views: number;
+  comments: number;
 }
 
-const ActivityInsights: React.FC<Props> = ({ activity }) => {
+const ActivityInsights: React.FC = () => {
+  const [stats, setStats] = useState<ActivityStats | null>(null);
+  const { getAccessTokenSilently } = useAuth0();
+
+  useEffect(() => {
+    const fetchActivityStats = async () => {
+      try {
+        const token = await getAccessTokenSilently({
+          authorizationParams: {
+            audience: "https://billboard.local",
+          },
+        });
+
+        const response = await fetch("http://localhost:8000/api/me/activity-stats/", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const data = await response.json();
+        setStats(data);
+      } catch (err) {
+        console.error("Error fetching activity stats:", err);
+      }
+    };
+
+    fetchActivityStats();
+  }, [getAccessTokenSilently]);
+
   return (
     <Box p={5} shadow="md" borderRadius="md">
       <Text fontSize="xl" fontWeight="bold" color="bg.inverted">
         Activity Insights
       </Text>
-      <SimpleGrid columns={3} gap={4} mt={3}>
+      <SimpleGrid columns={2} gap={4} mt={3}>
         <Box>
           <Text fontSize="lg" fontWeight="bold" color="bg.inverted">
-            {activity.postViews}
+            {stats?.bill_views || 0}
           </Text>
           <Text fontSize="sm" color="gray.500">
-            Post Views
+            Bills Viewed
           </Text>
         </Box>
         <Box>
           <Text fontSize="lg" fontWeight="bold" color="bg.inverted">
-            {activity.commentInteractions}
+            {stats?.comments || 0}
           </Text>
           <Text fontSize="sm" color="gray.500">
-            Comment Interactions
-          </Text>
-        </Box>
-        <Box>
-          <Text fontSize="lg" fontWeight="bold" color="bg.inverted">
-            {activity.votes}
-          </Text>
-          <Text fontSize="sm" color="gray.500">
-            Votes
+            Comments Posted
           </Text>
         </Box>
       </SimpleGrid>
