@@ -1,4 +1,4 @@
-import { Box, SimpleGrid, Text, Spinner } from "@chakra-ui/react";
+import { Box, SimpleGrid, Text} from "@chakra-ui/react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
 
