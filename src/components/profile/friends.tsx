@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 
 interface Props {
   friends: Friend[];
+  searchQuery: string;
 }
 
 const FriendsList: React.FC<Props> = ({ friends }) => {
@@ -39,7 +40,6 @@ const FriendsList: React.FC<Props> = ({ friends }) => {
           Expand
         </Button>
       </HStack>
-      <Input placeholder="Search friends..." mt={2} />
       <VStack mt={3} align="start">
         {friends.map((friend) => (
           <Flex key={friend.id} justify="space-between" w="100%">

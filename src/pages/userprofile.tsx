@@ -7,6 +7,7 @@ import ActivityInsights from "@/components/profile/activityinsights";
 import FriendsList from "@/components/profile/friends";
 import FriendRequestsBlocked from "@/components/profile/friendrequest";
 import SavedPosts from "@/components/profile/savedpost";
+import { Friend } from "@/components/type";
 import {
   mockActivity,
   mockFriends,
@@ -30,6 +31,9 @@ const UserProfile = () => {
   const [profileError, setProfileError] = useState<string | null>(null);
   const [isFollowing, setIsFollowing] = useState(false);
   const [followLoading, setFollowLoading] = useState(true);
+  const [friends, setFriends] = useState<Friend[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [friendsLoading, setFriendsLoading] = useState(true);
 
   const navigate = useNavigate();
   const { username } = useParams();
@@ -114,12 +118,23 @@ const UserProfile = () => {
               headers: { Authorization: `Bearer ${token}` },
             }
           );
-          console.log("🔍 Raw followCheck response:", followCheck);
+
           if (followCheck.ok) {
             const followData = await followCheck.json();
-            console.log("📦 Parsed followCheck data:", followData);
-            setIsFollowing(followData.is_following); // ✅ consistent key
+            setIsFollowing(followData.is_following);
           }
+        } else {
+          const friendsRes = await fetch(
+            "http://localhost:8000/api/me/following/",
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
+          if (friendsRes.ok) {
+            const friendsData = await friendsRes.json();
+            setFriends(friendsData.following || []);
+          }
+          setFriendsLoading(false);
         }
 
         setFollowLoading(false);
@@ -139,6 +154,10 @@ const UserProfile = () => {
       navigate("/complete-profile");
     }
   }, [isAuthenticated, userProfile, isOwnProfile, navigate]);
+
+  const filteredFriends = friends.filter((friend) =>
+    friend.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   if (error || profileError) {
     return (
@@ -231,7 +250,7 @@ const UserProfile = () => {
 
       <Flex justify="space-between" w="100%">
         <Flex flex="1" justify="left">
-          <FriendsList friends={mockFriends} />
+          <FriendsList friends={filteredFriends} searchQuery={""} />
         </Flex>
         <Flex flex="1" justify="right">
           <FriendRequestsBlocked
