@@ -4,7 +4,7 @@ function Dev() {
 
   return (
     <>
-      <LikeButton postId={1}/>
+      <LikeButton/>
     </>
   )
 }
