@@ -211,7 +211,7 @@ const UserProfile = () => {
           <UserInfo user={userProfile} />
         </Flex>
         <Flex flex="1" justify="right">
-          <ActivityInsights activity={mockActivity} />
+          <ActivityInsights />
         </Flex>
       </Flex>
 
