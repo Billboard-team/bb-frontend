@@ -167,10 +167,12 @@ const UserProfile = () => {
     );
   }
 
-  if (isLoading || profileLoading) {
+  console.log({ isLoading, profileLoading });
+
+  if (isLoading || (profileLoading && isAuthenticated)) {
     return (
       <Box p={10}>
-        <Text>Loading profile...</Text>
+        <Text>Loading profile…</Text>
       </Box>
     );
   }
