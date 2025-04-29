@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Text, Checkbox, CheckboxGroup } from "@chakra-ui/react";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +9,7 @@ import FriendRequestsBlocked from "@/components/profile/friendrequest";
 import SavedPosts from "@/components/profile/savedpost";
 import BillViewHistory from "@/components/profile/billviewhistory";
 import { GetTokenSilentlyOptions } from "@auth0/auth0-react";
+import { Select }  from "@chakra-ui/react";
 
 import {
   mockActivity,
@@ -94,8 +95,9 @@ const UserProfile = () => {
 
         const data = await res.json();
 
-        data.expertiseTags = data.expertiseTags || [];
+        data.expertiseTags = data.expertise_tags || [];
         setUserProfile(data);
+        setSelectedTags(data.expertiseTags);
       } catch (err: any) {
         console.error("Error fetching user profile:", err);
         setProfileError(err.message);
@@ -189,7 +191,7 @@ const UserProfile = () => {
       {/* First Row: User Info + Activity */}
       <Flex justify="space-between" w="100%">
         <Flex flex="1" justify="center">
-          <UserInfo user={userProfile} />
+          <UserInfo user={userProfile} expertise_tags={userProfile.expertiseTags || []} />
         </Flex>
         <Flex flex="1" justify="right">
           <ActivityInsights activity={mockActivity} />
@@ -243,27 +245,25 @@ const UserProfile = () => {
 
       <Box my={6} />
       
-      {/* Tags Section */}
       <Box mt={8}>
         <Text fontSize="xl" fontWeight="bold" mb={4}>
-          Select Your Expertise Tags
+          Select Your Expertise Tag
         </Text>
 
-        <CheckboxGroup
-          value={selectedTags}
-          onChange={(values: unknown) => setSelectedTags(values as string[])}
-        >
-          <Flex wrap="wrap" gap={4}>
-            {tags.map((tag) => (
-              <Checkbox key={tag} value={tag}>
-                {tag}
-              </Checkbox>
-            ))}
-          </Flex>
-        </CheckboxGroup>
-
-
-
+        <Flex wrap="wrap" gap={4}>
+          {tags.map((tag) => (
+            <label key={tag}>
+              <input
+                type="radio"
+                name="expertiseTag"
+                value={tag}
+                checked={selectedTags[0] === tag}
+                onChange={(e) => setSelectedTags([e.target.value])}
+              />
+              {" "}{tag}
+            </label>
+          ))}
+        </Flex>
 
         <Button
           mt={4}
@@ -271,9 +271,7 @@ const UserProfile = () => {
           onClick={async () => {
             try {
               const token = await getAccessTokenSilently({
-                authorizationParams: {
-                  audience: "https://billboard.local",
-                },
+                authorizationParams: { audience: "https://billboard.local" },
               });
 
               await fetch("http://localhost:8000/api/profile/tags/", {
@@ -284,16 +282,19 @@ const UserProfile = () => {
                 },
                 body: JSON.stringify({ tags: selectedTags }),
               });
-
-              alert("Tags updated successfully!");
+              alert("Tag updated successfully!");
+              
             } catch (err) {
-              console.error("Failed to update tags:", err);
+              console.error("Failed to update tag:", err);
             }
           }}
+          disabled={selectedTags.length === 0}
         >
-          Save Expertise Tags
+          Save Expertise Tag
         </Button>
       </Box>
+
+
       {/* Fourth Row: Bill View History */}
       <Box w="100%">
         <BillViewHistory />
