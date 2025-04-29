@@ -7,6 +7,7 @@ import ActivityInsights from "@/components/profile/activityinsights";
 import FriendsList from "@/components/profile/friends";
 import FriendRequestsBlocked from "@/components/profile/friendrequest";
 import SavedPosts from "@/components/profile/savedpost";
+import BillViewHistory from "@/components/profile/billviewhistory";
 import { Friend } from "@/components/type";
 import {
   mockActivity,
@@ -204,7 +205,7 @@ const UserProfile = () => {
   }
 
   return (
-    <Flex direction="column" h="100vh" w="85vw" p={10} overflow="hidden">
+    <Flex direction="column" h="100vh" w="85vw" p={10}>
       <Flex justify="space-between" w="100%">
         <Flex flex="1" justify="center">
           <UserInfo user={userProfile} />
@@ -262,7 +263,16 @@ const UserProfile = () => {
 
       <Box my={6} />
 
-      <SavedPosts savedPosts={mockSavedPosts} />
+      <Box w="100%">
+        <SavedPosts savedPosts={mockSavedPosts} />
+      </Box>
+
+      <Box my={6} />
+
+      {/* Fourth Row: Bill View History */}
+      <Box w="100%">
+        <BillViewHistory />
+      </Box>
     </Flex>
   );
 };
