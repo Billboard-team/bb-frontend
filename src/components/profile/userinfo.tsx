@@ -1,11 +1,13 @@
 import { Box, Avatar, Text, HStack, Tag, Button } from "@chakra-ui/react";
 import { User } from "@/components/type";
+import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 interface Props {
   user: User;
 }
 
 const UserInfo: React.FC<Props> = ({ user }) => {
+  const navigate = useNavigate();
   return (
     <Box textAlign="center">
       <Avatar.Root>
@@ -21,7 +23,7 @@ const UserInfo: React.FC<Props> = ({ user }) => {
           </Tag.Root>
         ))}
       </HStack>
-      <Button variant="ghost" mt={4}>
+      <Button variant="ghost" mt={4} onClick={() => navigate("/update")}>
         Edit Profile
       </Button>
     </Box>
