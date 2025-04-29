@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Text, Checkbox, CheckboxGroup } from "@chakra-ui/react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +9,7 @@ import FriendRequestsBlocked from "@/components/profile/friendrequest";
 import SavedPosts from "@/components/profile/savedpost";
 import BillViewHistory from "@/components/profile/billviewhistory";
 import { GetTokenSilentlyOptions } from "@auth0/auth0-react";
+
 import {
   mockActivity,
   mockFriends,
@@ -30,7 +31,8 @@ const UserProfile = () => {
   const [profileLoading, setProfileLoading] = useState(true);
   const [profileError, setProfileError] = useState<string | null>(null);
   const navigate = useNavigate();
-
+  const [tags, setTags] = useState<string[]>([]);  // available tags
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);  // what user picks
   const handleDeleteAccount = async () => {
     if (
       !window.confirm(
@@ -106,6 +108,22 @@ const UserProfile = () => {
       fetchUserProfile();
     }
   }, [isAuthenticated, getAccessTokenSilently]);
+
+  useEffect(() => {
+    const fetchTags = async () => {
+      try {
+        const res = await fetch("http://localhost:8000/api/tags/");
+        const data = await res.json();
+        setTags(data);
+      } catch (err) {
+        console.error("Error fetching tags:", err);
+      }
+    };
+
+    if (isAuthenticated) {
+      fetchTags();
+    }
+  }, [isAuthenticated]);
 
   useEffect(() => {
     if (isAuthenticated && userProfile && !userProfile.name) {
@@ -224,7 +242,58 @@ const UserProfile = () => {
       </Box>
 
       <Box my={6} />
+      
+      {/* Tags Section */}
+      <Box mt={8}>
+        <Text fontSize="xl" fontWeight="bold" mb={4}>
+          Select Your Expertise Tags
+        </Text>
 
+        <CheckboxGroup
+          value={selectedTags}
+          onChange={(values: unknown) => setSelectedTags(values as string[])}
+        >
+          <Flex wrap="wrap" gap={4}>
+            {tags.map((tag) => (
+              <Checkbox key={tag} value={tag}>
+                {tag}
+              </Checkbox>
+            ))}
+          </Flex>
+        </CheckboxGroup>
+
+
+
+
+        <Button
+          mt={4}
+          colorScheme="teal"
+          onClick={async () => {
+            try {
+              const token = await getAccessTokenSilently({
+                authorizationParams: {
+                  audience: "https://billboard.local",
+                },
+              });
+
+              await fetch("http://localhost:8000/api/profile/tags/", {
+                method: "POST",
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ tags: selectedTags }),
+              });
+
+              alert("Tags updated successfully!");
+            } catch (err) {
+              console.error("Failed to update tags:", err);
+            }
+          }}
+        >
+          Save Expertise Tags
+        </Button>
+      </Box>
       {/* Fourth Row: Bill View History */}
       <Box w="100%">
         <BillViewHistory />
@@ -232,5 +301,6 @@ const UserProfile = () => {
     </Flex>
   );
 };
+
 
 export default UserProfile;
