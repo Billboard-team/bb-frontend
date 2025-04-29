@@ -60,6 +60,7 @@ export interface Cosponsor {
 }
 
 export interface CosponsorCardProp {
+  bill_id: any;
   bioguide_id: string;
   full_name: string;
   party: string;
