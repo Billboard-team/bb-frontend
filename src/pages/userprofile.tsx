@@ -194,7 +194,7 @@ const UserProfile = () => {
           <UserInfo user={userProfile} expertise_tags={userProfile.expertiseTags || []} />
         </Flex>
         <Flex flex="1" justify="right">
-          <ActivityInsights activity={mockActivity} />
+          <ActivityInsights />
         </Flex>
       </Flex>
       <Button
