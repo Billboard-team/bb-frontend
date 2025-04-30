@@ -52,7 +52,7 @@ const BillCardDetailed = ({ bill }: { bill: BillCardProp }) => {
                           <Avatar.Image src={cosponsor.image_url} />
                         </Avatar.Root>
                         <Stack gap="0">
-                          <Text fontWeight="medium">{cosponsor.full_name}</Text>
+                          <Text fontWeight="medium">{cosponsor.fname} {cosponsor.lname}</Text>
                         </Stack>
                     </HStack>
                   ))}

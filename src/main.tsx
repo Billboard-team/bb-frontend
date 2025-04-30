@@ -18,6 +18,8 @@ import AuthCallback from "@/pages/auth-callback";
 import CompleteProfile from "@/pages/complete-profile";
 import SignOutPage from "@/pages/sign-out-page";
 import RepsPage from "@/pages/reps-page";
+import SearchPage from "./pages/search-page";
+
 
 const domain = "dev-o057ijjrl6wtbm32.us.auth0.com";
 const clientId = "KtwRQunLY2dwT5UiqHDYOIoqMt4j3Sab";
@@ -45,7 +47,11 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/complete-profile" element={<CompleteProfile />} />
               <Route index element={<Dashboard />} />
               <Route path="post/:id" element={<DetailView />} />
+
               <Route path="/reps" element={<RepsPage />} />
+
+              <Route path="search" element={<SearchPage/>} />
+
 
               <Route path="member/:id" element={<MemberDetailView/>} />
               <Route path="profile">
