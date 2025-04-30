@@ -35,6 +35,8 @@ const UserProfile = () => {
   const [friends, setFriends] = useState<Friend[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [friendsLoading, setFriendsLoading] = useState(true);
+  const [isBlocked, setIsBlocked] = useState(false);
+  const [isBlockedBy, setIsBlockedBy] = useState(false);
 
   const navigate = useNavigate();
   const { username } = useParams();
@@ -106,7 +108,13 @@ const UserProfile = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        if (!res.ok) throw new Error("Failed to fetch user profile");
+        if (!res.ok) {
+          if (res.status === 403) {
+            setIsBlockedBy(true);
+            return;
+          }
+          throw new Error("Failed to fetch user profile");
+        }
 
         const data = await res.json();
         data.expertiseTags = data.expertiseTags || [];
@@ -123,6 +131,18 @@ const UserProfile = () => {
           if (followCheck.ok) {
             const followData = await followCheck.json();
             setIsFollowing(followData.is_following);
+          }
+
+          const blockCheck = await fetch(
+            `http://localhost:8000/api/users/${username}/is-blocked/`,
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
+
+          if (blockCheck.ok) {
+            const blockData = await blockCheck.json();
+            setIsBlocked(blockData.is_blocked);
           }
         } else {
           const friendsRes = await fetch(
@@ -168,7 +188,7 @@ const UserProfile = () => {
     );
   }
 
-  if (isLoading || profileLoading) {
+  if (isLoading || (profileLoading && isAuthenticated)) {
     return (
       <Box p={10}>
         <Text>Loading profile...</Text>
@@ -204,14 +224,27 @@ const UserProfile = () => {
     );
   }
 
+  if (isBlockedBy) {
+    return (
+      <Box p={10} textAlign="center">
+        <Text color="red.500" fontSize="xl">
+          No Permission - Blocked
+        </Text>
+        <Text mt={2} color="gray.500">
+          You have been blocked by this user and cannot view their profile.
+        </Text>
+      </Box>
+    );
+  }
+
   return (
     <Flex direction="column" h="100vh" w="85vw" p={10}>
       <Flex justify="space-between" w="100%">
         <Flex flex="1" justify="center">
-          <UserInfo user={userProfile} />
+          <UserInfo user={userProfile} isOwnProfile={isOwnProfile} />
         </Flex>
         <Flex flex="1" justify="right">
-          <ActivityInsights />
+          <ActivityInsights username={!isOwnProfile ? username : undefined} />
         </Flex>
       </Flex>
 
@@ -234,6 +267,33 @@ const UserProfile = () => {
           >
             Delete Account
           </Button>
+
+          <Box my={6} />
+
+          <Flex justify="space-between" w="100%">
+            <Flex flex="1" justify="left">
+              <FriendsList friends={filteredFriends} searchQuery={""} />
+            </Flex>
+            <Flex flex="1" justify="right">
+              <FriendRequestsBlocked
+                friendRequests={mockFriendRequests}
+                blockedUsers={mockBlockedUsers}
+              />
+            </Flex>
+          </Flex>
+
+          <Box my={6} />
+
+          <Box w="100%">
+            <SavedPosts savedPosts={mockSavedPosts} />
+          </Box>
+
+          <Box my={6} />
+
+          {/* Fourth Row: Bill View History */}
+          <Box w="100%">
+            <BillViewHistory />
+          </Box>
         </>
       ) : (
         !followLoading && ( // ✅ Only show follow/unfollow button after loading
@@ -246,33 +306,6 @@ const UserProfile = () => {
           </Button>
         )
       )}
-
-      <Box my={6} />
-
-      <Flex justify="space-between" w="100%">
-        <Flex flex="1" justify="left">
-          <FriendsList friends={filteredFriends} searchQuery={""} />
-        </Flex>
-        <Flex flex="1" justify="right">
-          <FriendRequestsBlocked
-            friendRequests={mockFriendRequests}
-            blockedUsers={mockBlockedUsers}
-          />
-        </Flex>
-      </Flex>
-
-      <Box my={6} />
-
-      <Box w="100%">
-        <SavedPosts savedPosts={mockSavedPosts} />
-      </Box>
-
-      <Box my={6} />
-
-      {/* Fourth Row: Bill View History */}
-      <Box w="100%">
-        <BillViewHistory />
-      </Box>
     </Flex>
   );
 };
