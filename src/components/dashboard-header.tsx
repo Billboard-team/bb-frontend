@@ -1,6 +1,14 @@
-import { Flex, Image, Spacer, Button, IconButton, Box, Avatar } from "@chakra-ui/react";
+import {
+  Flex,
+  Image,
+  Spacer,
+  Button,
+  IconButton,
+  Box,
+  Avatar,
+} from "@chakra-ui/react";
 import BillboardLogo from "@/assets/Billboard-Logo-Banner.png";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import { LuSearch } from "react-icons/lu";
 import { mockUser } from "./mockData/mockData";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -11,7 +19,7 @@ const DashboardHeader = () => {
     window.location.reload(); // Force page reload
   };
 
-  const { user } = useAuth0(); 
+  const { user } = useAuth0();
   return (
     <Box position="sticky">
       <Flex justify="space-between" align="center" p={4} shadow="md">
@@ -31,10 +39,14 @@ const DashboardHeader = () => {
 
           {/* Navigation Buttons */}
           <Flex ml={6} gap={4}>
-            <Button variant="ghost" fontSize="sm" onClick={() => navigate('/')}>
+            <Button variant="ghost" fontSize="sm" onClick={() => navigate("/")}>
               Dashboard
             </Button>
-            <Button variant="ghost" fontSize="sm" onClick={() => navigate('/profile/messages')}>
+            <Button
+              variant="ghost"
+              fontSize="sm"
+              onClick={() => navigate("/profile/messages")}
+            >
               Messages
             </Button>
           </Flex>
@@ -44,12 +56,21 @@ const DashboardHeader = () => {
 
         {/* Avatar on the Right */}
         <Flex ml={6} gap={4}>
-          <IconButton variant="ghost" fontSize="lg">
-            <LuSearch/>
+          <IconButton
+            variant="ghost"
+            fontSize="lg"
+            onClick={() => navigate("/search")}
+          >
+            <LuSearch />
           </IconButton>
-          <Button variant="ghost" fontSize="lg" onClick={() => navigate('/profile')}>
+          <Button
+            variant="ghost"
+            fontSize="lg"
+            onClick={() => navigate("/profile")}
+          >
             <Avatar.Root>
-              <Avatar.Fallback name={user?.name} />   {/* use actual user name for avatar */}
+              <Avatar.Fallback name={user?.name} />{" "}
+              {/* use actual user name for avatar */}
             </Avatar.Root>
           </Button>
         </Flex>
