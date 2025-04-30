@@ -1,7 +1,7 @@
 export interface User {
   name: string;
   avatar: string;
-  expertiseTags: string[];
+  expertise_tags: string[];
 }
 
 export interface Activity {
