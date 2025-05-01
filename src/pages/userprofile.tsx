@@ -9,8 +9,6 @@ import FriendRequestsBlocked from "@/components/profile/friendrequest";
 import SavedPosts from "@/components/profile/savedpost";
 import { Friend } from "@/components/type";
 import BillViewHistory from "@/components/profile/billviewhistory";
-import { GetTokenSilentlyOptions } from "@auth0/auth0-react";
-import { Select }  from "@chakra-ui/react";
 
 import {
   mockFriendRequests,
@@ -231,7 +229,7 @@ const UserProfile = () => {
   }
 
   return (
-    <Flex direction="column" h="100vh" w="85vw" p={10} overflow="hidden">
+    <Flex direction="column" h="100vh" w="85vw" p={10}>
       <Flex justify="space-between" w="100%">
         <Flex flex="1" justify="center">
           <UserInfo user={userProfile} expertise_tags={userProfile.expertiseTags || []} />
