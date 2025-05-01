@@ -15,14 +15,16 @@ export default function RepCard({item}: {item: CosponsorCardProp}) {
 
 
     const handleAddRep = async () => {
-        const token = await getAccessTokenSilently();
+        
         const url = `http://localhost:8000/api/users/${item.bioguide_id}/followrep/`
         
         try {
+            const token = await getAccessTokenSilently();
             const res = await fetch(url, {
                 method: 'POST',
                 headers: {'Authorization': `Bearer ${token}`}
             })
+            console.log("Response status:", res.status);
 
             if (!res.ok) {
                 throw new Error("Something went wrong");
@@ -30,9 +32,10 @@ export default function RepCard({item}: {item: CosponsorCardProp}) {
 
         }
         catch(err) {
+            //toaster isnt throwing anything, user must be signed in
             toaster.create({
                 title: 'Error',
-                description: err instanceof Error ? err.message : 'Failed to follow rep',
+                description: err instanceof Error ? err.message : 'Failed to follow rep, are you signed in?',
                 type: 'error',
                 duration: 3000,
                 meta: { closable: true },
