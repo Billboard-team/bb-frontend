@@ -2,14 +2,44 @@ import { Badge, Card, Button, Stack, For, Avatar } from "@chakra-ui/react"
 import { useNavigate } from "react-router-dom"; 
 import { useState } from "react";
 import { CosponsorCardProp } from "@/components/type";
+import { useAuth0 } from "@auth0/auth0-react";
+import { toaster } from "./ui/toaster";
 
 export default function RepCard({item}: {item: CosponsorCardProp}) {
 
+    const { isAuthenticated, getAccessTokenSilently } = useAuth0();
     const navigate = useNavigate();
 
     //maxlength
     //displayed text truncation if needed
 
+
+    const handleAddRep = async () => {
+        const token = await getAccessTokenSilently();
+        const url = `http://localhost:8000/api/users/${item.bioguide_id}/followrep/`
+        
+        try {
+            const res = await fetch(url, {
+                method: 'POST',
+                headers: {'Authorization': `Bearer ${token}`}
+            })
+
+            if (!res.ok) {
+                throw new Error("Something went wrong");
+            }
+
+        }
+        catch(err) {
+            toaster.create({
+                title: 'Error',
+                description: err instanceof Error ? err.message : 'Failed to follow rep',
+                type: 'error',
+                duration: 3000,
+                meta: { closable: true },
+            })
+        }
+    }
+    
     return (
         <Card.Root width="320px">
             <Card.Body gap="2">
@@ -27,12 +57,18 @@ export default function RepCard({item}: {item: CosponsorCardProp}) {
             </Card.Description>
             </Card.Body>
             <Card.Footer justifyContent="flex-end">
-            <Button>Add</Button>
+
+            <Button onClick={handleAddRep}>Add</Button>
+
             </Card.Footer>
         </Card.Root> 
         
     )
+
+
 }
+
+
 
 
     
