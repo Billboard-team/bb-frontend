@@ -57,12 +57,8 @@ const CommentSection: React.FC<CommentSectionProps> = ({ billId }) => {
   const [sortType, setSortType] = useState<SortType>('newest');
   const [editingComment, setEditingComment] = useState<Comment | null>(null);
   const [editingText, setEditingText] = useState("");
-  const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
-  const [deleteCommentId, setDeleteCommentId] = useState<number | null>(null);
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [likedComments, setLikedComments] = useState<Set<number>>(new Set());
   const [dislikedComments, setDislikedComments] = useState<Set<number>>(new Set());
 

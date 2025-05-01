@@ -1,15 +1,22 @@
-import { Flex, Image, Spacer, Button, IconButton, Box, Avatar } from "@chakra-ui/react";
+import { Flex, Image, Button, IconButton, Box, Avatar, Group, Input } from "@chakra-ui/react";
 import BillboardLogo from "@/assets/Billboard-Logo-Banner.png";
 import { useNavigate } from 'react-router-dom';
 import { LuSearch } from "react-icons/lu";
-import { mockUser } from "./mockData/mockData";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useState } from "react";
 const DashboardHeader = () => {
   const navigate = useNavigate();
   const handleLogoClick = () => {
     navigate("/", { replace: true }); // Navigate to home page
     window.location.reload(); // Force page reload
   };
+
+  const [ query, setQuery ] = useState<string>('');
+  const handleSubmit = () => {
+    const param = query.split(' ').join(',')
+    navigate('search?q=' + param)
+    window.location.reload()
+  }
 
   const { user } = useAuth0(); 
   return (
@@ -40,13 +47,17 @@ const DashboardHeader = () => {
           </Flex>
         </Flex>
 
-        <Spacer />
+        {/* Search Bar */}
+        <Group>
+          <Input onChange={(e) => setQuery(e.currentTarget.value)} width="lg" placeholder="Search"/>
+          <IconButton variant="surface" fontSize="lg" onClick={handleSubmit} disabled={query === ''}>
+            <LuSearch/>
+          </IconButton>
+        </Group>
+
 
         {/* Avatar on the Right */}
         <Flex ml={6} gap={4}>
-          <IconButton variant="ghost" fontSize="lg">
-            <LuSearch/>
-          </IconButton>
           <Button variant="ghost" fontSize="lg" onClick={() => navigate('/profile')}>
             <Avatar.Root>
               <Avatar.Fallback name={user?.name} />   {/* use actual user name for avatar */}
