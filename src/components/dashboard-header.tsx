@@ -1,11 +1,21 @@
-import { Flex, Image, Button, IconButton, Box, Avatar, Group, Input, Badge, Spacer } from "@chakra-ui/react";
+import {
+  Flex,
+  Image,
+  Button,
+  IconButton,
+  Box,
+  Avatar,
+  Group,
+  Input,
+  Badge,
+  Spacer,
+} from "@chakra-ui/react";
 import BillboardLogo from "@/assets/Billboard-Logo-Banner.png";
 import { useNavigate } from "react-router-dom";
 import { LuSearch } from "react-icons/lu";
 import { useAuth0 } from "@auth0/auth0-react";
 import { IoIosNotifications } from "react-icons/io";
 import { useEffect, useState } from "react";
-import { useState } from "react";
 const DashboardHeader = () => {
   const navigate = useNavigate();
   const { getAccessTokenSilently, isAuthenticated } = useAuth0();
@@ -45,14 +55,13 @@ const DashboardHeader = () => {
     }
   }, [getAccessTokenSilently, isAuthenticated]);
 
-  const [ query, setQuery ] = useState<string>('');
+  const [query, setQuery] = useState<string>("");
   const handleSubmit = () => {
-    const param = query.split(' ').join(',')
-    navigate('search?q=' + param)
-    window.location.reload()
-  }
+    const param = query.split(" ").join(",");
+    navigate("search?q=" + param);
+    window.location.reload();
+  };
 
-  const { user } = useAuth0(); 
   return (
     <Box position="sticky">
       <Flex justify="space-between" align="center" p={4} shadow="md">
@@ -79,7 +88,11 @@ const DashboardHeader = () => {
             >
               Messages
             </Button>
-            <Button variant="ghost" fontSize="sm" onClick={() => navigate('/reps')}>
+            <Button
+              variant="ghost"
+              fontSize="sm"
+              onClick={() => navigate("/reps")}
+            >
               Representatives
             </Button>
           </Flex>
@@ -87,18 +100,26 @@ const DashboardHeader = () => {
 
         {/* Search Bar */}
         <Group>
-          <Input onChange={(e) => setQuery(e.currentTarget.value)} width="lg" placeholder="Search"/>
-          <IconButton variant="surface" fontSize="lg" onClick={handleSubmit} disabled={query === ''}>
-            <LuSearch/>
+          <Input
+            onChange={(e) => setQuery(e.currentTarget.value)}
+            width="lg"
+            placeholder="Search"
+          />
+          <IconButton
+            variant="surface"
+            fontSize="lg"
+            onClick={handleSubmit}
+            disabled={query === ""}
+          >
+            <LuSearch />
           </IconButton>
         </Group>
-
 
         <Flex ml={6} gap={4} align="center">
           <IconButton
             variant="ghost"
             fontSize="lg"
-            onClick={() => navigate("/search")}
+            onClick={() => navigate("/searchUser")}
             aria-label="Search"
           >
             <LuSearch />
@@ -126,13 +147,18 @@ const DashboardHeader = () => {
               </Badge>
             )}
           </Box>
-        {/* Avatar on the Right */}
-        <Flex ml={6} gap={4}>
-          <Button variant="ghost" fontSize="lg" onClick={() => navigate('/profile')}>
-            <Avatar.Root>
-              <Avatar.Fallback name={user?.name} />
-            </Avatar.Root>
-          </Button>
+          {/* Avatar on the Right */}
+          <Flex ml={6} gap={4}>
+            <Button
+              variant="ghost"
+              fontSize="lg"
+              onClick={() => navigate("/profile")}
+            >
+              <Avatar.Root>
+                <Avatar.Fallback name={user?.name} />
+              </Avatar.Root>
+            </Button>
+          </Flex>
         </Flex>
       </Flex>
     </Box>

@@ -48,14 +48,14 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/complete-profile" element={<CompleteProfile />} />
               <Route index element={<Dashboard />} />
               <Route path="post/:id" element={<DetailView />} />
-              <Route path="search" element={<SearchUserPage />} />
+              <Route path="searchUser" element={<SearchUserPage />} />
               <Route path="notification" element={<NotificationPage />} />
 
               <Route path="/reps" element={<RepsPage />} />
 
-              <Route path="search" element={<SearchPage/>} />
+              <Route path="search" element={<SearchPage />} />
 
-              <Route path="member/:id" element={<MemberDetailView/>} />
+              <Route path="member/:id" element={<MemberDetailView />} />
               <Route path="profile">
                 <Route index element={<UserProfile />} />
                 <Route path=":username" element={<UserProfile />} />
