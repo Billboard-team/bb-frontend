@@ -1,7 +1,7 @@
 export interface User {
   name: string;
   avatar: string;
-  expertiseTags: string[];
+  expertise_tags: string[];
 }
 
 export interface Activity {
@@ -60,8 +60,11 @@ export interface Cosponsor {
 }
 
 export interface CosponsorCardProp {
+  bill_id: any;
   bioguide_id: string;
   full_name: string;
+  fname: string,
+  lname: string,
   party: string;
   state: string;
   district?: number | null;

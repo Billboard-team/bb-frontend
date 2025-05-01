@@ -3,6 +3,7 @@ import { User } from "@/components/type";
 import { useAuth0 } from "@auth0/auth0-react";
 interface Props {
   user: User;
+  expertise_tags: string[];
 }
 
 const UserInfo: React.FC<Props> = ({ user }) => {
@@ -14,13 +15,12 @@ const UserInfo: React.FC<Props> = ({ user }) => {
       <Text fontSize="2xl" fontWeight="bold" mt={2} color="bg.inverted">
         {user.name}
       </Text>
-      <HStack mt={2}>
-        {user.expertiseTags.map((tag, idx) => (
-          <Tag.Root key={idx}>
-            <Tag.Label>{tag}</Tag.Label>
-          </Tag.Root>
-        ))}
-      </HStack>
+
+      <Text fontSize="1xl" fontWeight="bold" mt={2} color="bg.inverted">
+        Expertise Tag: {user.expertise_tags?.[0] || "None"}
+      </Text>
+
+      
       <Button variant="ghost" mt={4}>
         Edit Profile
       </Button>
