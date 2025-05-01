@@ -1,4 +1,4 @@
-import { Flex, Image, Button, IconButton, Box, Avatar, Group, Input, Badge, Spacer } from "@chakra-ui/react";
+import { Flex, Image, Button, IconButton, Box, Avatar, Group, Input, Badge } from "@chakra-ui/react";
 import BillboardLogo from "@/assets/Billboard-Logo-Banner.png";
 import { useNavigate } from "react-router-dom";
 import { LuSearch } from "react-icons/lu";
@@ -49,7 +49,7 @@ const DashboardHeader = () => {
   const handleSubmit = () => {
     const param = query.split(' ').join(',')
     navigate('search?q=' + param)
-    window.location.reload()
+    window.location.reload
   }
 
   return (
@@ -71,12 +71,8 @@ const DashboardHeader = () => {
             <Button variant="ghost" fontSize="sm" onClick={() => navigate("/")}>
               Dashboard
             </Button>
-            <Button
-              variant="ghost"
-              fontSize="sm"
-              onClick={() => navigate("/profile/messages")}
-            >
-              Messages
+            <Button variant="ghost" fontSize="sm" onClick={() => navigate('/following')}>
+              Following
             </Button>
             <Button variant="ghost" fontSize="sm" onClick={() => navigate('/reps')}>
               Representatives
