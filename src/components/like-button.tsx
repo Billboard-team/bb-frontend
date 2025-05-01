@@ -11,12 +11,18 @@ function LikeButton() {
   const [liked, setLiked] = useState(false)
 
   useEffect(() => {
+    checkLikeStatus()
+  }, [])
+
+
+  const checkLikeStatus = async () =>  {
     const url = `http://localhost:8000/api/bills/1/check-liked/`
-    const res = fetch(url)
+    const token = await getAccessTokenSilently();
+    const res = await fetch(url, {
+      headers: {'authorization': `bearer ${token}`}
+    })
     
-  }, [liked])
-
-
+  }
 
   const handleToggleLike = async () => {
     const subpath = liked ? "unlike-bill" : "like-bill"
@@ -25,8 +31,8 @@ function LikeButton() {
 
     try {
       const res = await fetch(url, {
-        method: 'PUT',
-        headers: {'Authorization': `Bearer ${token}`}
+        method: 'put',
+        headers: {'authorization': `bearer ${token}`}
       })
 
       if (!res.ok) {
