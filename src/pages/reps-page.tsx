@@ -7,13 +7,12 @@ import { useEffect, useState } from "react";
 const RepsPage = () => {
 
   const [members, setMembers] = useState<CosponsorCardProp[]>([]);
-  const retrieveMembersURL = "http://localhost:8000/api/members/121"
   
   const fetchCongressMembers = () => {
     //setloading
     //seterror
   
-    fetch(retrieveMembersURL)
+    fetch("http://localhost:8000/api/congress/121")
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -39,7 +38,7 @@ const RepsPage = () => {
   }, [])
   
   return (
-      <MemberGrid items={mockMembers}>
+      <MemberGrid items={members}>
         
       </MemberGrid>
   );

@@ -14,15 +14,16 @@ export default function RepCard({item}: {item: CosponsorCardProp}) {
         <Card.Root width="320px">
             <Card.Body gap="2">
             <Avatar.Root size="lg" shape="rounded">
-                <Avatar.Image src="" />
+                <Avatar.Image src={item.image_url} />
                 <Avatar.Fallback name="x" />
             </Avatar.Root>
-            <Card.Title mb="2"
-                _hover={{textDecor: "underline", cursor: "pointer"}}
-                onClick={() => navigate('/member/${}')}>
-                {item.full_name}</Card.Title>
+            <Card.Title onClick={() => navigate(`/member/${item.bioguide_id}`)} mb="2" _hover={{textDecor: "underline", cursor: "pointer"}}
+                >
+
+                {item.full_name}
+
+                </Card.Title>
             <Card.Description>
-                {item.party} - {item.state} - District {item.district}
             </Card.Description>
             </Card.Body>
             <Card.Footer justifyContent="flex-end">
