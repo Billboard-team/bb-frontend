@@ -15,7 +15,7 @@ const DashboardHeader = () => {
   const handleSubmit = () => {
     const param = query.split(' ').join(',')
     navigate('search?q=' + param)
-    window.location.reload()
+    window.location.reload
   }
 
   const { user } = useAuth0(); 
@@ -41,8 +41,8 @@ const DashboardHeader = () => {
             <Button variant="ghost" fontSize="sm" onClick={() => navigate('/')}>
               Dashboard
             </Button>
-            <Button variant="ghost" fontSize="sm" onClick={() => navigate('/profile/messages')}>
-              Messages
+            <Button variant="ghost" fontSize="sm" onClick={() => navigate('/following')}>
+              Following
             </Button>
           </Flex>
         </Flex>
