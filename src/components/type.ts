@@ -96,6 +96,16 @@ export interface FollowingCardProp {
   bills: BillCardProp[];
 }
 
+// Bill Compact
+export interface BillCompactProp {
+  bill_id: number;
+  bill_type: string;
+  congress: number;
+  bill_number: string;
+  title: string;
+  timestamp: string;
+}
+
 //Sidebar filters
 export type BillType = 'HR' | 'S' | 'SRES' | 'SJRES';
 export type Congress = 119 | 118 | 117;
