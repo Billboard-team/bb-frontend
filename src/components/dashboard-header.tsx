@@ -49,7 +49,7 @@ const DashboardHeader = () => {
   const handleSubmit = () => {
     const param = query.split(' ').join(',')
     navigate('search?q=' + param)
-    window.location.reload
+    window.location.reload();
   }
 
   return (
@@ -82,7 +82,7 @@ const DashboardHeader = () => {
 
         {/* Search Bar */}
         <Group>
-          <Input onChange={(e) => setQuery(e.currentTarget.value)} width="lg" placeholder="Search"/>
+          <Input onChange={(e) => setQuery(e.currentTarget.value)} width="lg" placeholder="Search for bills..."/>
           <IconButton variant="surface" fontSize="lg" onClick={handleSubmit} disabled={query === ''}>
             <LuSearch/>
           </IconButton>
@@ -93,7 +93,7 @@ const DashboardHeader = () => {
           <IconButton
             variant="ghost"
             fontSize="lg"
-            onClick={() => navigate("/search")}
+            onClick={() => navigate("/search-user")}
             aria-label="Search"
           >
             <LuSearch />

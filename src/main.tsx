@@ -55,7 +55,7 @@ createRoot(document.getElementById("root")!).render(
               <Route index element={<Dashboard />} />
               <Route path="post/:id" element={<DetailView />} />
               <Route path="update/profile/" element={<EditProfile />} />
-              <Route path="search" element={<SearchUserPage />} />
+              <Route path="search-user" element={<SearchUserPage />} />
               <Route path="notification" element={<NotificationPage />} />
 
               <Route path="/reps" element={<RepsPage />} />
