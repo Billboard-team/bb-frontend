@@ -18,22 +18,24 @@ const UserInfo: React.FC<Props> = ({ user }) => {
         {user.name}
       </Text>
       <HStack mt={2}>
-        {user.expertiseTags.map((tag, idx) => (
+
+      </HStack>
+
+      <Button variant="ghost" mt={4} onClick={() => navigate("/update")}>
+      </Button>
+
+      <Button variant="ghost" mt={4} ml={-12}>
+        Edit Profile
+      </Button>
+
+      <Text fontSize="1xl" fontWeight="bold" mt={2} color="bg.inverted">
+        {user.expertise_tags.map((tag, idx) => (
           <Tag.Root key={idx}>
             <Tag.Label>{tag}</Tag.Label>
           </Tag.Root>
         ))}
-      </HStack>
-      <Button variant="ghost" mt={4} onClick={() => navigate("/update")}>
-
-      <Text fontSize="1xl" fontWeight="bold" mt={2} color="bg.inverted">
-        Expertise Tag: {user.expertise_tags?.[0] || "None"}
       </Text>
 
-      
-      <Button variant="ghost" mt={4}>
-        Edit Profile
-      </Button>
     </Box>
   );
 };
