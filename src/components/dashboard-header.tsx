@@ -1,21 +1,12 @@
-import {
-  Flex,
-  Image,
-  Button,
-  IconButton,
-  Box,
-  Avatar,
-  Group,
-  Input,
-  Badge,
-  Spacer,
-} from "@chakra-ui/react";
+
+import { Flex, Image, Button, IconButton, Box, Avatar, Group, Input, Badge, Spacer } from "@chakra-ui/react";
 import BillboardLogo from "@/assets/Billboard-Logo-Banner.png";
 import { useNavigate } from "react-router-dom";
 import { LuSearch } from "react-icons/lu";
 import { useAuth0 } from "@auth0/auth0-react";
 import { IoIosNotifications } from "react-icons/io";
 import { useEffect, useState } from "react";
+
 const DashboardHeader = () => {
   const navigate = useNavigate();
   const { getAccessTokenSilently, isAuthenticated } = useAuth0();
@@ -62,6 +53,7 @@ const DashboardHeader = () => {
     window.location.reload();
   };
 
+
   return (
     <Box position="sticky">
       <Flex justify="space-between" align="center" p={4} shadow="md">
@@ -81,12 +73,8 @@ const DashboardHeader = () => {
             <Button variant="ghost" fontSize="sm" onClick={() => navigate("/")}>
               Dashboard
             </Button>
-            <Button
-              variant="ghost"
-              fontSize="sm"
-              onClick={() => navigate("/profile/messages")}
-            >
-              Messages
+            <Button variant="ghost" fontSize="sm" onClick={() => navigate('/following')}>
+              Following
             </Button>
             <Button
               variant="ghost"
@@ -149,11 +137,8 @@ const DashboardHeader = () => {
           </Box>
           {/* Avatar on the Right */}
           <Flex ml={6} gap={4}>
-            <Button
-              variant="ghost"
-              fontSize="lg"
-              onClick={() => navigate("/profile")}
-            >
+
+            <Button variant="ghost" fontSize="lg" onClick={() => navigate('/profile')}>
               <Avatar.Root>
                 <Avatar.Fallback name={user?.name} />
               </Avatar.Root>

@@ -89,7 +89,15 @@ export interface BillCardProp {
   cosponsors?: CosponsorCardProp[]; //for bill detail view page
 }
 
+// Following Feed
+export interface FollowingCardProp {
+  username: string;
+  interaction : "comment" | "like";
+  bills: BillCardProp[];
+}
+
 //Sidebar filters
 export type BillType = 'HR' | 'S' | 'SRES' | 'SJRES';
 export type Congress = 119 | 118 | 117;
+
 
