@@ -7,7 +7,11 @@ interface ActivityStats {
   comments: number;
 }
 
-const ActivityInsights: React.FC = () => {
+interface ActivityInsightsProps {
+  username?: string;
+}
+
+const ActivityInsights: React.FC<ActivityInsightsProps> = ({ username }) => {
   const [stats, setStats] = useState<ActivityStats | null>(null);
   const { getAccessTokenSilently } = useAuth0();
 
@@ -20,7 +24,11 @@ const ActivityInsights: React.FC = () => {
           },
         });
 
-        const response = await fetch("http://localhost:8000/api/me/activity-stats/", {
+        const url = username 
+          ? `http://localhost:8000/api/users/${username}/activity-stats/`
+          : "http://localhost:8000/api/me/activity-stats/";
+
+        const response = await fetch(url, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -34,7 +42,7 @@ const ActivityInsights: React.FC = () => {
     };
 
     fetchActivityStats();
-  }, [getAccessTokenSilently]);
+  }, [getAccessTokenSilently, username]);
 
   return (
     <Box p={5} shadow="md" borderRadius="md">
