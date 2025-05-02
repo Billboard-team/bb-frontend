@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Box, Heading, HStack, IconButton, Skeleton, Spinner, Text } from "@chakra-ui/react";
-import BillGrid from "./bill-grid"; // Ensure this is correctly implemented
+import BillGrid from "./followedbill-grid"; // Ensure this is correctly implemented
 import { LuRotateCcw } from "react-icons/lu";
 import { BillCardProp } from "@/components/type";
 import { useFilters } from "./filter-context";
