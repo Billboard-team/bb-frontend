@@ -6,23 +6,9 @@ import { useParams } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { BillCardProp } from "@/components/type";
 
-interface Bill {
-  bill_id: number;
-  title: string;
-  action: string;
-  action_date: string;
-  description: string;
-  congress: number;
-  bill_type: string;
-  bill_number: string;
-  summary?: string | null;
-  text?: string | null;
-  url: string;
-}
-
 const DetailView = () => {
   const { id } = useParams<{ id: string }>();  
-  const [bill, setBill] = useState<Bill | null>(null);
+  const [bill, setBill] = useState<BillCardProp | null>(null);
   const [loading, setLoading] = useState(true);
   const { getAccessTokenSilently } = useAuth0();
 
@@ -72,24 +58,11 @@ const DetailView = () => {
   if (loading) return <Spinner size="xl" />;
   if (!bill) return <Text fontSize="xl" color="red.500">Bill not found</Text>;
 
-  // Convert Bill to BillCardProp
-  const billCardProp: BillCardProp = {
-    bill_id: bill.bill_id,
-    title: bill.title,
-    action: bill.action,
-    action_date: bill.action_date,
-    description: bill.description,
-    congress: bill.congress as any, // Type assertion since we know the value is valid
-    bill_type: bill.bill_type as any, // Type assertion since we know the value is valid
-    bill_number: bill.bill_number,
-    url: bill.url
-  };
-
   return (
     <Stack separator={<StackSeparator />} gapY={2}>
       <Box mb={6}>
         <Grid autoRows="auto" templateColumns="repeat(1, minmax(350px, 1fr))" gap={6}>
-          <DetailBillCard bill={billCardProp} />
+          <DetailBillCard bill={bill} />
         </Grid>
         <CommentSection billId={bill.bill_id} />
       </Box>

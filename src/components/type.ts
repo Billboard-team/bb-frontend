@@ -1,7 +1,7 @@
 export interface User {
   name: string;
   avatar: string;
-  expertiseTags: string[];
+  expertise_tags: string[];
 }
 
 export interface Activity {
@@ -60,8 +60,11 @@ export interface Cosponsor {
 }
 
 export interface CosponsorCardProp {
+  bill_id: any;
   bioguide_id: string;
   full_name: string;
+  fname: string,
+  lname: string,
   party: string;
   state: string;
   district?: number | null;
@@ -86,7 +89,15 @@ export interface BillCardProp {
   cosponsors?: CosponsorCardProp[]; //for bill detail view page
 }
 
+// Following Feed
+export interface FollowingCardProp {
+  username: string;
+  interaction : "comment" | "like";
+  bills: BillCardProp[];
+}
+
 //Sidebar filters
 export type BillType = 'HR' | 'S' | 'SRES' | 'SJRES';
 export type Congress = 119 | 118 | 117;
+
 
