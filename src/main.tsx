@@ -45,7 +45,7 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/complete-profile" element={<CompleteProfile />} />
               <Route index element={<Dashboard />} />
               <Route path="post/:id" element={<DetailView />} />
-              <Route path="update/" element={<EditProfile />} />
+              <Route path="update/profile/" element={<EditProfile />} />
               <Route path="member/:id" element={<MemberDetailView/>} />
               <Route path="profile">
                 <Route path="" element={<UserProfile />} />

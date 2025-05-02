@@ -43,7 +43,7 @@ const EditProfile = () => {
                 authorizationParams: { audience: "https://billboard.local" },
             });
 
-            const res = await fetch("http://localhost:8000/api/me/update/", {
+            const res = await fetch("http://localhost:8000/api/update/profile/", {
                 method: "POST",
                 headers: {
                     Authorization: `Bearer ${token}`,
