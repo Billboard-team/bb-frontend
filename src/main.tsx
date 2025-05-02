@@ -19,16 +19,19 @@ import CompleteProfile from "@/pages/complete-profile";
 import SignOutPage from "@/pages/sign-out-page";
 import EditProfile from "./pages/edit-profile";
 import SearchPage from "./pages/search-page";
+import { Toaster } from "@/components/ui/toaster";
 import FollowingPage from "./pages/following-page";
 import SearchUserPage from "@/pages/search-user-page";
 import NotificationPage from "@/pages/notification-page";
 import RepsPage from "@/pages/reps-page";
+
 
 const domain = "dev-o057ijjrl6wtbm32.us.auth0.com";
 const clientId = "KtwRQunLY2dwT5UiqHDYOIoqMt4j3Sab";
 const audience = "https://billboard.local";
 
 createRoot(document.getElementById("root")!).render(
+  
   <Auth0Provider
     domain={domain}
     clientId={clientId}
@@ -39,6 +42,7 @@ createRoot(document.getElementById("root")!).render(
     }}
   >
     <Provider>
+      <Toaster/>
       <BrowserRouter>
         <FilterProvider>
           <Routes>
