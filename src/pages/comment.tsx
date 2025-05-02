@@ -28,6 +28,7 @@ interface Comment {
   created_at: string;
   updated_at: string;
   auth0_id: string;
+  expertise_tags: string[];
 }
 
 interface CommentSectionProps {
@@ -57,12 +58,8 @@ const CommentSection: React.FC<CommentSectionProps> = ({ billId }) => {
   const [sortType, setSortType] = useState<SortType>('newest');
   const [editingComment, setEditingComment] = useState<Comment | null>(null);
   const [editingText, setEditingText] = useState("");
-  const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
-  const [deleteCommentId, setDeleteCommentId] = useState<number | null>(null);
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [likedComments, setLikedComments] = useState<Set<number>>(new Set());
   const [dislikedComments, setDislikedComments] = useState<Set<number>>(new Set());
 
@@ -86,7 +83,9 @@ const CommentSection: React.FC<CommentSectionProps> = ({ billId }) => {
         }
       });
       if (!response.ok) throw new Error('Failed to fetch comments');
-      const data = await response.json();
+      //const data = await response.json();
+      const data: Comment[] = await response.json();
+      console.log("Fetched comments:", data);
       setComments(data);
       setIsLoading(false);
     } catch (err) {
@@ -415,7 +414,20 @@ const CommentSection: React.FC<CommentSectionProps> = ({ billId }) => {
                       bg={commentBgColor}
                     >
                       <HStack justify="space-between">
-                        <Text fontWeight="bold" color={textColor}>{comment.user_name}:</Text>
+                          <HStack gap={2}>
+                            <Text fontWeight="bold" color={textColor}>
+                              {comment.user_name}
+                            </Text>
+                            {Array.isArray(comment.expertise_tags) && comment.expertise_tags.length > 0 && (
+                              <Text fontSize="sm" color="yellow.400" fontWeight="medium">
+                                ({comment.expertise_tags[0]})
+                              </Text>
+                            )}
+                            <Text fontSize="xs" color={textColor} ml={1}>
+                              {new Date(comment.created_at).toLocaleDateString()}
+                            </Text>
+                          </HStack>
+                        
                         <HStack gap={2}>
                           <IconButton
                             aria-label="Like"

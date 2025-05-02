@@ -9,6 +9,8 @@ import FriendRequestsBlocked from "@/components/profile/friendrequest";
 import SavedPosts from "@/components/profile/savedpost";
 import BillViewHistory from "@/components/profile/billviewhistory";
 import { GetTokenSilentlyOptions } from "@auth0/auth0-react";
+import { Select }  from "@chakra-ui/react";
+
 import {
   mockActivity,
   mockFriends,
@@ -30,7 +32,8 @@ const UserProfile = () => {
   const [profileLoading, setProfileLoading] = useState(true);
   const [profileError, setProfileError] = useState<string | null>(null);
   const navigate = useNavigate();
-
+  const [tags, setTags] = useState<string[]>([]);  // available tags
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);  // what user picks
   const handleDeleteAccount = async () => {
     if (
       !window.confirm(
@@ -92,8 +95,9 @@ const UserProfile = () => {
 
         const data = await res.json();
 
-        data.expertiseTags = data.expertiseTags || [];
+        data.expertiseTags = data.expertise_tags || [];
         setUserProfile(data);
+        setSelectedTags(data.expertiseTags);
       } catch (err: any) {
         console.error("Error fetching user profile:", err);
         setProfileError(err.message);
@@ -106,6 +110,22 @@ const UserProfile = () => {
       fetchUserProfile();
     }
   }, [isAuthenticated, getAccessTokenSilently]);
+
+  useEffect(() => {
+    const fetchTags = async () => {
+      try {
+        const res = await fetch("http://localhost:8000/api/tags/");
+        const data = await res.json();
+        setTags(data);
+      } catch (err) {
+        console.error("Error fetching tags:", err);
+      }
+    };
+
+    if (isAuthenticated) {
+      fetchTags();
+    }
+  }, [isAuthenticated]);
 
   useEffect(() => {
     if (isAuthenticated && userProfile && !userProfile.name) {
@@ -171,7 +191,7 @@ const UserProfile = () => {
       {/* First Row: User Info + Activity */}
       <Flex justify="space-between" w="100%">
         <Flex flex="1" justify="center">
-          <UserInfo user={userProfile} />
+          <UserInfo user={userProfile} expertise_tags={userProfile.expertiseTags || []} />
         </Flex>
         <Flex flex="1" justify="right">
           <ActivityInsights activity={mockActivity} />
@@ -216,21 +236,73 @@ const UserProfile = () => {
         </Flex>
       </Flex>
 
-      <Box my={6} />
+      <Box my={5} />
 
       {/* Third Row: Saved Posts */}
       <Box w="100%">
         <SavedPosts savedPosts={mockSavedPosts} />
       </Box>
 
-      <Box my={6} />
+      <Box mt={8}>
+        <Text fontSize="xl" fontWeight="bold" mb={3}>
+          Select Your Expertise Tag
+        </Text>
+
+        <Flex wrap="wrap" gap={4} align="center">
+          {/* Radio buttons */}
+          {tags.map((tag) => (
+            <label key={tag}>
+              <input
+                type="radio"
+                name="expertiseTag"
+                value={tag}
+                checked={selectedTags[0] === tag}
+                onChange={(e) => setSelectedTags([e.target.value])}
+              />
+              {" "}{tag}
+            </label>
+          ))}
+
+          {/* Button */}
+          <Button
+            ml={6} mb={7}
+            colorScheme="teal"
+            onClick={async () => {
+              try {
+                const token = await getAccessTokenSilently({
+                  authorizationParams: { audience: "https://billboard.local" },
+                });
+
+                await fetch("http://localhost:8000/api/profile/tags/", {
+                  method: "POST",
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({ tags: selectedTags }),
+                });
+                alert("Tag updated successfully!");
+              } catch (err) {
+                console.error("Failed to update tag:", err);
+              }
+            }}
+            disabled={selectedTags.length === 0}
+          >
+            Save Expertise Tag
+          </Button>
+        </Flex>
+      </Box>
+
+
 
       {/* Fourth Row: Bill View History */}
       <Box w="100%">
+        
         <BillViewHistory />
       </Box>
     </Flex>
   );
 };
+
 
 export default UserProfile;
