@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box, Heading, HStack, IconButton, Spinner, Text } from "@chakra-ui/react";
+import { Box, Heading, HStack, IconButton, Skeleton, Spinner, Text } from "@chakra-ui/react";
 import BillGrid from "./bill-grid"; // Ensure this is correctly implemented
 import { LuRotateCcw } from "react-icons/lu";
 import { BillCardProp } from "@/components/type";
@@ -72,7 +72,11 @@ const TrendingBills = () => {
         </IconButton>
       </HStack>
 
-      {loading && <Spinner size="xl" />}
+      {loading && <>
+        <Skeleton m={3} height="200px"/>
+        <Skeleton m={3} height="200px"/>
+        <Skeleton m={3} height="200px"/>
+      </> }
       {error && <Text color="red.500">{error}</Text>}
 
       {!loading && !error && bills.length > 0 && <BillGrid items={bills} />}

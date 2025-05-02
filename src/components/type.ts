@@ -89,7 +89,25 @@ export interface BillCardProp {
   cosponsors?: CosponsorCardProp[]; //for bill detail view page
 }
 
+// Following Feed
+export interface FollowingCardProp {
+  username: string;
+  interaction : "comment" | "like";
+  bills: BillCardProp[];
+}
+
+// Bill Compact
+export interface BillCompactProp {
+  bill_id: number;
+  bill_type: string;
+  congress: number;
+  bill_number: string;
+  title: string;
+  timestamp: string;
+}
+
 //Sidebar filters
 export type BillType = 'HR' | 'S' | 'SRES' | 'SJRES';
 export type Congress = 119 | 118 | 117;
+
 

@@ -5,6 +5,7 @@ import { LuCircleCheckBig, LuShare } from "react-icons/lu";
 import { useState } from "react";
 import { BillCardProp } from "@/components/type"
 import { useNavigate } from "react-router";
+import LikeButton from "./like-button";
 
 const BillCardDetailed = ({ bill }: { bill: BillCardProp }) => {
   
@@ -38,6 +39,8 @@ const BillCardDetailed = ({ bill }: { bill: BillCardProp }) => {
             Bill Number: {bill.bill_type + " " + bill.bill_number || "N/A"} | Congress: {bill.congress || "N/A"}
           </Text>
         </Box>
+        
+        <LikeButton/>
 
         <Stack gap={3}>
           <HStack justify="space-between">
