@@ -4,55 +4,71 @@ import BillGrid from "./bill-grid"; // Ensure this is correctly implemented
 import { LuRotateCcw } from "react-icons/lu";
 import { BillCardProp } from "@/components/type";
 import { useFilters } from "./filter-context";
+import { toaster } from "./ui/toaster";
+import { useAuth0 } from "@auth0/auth0-react";
 
-const trendingBillsURL = "http://localhost:8000/api/bills/followed"
+const followedBillsURL = "http://localhost:8000/api/bills/followed"
 
 const FollowedBills = () => {
+
+  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
   const [bills, setBills] = useState<BillCardProp[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [url, setUrl] = useState<string>(trendingBillsURL);
+  const [url, setUrl] = useState<string>(followedBillsURL);
 
   const { selectedCategories } = useFilters();
 
-  const fetchTrendedBills = () => {
-    setLoading(true);
+  const fetchFollowedBills = async () => {
+    setLoading(false);
     setError(null);
 
-    console.log(url)
+    try {
+      const token = await getAccessTokenSilently();
+      await fetch(url , {
+        method: 'GET',
+        headers: {'Authorization': `Bearer ${token}`}
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log("Fetched Followed Bills:", data);
 
-    fetch(url)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return response.json();
+          // commenting this out for now as to not kill requests for categorized bills
+          if (!data.followed_bills || !Array.isArray(data.followed_bills)) {
+            throw new Error("Invalid response format");
+          }
+          
+          setBills(data.followed_bills);
+        })
+        .catch((err) => {
+          console.error("Error fetching followed bills:", err);
+        })
+        .finally(() => setLoading(false));
+    }
+    catch(err) {
+      toaster.create({
+          title: 'message',
+          description: 'Sign in to view followed bills',
+          type: 'info',
+          duration: 3000,
+          meta: { closable: true },
       })
-      .then((data) => {
-        console.log("Fetched Followed Bills:", data);
-
-        // commenting this out for now as to not kill requests for categorized bills
-        if (!data.trending_bills || !Array.isArray(data.trending_bills)) {
-          throw new Error("Invalid response format");
-        }
-        
-        setBills(data.trending_bills);
-      })
-      .catch((err) => {
-        console.error("Error fetching followed bills:", err);
-        setError("Failed to load followed bills.");
-      })
-      .finally(() => setLoading(false));
+    }
   }; 
   
   // Fetch data on mount
   useEffect(() => {
-    fetchTrendedBills();
+    fetchFollowedBills();
   }, []);
 
   useEffect(() => {
     const param = selectedCategories.join(",")
-    setUrl(trendingBillsURL + "?categories=" + encodeURIComponent(param))
+    setUrl(followedBillsURL + "?categories=" + encodeURIComponent(param))
   }, [selectedCategories]);
 
   return (
@@ -66,7 +82,7 @@ const FollowedBills = () => {
           variant="ghost"
           colorScheme="teal"
           size="sm"
-          onClick={fetchTrendedBills}
+          onClick={fetchFollowedBills}
           aria-label="Refresh Followed Bills">
           <LuRotateCcw/>
         </IconButton>
