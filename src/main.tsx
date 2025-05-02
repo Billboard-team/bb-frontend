@@ -17,6 +17,7 @@ import { Auth0Provider } from "@auth0/auth0-react";
 import AuthCallback from "@/pages/auth-callback";
 import CompleteProfile from "@/pages/complete-profile";
 import SignOutPage from "@/pages/sign-out-page";
+import EditProfile from "./pages/edit-profile";
 import SearchPage from "./pages/search-page";
 import FollowingPage from "./pages/following-page";
 import SearchUserPage from "@/pages/search-user-page";
@@ -49,6 +50,7 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/complete-profile" element={<CompleteProfile />} />
               <Route index element={<Dashboard />} />
               <Route path="post/:id" element={<DetailView />} />
+              <Route path="update/profile/" element={<EditProfile />} />
               <Route path="search" element={<SearchUserPage />} />
               <Route path="notification" element={<NotificationPage />} />
 
