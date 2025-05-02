@@ -1,14 +1,16 @@
-import { Badge, Card, Button, Stack, For, Avatar } from "@chakra-ui/react"
+import { Badge, Card, Button, Stack, For, Avatar, IconButton, Toaster } from "@chakra-ui/react"
 import { useNavigate } from "react-router-dom"; 
 import { useState } from "react";
 import { CosponsorCardProp } from "@/components/type";
 import { useAuth0 } from "@auth0/auth0-react";
-import { toaster } from "./ui/toaster";
+import { toaster } from "@/components/ui/toaster";
+import { LuCircleCheckBig, LuCirclePlus } from "react-icons/lu";
 
 export default function RepCard({item}: {item: CosponsorCardProp}) {
 
     const { isAuthenticated, getAccessTokenSilently } = useAuth0();
     const navigate = useNavigate();
+    const [addClicked, setAddClicked] = useState(false)
 
     //maxlength
     //displayed text truncation if needed
@@ -32,6 +34,7 @@ export default function RepCard({item}: {item: CosponsorCardProp}) {
 
         }
         catch(err) {
+            setAddClicked(false)
             //toaster isnt throwing anything, user must be signed in
             toaster.create({
                 title: 'Error',
@@ -50,8 +53,7 @@ export default function RepCard({item}: {item: CosponsorCardProp}) {
                 <Avatar.Image src={item.image_url} />
                 <Avatar.Fallback name="x" />
             </Avatar.Root>
-            <Card.Title onClick={() => navigate(`/member/${item.bioguide_id}`)} mb="2" _hover={{textDecor: "underline", cursor: "pointer"}}
-                >
+            <Card.Title onClick={() => navigate(`/member/${item.bioguide_id}`)} mb="2" _hover={{textDecor: "underline", cursor: "pointer"}}>
 
                 {item.full_name}
 
@@ -60,8 +62,20 @@ export default function RepCard({item}: {item: CosponsorCardProp}) {
             </Card.Description>
             </Card.Body>
             <Card.Footer justifyContent="flex-end">
-
-            <Button onClick={handleAddRep}>Add</Button>
+            Follow / Unfollow 
+            <IconButton 
+                colorScheme={addClicked ? "green" : "gray"} 
+                onClick={async () => {
+                  setAddClicked(!addClicked);
+                  try {
+                    await handleAddRep();
+                  } catch (err) {
+                    setAddClicked(!addClicked);
+                  }
+                }
+                }>
+                {addClicked ? <LuCircleCheckBig/> : <LuCirclePlus/>}
+                </IconButton>
 
             </Card.Footer>
         </Card.Root> 
