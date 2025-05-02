@@ -38,7 +38,6 @@ const BillCardDetailed = ({ bill }: { bill: BillCardProp }) => {
           <Text fontSize="sm" color={subTextColor}>
             Bill Number: {bill.bill_type + " " + bill.bill_number || "N/A"} | Congress: {bill.congress || "N/A"}
           </Text>
-
         </Box>
         
         <LikeButton/>

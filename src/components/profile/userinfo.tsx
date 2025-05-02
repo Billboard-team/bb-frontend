@@ -87,14 +87,6 @@ const UserInfo: React.FC<Props> = ({ user, isOwnProfile = false }) => {
       <Text fontSize="2xl" fontWeight="bold" mt={2} color="bg.inverted">
         {user.name}
       </Text>
-      <HStack mt={2}>
-
-      </HStack>
-
-      <Button variant="ghost" mt={4} onClick={() => navigate("/update/profile")}>
-        Edit Profile
-      </Button>
-
 
       <Text fontSize="1xl" fontWeight="bold" mt={2} color="bg.inverted">
         {user.expertise_tags.map((tag, idx) => (

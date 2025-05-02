@@ -272,7 +272,6 @@ const UserProfile = () => {
 
       {isOwnProfile ? (
         <>
-
           <Box mt={8}>
             <Text fontSize="xl" fontWeight="bold" mb={3}>
               Select Your Expertise Tag
@@ -358,7 +357,7 @@ const UserProfile = () => {
           <Box my={6} />
 
           <Box w="100%">
-            <SavedPosts savedPosts={mockSavedPosts} />
+            <SavedPosts/>
           </Box>
 
           <Box my={6} />
