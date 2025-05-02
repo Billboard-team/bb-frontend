@@ -236,21 +236,20 @@ const UserProfile = () => {
         </Flex>
       </Flex>
 
-      <Box my={6} />
+      <Box my={5} />
 
       {/* Third Row: Saved Posts */}
       <Box w="100%">
         <SavedPosts savedPosts={mockSavedPosts} />
       </Box>
 
-      <Box my={6} />
-      
       <Box mt={8}>
-        <Text fontSize="xl" fontWeight="bold" mb={4}>
+        <Text fontSize="xl" fontWeight="bold" mb={3}>
           Select Your Expertise Tag
         </Text>
 
-        <Flex wrap="wrap" gap={4}>
+        <Flex wrap="wrap" gap={4} align="center">
+          {/* Radio buttons */}
           {tags.map((tag) => (
             <label key={tag}>
               <input
@@ -263,40 +262,42 @@ const UserProfile = () => {
               {" "}{tag}
             </label>
           ))}
+
+          {/* Button */}
+          <Button
+            ml={6} mb={7}
+            colorScheme="teal"
+            onClick={async () => {
+              try {
+                const token = await getAccessTokenSilently({
+                  authorizationParams: { audience: "https://billboard.local" },
+                });
+
+                await fetch("http://localhost:8000/api/profile/tags/", {
+                  method: "POST",
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({ tags: selectedTags }),
+                });
+                alert("Tag updated successfully!");
+              } catch (err) {
+                console.error("Failed to update tag:", err);
+              }
+            }}
+            disabled={selectedTags.length === 0}
+          >
+            Save Expertise Tag
+          </Button>
         </Flex>
-
-        <Button
-          mt={4}
-          colorScheme="teal"
-          onClick={async () => {
-            try {
-              const token = await getAccessTokenSilently({
-                authorizationParams: { audience: "https://billboard.local" },
-              });
-
-              await fetch("http://localhost:8000/api/profile/tags/", {
-                method: "POST",
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ tags: selectedTags }),
-              });
-              alert("Tag updated successfully!");
-              
-            } catch (err) {
-              console.error("Failed to update tag:", err);
-            }
-          }}
-          disabled={selectedTags.length === 0}
-        >
-          Save Expertise Tag
-        </Button>
       </Box>
+
 
 
       {/* Fourth Row: Bill View History */}
       <Box w="100%">
+        
         <BillViewHistory />
       </Box>
     </Flex>
