@@ -19,6 +19,11 @@ const BillViewHistory: React.FC = () => {
   const { getAccessTokenSilently } = useAuth0();
   const navigate = useNavigate();
 
+  const truncateTitle = (title: string, maxLength: number = 150) => {
+    if (title.length <= maxLength) return title;
+    return `${title.substring(0, maxLength)}...`;
+  };
+
   useEffect(() => {
     const fetchViewHistory = async () => {
       try {
@@ -89,8 +94,15 @@ const BillViewHistory: React.FC = () => {
                 <Text color="bg.inverted" fontWeight="medium">
                   {view.bill_type}-{view.bill_number} | Congress: {view.congress}
                 </Text>
-                <Text color="bg.inverted" fontSize="sm" truncate>
-                  {view.title}
+                <Text 
+                  color="bg.inverted" 
+                  fontSize="sm" 
+                  textOverflow="ellipsis" 
+                  whiteSpace="nowrap" 
+                  maxWidth="300px"
+                  title={view.title}
+                >
+                  {truncateTitle(view.title)}
                 </Text>
                 <Text color="gray.500" fontSize="xs">
                   Viewed on {new Date(view.viewed_at).toLocaleDateString()}
