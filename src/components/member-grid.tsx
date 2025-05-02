@@ -1,20 +1,30 @@
 import { Grid, Portal, Select, Stack, createListCollection } from "@chakra-ui/react";
 import RepCard from "@/components/rep-card";
 import { CosponsorCardProp } from "@/components/type";
+import { useState } from "react";
 
 
 export default function MemberGrid({items} : {items : CosponsorCardProp[]}) {
 
+  const [selectedState, setSelectedState] = useState<string | undefined>(undefined);
+  
   // filter congress members based on state
+  const filteredItems = selectedState 
+    ? items.filter((item) => item.state === selectedState)
+    : items;
+
 
   return (
     <Stack>
-    <Select.Root collection={states} size="sm" width="320px">
+    <Select.Root collection={states} size="sm" width="320px"
+    onValueChange={( {value} ) => { console.log("Selected:", value);
+                                setSelectedState(value[0]);
+    }}>
       <Select.HiddenSelect />
       <Select.Label>Filter by State</Select.Label>
       <Select.Control>
         <Select.Trigger>
-          <Select.ValueText placeholder="Select State" />
+          <Select.ValueText placeholder="Select State"/>
         </Select.Trigger>
         <Select.IndicatorGroup>
           <Select.Indicator />
@@ -24,7 +34,15 @@ export default function MemberGrid({items} : {items : CosponsorCardProp[]}) {
         <Select.Positioner>
           <Select.Content>
             {states.items.map((state) => (
-              <Select.Item item={state} key={state.value}>
+              <Select.Item 
+                item={state} 
+                key={state.value}
+                onSelect={() => {
+                  setSelectedState(state.value);
+                  console.log("Selected state:", state.value);
+                }
+                }
+              >
                 {state.label}
                 <Select.ItemIndicator />
               </Select.Item>
@@ -35,7 +53,7 @@ export default function MemberGrid({items} : {items : CosponsorCardProp[]}) {
     </Select.Root>
 
     <Grid templateColumns="repeat(3, 1fr)" gap={3}>
-      {items.map((data) => (
+      {filteredItems.map((data) => (
         <RepCard item={data} key={data.bioguide_id} />
       ))}
     </Grid>
@@ -45,6 +63,7 @@ export default function MemberGrid({items} : {items : CosponsorCardProp[]}) {
 
 const states = createListCollection({
   items: [
+    { label: "Show All", value: ""},
     { label: "Alabama", value: "AL" },
     { label: "Alaska", value: "AK" },
     { label: "Arizona", value: "AZ" },
