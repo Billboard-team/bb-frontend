@@ -1,6 +1,6 @@
 import { Box, Heading, Text, Link, Stack, VStack, HStack, IconButton, Color, Image } from "@chakra-ui/react";
 import { useColorModeValue } from "@/components/ui/color-mode";
-import { LuCircleCheckBig, LuShare } from "react-icons/lu";
+import { LuCircleCheckBig, LuClipboardPlus } from "react-icons/lu";
 import { useState } from "react";
 import { Cosponsor } from "@/components/type";
 import BillGrid from "./bill-grid";
@@ -61,7 +61,7 @@ const CongressMemberDetailed = ({ member }: { member: Cosponsor}) => {
               setShareClicked(true);
             }
             }>
-            {shareClicked ? <LuCircleCheckBig/> : <LuShare/>}
+            {shareClicked ? <LuCircleCheckBig/> : <LuClipboardPlus/>}
           </IconButton>
         </HStack>
       </VStack>
