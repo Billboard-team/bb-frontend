@@ -6,7 +6,7 @@ import Dashboard from "@/pages/dashboard";
 import DetailView from "@/pages/detail-view";
 import DashboardLayout from "@/pages/dashboard-layout";
 import UserProfile from "@/pages/userprofile";
-import SignInForm from '@/pages/sign-in-page';
+import SignInForm from "@/pages/sign-in-page";
 import FriendListPage from "@/pages/friend-list-page";
 import SignupForm from "./pages/sign-up-page";
 import DMPage from "@/pages/dm-page";
@@ -18,6 +18,11 @@ import AuthCallback from "@/pages/auth-callback";
 import CompleteProfile from "@/pages/complete-profile";
 import SignOutPage from "@/pages/sign-out-page";
 import EditProfile from "./pages/edit-profile";
+import SearchPage from "./pages/search-page";
+import FollowingPage from "./pages/following-page";
+import SearchUserPage from "@/pages/search-user-page";
+import NotificationPage from "@/pages/notification-page";
+import RepsPage from "@/pages/reps-page";
 
 const domain = "dev-o057ijjrl6wtbm32.us.auth0.com";
 const clientId = "KtwRQunLY2dwT5UiqHDYOIoqMt4j3Sab";
@@ -30,7 +35,7 @@ createRoot(document.getElementById("root")!).render(
     authorizationParams={{
       redirect_uri: window.location.origin + "/callback",
       audience,
-      scope: "openid profile email"
+      scope: "openid profile email",
     }}
   >
     <Provider>
@@ -38,17 +43,26 @@ createRoot(document.getElementById("root")!).render(
         <FilterProvider>
           <Routes>
             <Route path="/sign-out" element={<SignOutPage />} />
-            <Route path='signin' element={<SignInForm />} />
-            <Route path='signup' element={<SignupForm />} />
+            <Route path="signin" element={<SignInForm />} />
+            <Route path="signup" element={<SignupForm />} />
             <Route path="/" element={<DashboardLayout />}>
               <Route path="callback" element={<AuthCallback />} />
               <Route path="/complete-profile" element={<CompleteProfile />} />
               <Route index element={<Dashboard />} />
               <Route path="post/:id" element={<DetailView />} />
               <Route path="update/profile/" element={<EditProfile />} />
+              <Route path="search" element={<SearchUserPage />} />
+              <Route path="notification" element={<NotificationPage />} />
+
+              <Route path="/reps" element={<RepsPage />} />
+
+              <Route path="search" element={<SearchPage/>} />
+              <Route path="following" element={<FollowingPage/>} />
+
               <Route path="member/:id" element={<MemberDetailView/>} />
               <Route path="profile">
-                <Route path="" element={<UserProfile />} />
+                <Route index element={<UserProfile />} />
+                <Route path=":username" element={<UserProfile />} />
                 <Route path="friendlist" element={<FriendListPage />} />
                 <Route path="messages" element={<DMPage />} />
               </Route>
