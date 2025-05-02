@@ -1,19 +1,26 @@
 import { useEffect, useState } from "react";
-import { Box, Heading, HStack, Spinner, Text, IconButton, Skeleton } from "@chakra-ui/react";
+import { Box, Heading, HStack, Text, IconButton, Skeleton } from "@chakra-ui/react";
 import BillGrid from "./bill-grid"; // Ensure this is correctly implemented
 import { LuRotateCcw } from "react-icons/lu";
 import { BillCardProp } from "@/components/type";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const RecommendedBills = () => {
   const [bills, setBills] = useState<BillCardProp[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchRecommendedBills = () => {
+  const { getAccessTokenSilently } = useAuth0();
+
+  const fetchRecommendedBills = async () => {
     setLoading(true);
     setError(null);
 
-    fetch("http://localhost:8000/api/bills/recommended")
+    const token = await getAccessTokenSilently()
+
+    fetch("http://localhost:8000/api/bills/recommended", {
+      headers: {'authorization': `bearer ${token}`}
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -23,11 +30,11 @@ const RecommendedBills = () => {
       .then((data) => {
         console.log("Fetched Recommended Bills:", data);
 
-        if (!data.recommended_bills || !Array.isArray(data.recommended_bills)) {
+        if (!data.bills || !Array.isArray(data.bills)) {
           throw new Error("Invalid response format");
         }
 
-        setBills(data.recommended_bills);
+        setBills(data.bills);
       })
       .catch((err) => {
         console.error("Error fetching recommended bills:", err);

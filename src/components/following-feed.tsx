@@ -12,7 +12,7 @@ const FollowingFeed = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
 
   const fetchFollowingFeed = async () => {
     const token = await getAccessTokenSilently()
@@ -44,7 +44,7 @@ const FollowingFeed = () => {
       {error && <Text color="red.500">{error}</Text>}
 
       {!loading && !error && cards.map((card) => {
-          return <Card.Root my={5} colorPalette="teal" variant="subtle">
+          return <Card.Root my={3} colorPalette="teal" variant="subtle">
             <Card.Header>
               <Card.Description fontStyle="italic">{card.username} {card.interaction}</Card.Description>
               <Card.Description><BsArrowReturnRight/></Card.Description>
