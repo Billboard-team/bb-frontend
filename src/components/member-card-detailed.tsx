@@ -35,22 +35,30 @@ const CongressMemberDetailed = ({ member }: { member: Cosponsor}) => {
       color={textColor}
     >
       <VStack align="stretch" gap={4}>
-        <Box textAlign="center">
-          <Image 
-            src={member.image_url} 
-            alt={member.full_name} 
-            borderRadius="md" 
-            boxSize="100px" 
-            mx="auto" 
-          />
+        <Box textAlign="left">
+        <Image 
+          src={member.image_url} 
+          alt={member.full_name} 
+          borderRadius="xl"
+          border="4px solid"
+          borderColor={
+            member.party === "D" ? "blue.300" :
+            member.party === "R" ? "red.300" :
+            "gray.300"
+          }
+          boxSize="140px" 
+          height="150px" 
+          mx="0" 
+
+        />
           <Heading fontSize="xl" mt={3}>{member.full_name}</Heading>
           <Text fontSize="sm" color={subTextColor}>
-            ({member.party}-{member.state})
+            ({member.party === "D" ? "Democrat" : member.party === "R" ? "Republican" : "Independent"}-{member.state})
           </Text>
         </Box>
         <HStack justifyContent="space-between">
           <Box pt={4}>
-            {/* <Text fontWeight="bold" display="inline" mr={2}>Cosponsored Bills</Text> */}
+            <Text fontWeight="bold" display="inline" mr={2}>Cosponsored Bills</Text> 
             <BillGrid items={member.cosponsored_bills} /> 
           </Box>
           <IconButton 
@@ -67,6 +75,12 @@ const CongressMemberDetailed = ({ member }: { member: Cosponsor}) => {
       </VStack>
     </Box>
   );
+};
+
+const partyMap = {
+  "D": "Democrat",
+  "R": "Republican",
+  "I": "Independent"
 };
 
 export default CongressMemberDetailed;
