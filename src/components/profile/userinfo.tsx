@@ -95,7 +95,7 @@ const UserInfo: React.FC<Props> = ({ user, isOwnProfile = false }) => {
           </Tag.Root>
         ))}
       {isOwnProfile ? (
-        <Button variant="ghost" mt={4}>
+        <Button variant="ghost" mt={4} onClick={() => navigate("/profile/update")}>
           Edit Profile
         </Button>
       ) : (

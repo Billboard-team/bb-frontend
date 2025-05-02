@@ -54,7 +54,6 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/complete-profile" element={<CompleteProfile />} />
               <Route index element={<Dashboard />} />
               <Route path="post/:id" element={<DetailView />} />
-              <Route path="update/profile/" element={<EditProfile />} />
               <Route path="search-user" element={<SearchUserPage />} />
               <Route path="notification" element={<NotificationPage />} />
 
@@ -69,6 +68,7 @@ createRoot(document.getElementById("root")!).render(
                 <Route path=":username" element={<UserProfile />} />
                 <Route path="friendlist" element={<FriendListPage />} />
                 <Route path="messages" element={<DMPage />} />
+                <Route path="update" element={<EditProfile />} />
               </Route>
             </Route>
             <Route path="dev" element={<Dev />} />

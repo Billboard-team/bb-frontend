@@ -172,11 +172,6 @@ const UserProfile = () => {
       }
     };
 
-    if (isAuthenticated) fetchUserProfile();
-  }, [isAuthenticated, username, getAccessTokenSilently]);
-
-  useEffect(() => {
-    if (isAuthenticated && userProfile && isOwnProfile && !userProfile.name) {
     const fetchTags = async () => {
       try {
         const res = await fetch("http://localhost:8000/api/tags/");
@@ -190,7 +185,10 @@ const UserProfile = () => {
     if (isAuthenticated) {
       fetchTags();
     }
-  }}, [isAuthenticated]);
+
+
+    if (isAuthenticated) fetchUserProfile();
+  }, [isAuthenticated, username, getAccessTokenSilently]);
 
   useEffect(() => {
     if (isAuthenticated && userProfile && !userProfile.name) {
@@ -283,7 +281,7 @@ const UserProfile = () => {
                 <label key={tag}>
                   <input
                     type="radio"
-                    name="expertiseTag"
+                    name="expertiseag"
                     value={tag}
                     checked={selectedTags[0] === tag}
                     onChange={(e) => setSelectedTags([e.target.value])}
