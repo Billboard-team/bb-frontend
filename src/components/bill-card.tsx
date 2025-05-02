@@ -27,8 +27,6 @@ export default function BillCard({item}: {item: BillCardProp}) {
         <Card.Title mt="3" fontSize="3xl">
           {item.title}
         </Card.Title>
-        <Card.Description>Sponsor: {item.sponsor || "Not Available"}</Card.Description>
-        <Card.Description>Description: {item.description || "Not Available"}</Card.Description>
       </Card.Body>
       
       <Card.Footer justifyContent="flex-end" display="flex" flexDirection="column" alignItems="flex-end" flexWrap="wrap">

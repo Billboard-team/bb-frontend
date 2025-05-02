@@ -58,8 +58,6 @@ export default function BillCardFollowed({item}: {item: BillCardProp}) {
             </Stack>
 
         </Card.Description>
-
-        <Card.Description>Description: {item.description || "Not Available"}</Card.Description>
       </Card.Body>
       
       <Card.Footer justifyContent="flex-end" display="flex" flexDirection="column" alignItems="flex-end" flexWrap="wrap">
